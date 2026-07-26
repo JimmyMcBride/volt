@@ -1,0 +1,21 @@
+{
+  "schema_version": 3,
+  "last_active_chain": "brainstorm/volt-language-thesis-and-minimum-semantic-core",
+  "last_updated_at": "2026-07-26T05:38:51Z",
+  "sessions": {
+    "brainstorm/volt-language-thesis-and-minimum-semantic-core": {
+      "chain_id": "brainstorm/volt-language-thesis-and-minimum-semantic-core",
+      "brainstorm": "volt-language-thesis-and-minimum-semantic-core",
+      "current_stage": "brainstorm",
+      "current_cluster": 3,
+      "current_cluster_label": "clarify-constraints-appetite",
+      "stage_statuses": {
+        "brainstorm": "in_progress"
+      },
+      "summary": "Recap:\nCurrent understanding: AI agents program through languages and tools designed mainly for human authors. Critical behavior, effects, diagnostics, and repair loops often remain implicit, making generated software harder to verify and govern. / AI coding agents gain a deterministic, machine-legible environment for creating and repairing programs. Human developers gain software that is easier to inspect, constrain, review, and trust.\nKey decisions: none yet.\nUnresolved risks or questions: none captured yet.\nParked items: none.\nRecommended next stage: Continue with constraints and appetite.",
+      "next_action": "Continue with constraints and appetite.",
+      "created_at": "2026-07-26T05:38:11Z",
+      "updated_at": "2026-07-26T05:38:51Z"
+    }
+  }
+}
