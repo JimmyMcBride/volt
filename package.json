@@ -1,0 +1,14 @@
+{
+  "name": "volt-research-protocol",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "check": "node research/scripts/validate.mjs",
+    "test": "node --test",
+    "verify": "npm run check && npm test"
+  }
+}

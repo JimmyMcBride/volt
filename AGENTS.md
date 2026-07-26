@@ -17,6 +17,13 @@ Read the linked context files before substantial work. Prefer the `brain` skill 
 - [Current State](./.brain/context/current-state.md)
 - [Policy](./.brain/policy.yaml)
 
+## Project Docs
+
+- [project-architecture.md](./docs/project-architecture.md)
+- [project-overview.md](./docs/project-overview.md)
+- [project-workflows.md](./docs/project-workflows.md)
+- [research-hypothesis.md](./docs/research-hypothesis.md)
+
 ## Required Workflow
 
 1. If no validated session is active, run `brain prep --task "<task>"`.

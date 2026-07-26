@@ -1,6 +1,8 @@
 ---
-updated: "2026-07-26T05:59:54Z"
+updated: "2026-07-26T07:22:30Z"
 ---
+# Project Overview
+
 Volt is a greenfield research project for an experimental programming language and toolchain designed around AI coding models and autonomous software-engineering agents.
 
 ## Vision
@@ -17,21 +19,21 @@ The working principle is **semantic compression**: maximize how much programmer 
 
 ## Current Stage
 
-- Research framing and language discovery.
-- Central hypothesis unvalidated; no project-specific evidence review completed.
-- Candidate language features are research inputs, not approved requirements.
-- No implementation language, runtime, execution model, syntax, or package model selected.
-- No compiler implementation begins before an approval-ready GitHub spec.
-- Brain owns durable knowledge under `.brain/` and `docs/`.
-- GitHub owns planning through Discussions, Issues, Milestones, and Projects.
+- The evidence synthesis and preregistered protocol in [GitHub Issue #3](https://github.com/JimmyMcBride/volt/issues/3) are approved and implemented as executable artifacts under `research/`.
+- The evidence matrix distinguishes prior evidence, counterevidence, limitations, and unvalidated Volt hypotheses.
+- The protocol defines three causal estimands, four explanatory semantic-compression metrics, exact decision rules, and schemas for later study manifests and results.
+- No controlled Volt study has run, so the central hypothesis remains unvalidated.
+- Language semantics, compiler architecture, and benchmark execution remain blocked on separately approved GitHub specs.
+- Brain owns durable knowledge under `.brain/` and `docs/`; GitHub owns planning through Discussions, Issues, Milestones, and Projects.
 
 ## Near-Term Goal
 
-Complete evidence synthesis, evaluation design, minimum-kernel specification, prototype architecture, and benchmark plan before implementation approval.
+Review the completed Issue #3 artifacts, then shape and explicitly approve the language-kernel spec before any compiler implementation.
 
 ## Durable Research Context
 
-[Volt Research Hypothesis](./research-hypothesis.md)
+- [Volt Research Hypothesis](./research-hypothesis.md)
+- [Executable Research Artifacts](../research/README.md)
 
 ## Canonical Planning Source
 

@@ -1,0 +1,765 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JimmyMcBride/volt/research/schema/protocol.schema.json",
+  "title": "Volt Evidence Protocol V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "protocolId",
+    "version",
+    "status",
+    "source",
+    "scope",
+    "conditions",
+    "descriptiveBaselines",
+    "workload",
+    "execution",
+    "primaryEstimands",
+    "secondaryOutcomes",
+    "metrics",
+    "analysis",
+    "power",
+    "controls",
+    "complexityGuardrails",
+    "decisionRules",
+    "claimBoundaries",
+    "freezeArtifacts"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "protocolId": {
+      "const": "volt-v0-evidence-ready"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[1-9][0-9]*\\.[0-9]+\\.[0-9]+$"
+    },
+    "status": {
+      "enum": [
+        "approved",
+        "frozen",
+        "superseded"
+      ]
+    },
+    "source": {
+      "$ref": "#/$defs/source"
+    },
+    "scope": {
+      "$ref": "#/$defs/scope"
+    },
+    "conditions": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "$ref": "#/$defs/condition"
+      }
+    },
+    "descriptiveBaselines": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "$ref": "#/$defs/baseline"
+      }
+    },
+    "workload": {
+      "$ref": "#/$defs/workload"
+    },
+    "execution": {
+      "$ref": "#/$defs/execution"
+    },
+    "primaryEstimands": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "$ref": "#/$defs/estimand"
+      }
+    },
+    "secondaryOutcomes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "metrics": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "$ref": "#/$defs/metric"
+      }
+    },
+    "analysis": {
+      "$ref": "#/$defs/analysis"
+    },
+    "power": {
+      "$ref": "#/$defs/power"
+    },
+    "controls": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "complexityGuardrails": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "$ref": "#/$defs/guardrail"
+      }
+    },
+    "decisionRules": {
+      "$ref": "#/$defs/decisionRules"
+    },
+    "claimBoundaries": {
+      "type": "object",
+      "required": [
+        "humanAuditability",
+        "externalLanguageComparisons",
+        "semanticCompressionComposite",
+        "voltSpecificBenefit"
+      ],
+      "properties": {
+        "humanAuditability": {
+          "const": "deferred_pending_separately_approved_blinded_reviewer_study"
+        },
+        "externalLanguageComparisons": {
+          "const": "descriptive_only"
+        },
+        "semanticCompressionComposite": {
+          "const": "prohibited_for_success_decision"
+        },
+        "voltSpecificBenefit": {
+          "const": "unvalidated_until_confirmatory_results"
+        }
+      },
+      "additionalProperties": false
+    },
+    "freezeArtifacts": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": [
+        "issue",
+        "approvedAt",
+        "owner"
+      ],
+      "properties": {
+        "issue": {
+          "const": "https://github.com/JimmyMcBride/volt/issues/3"
+        },
+        "approvedAt": {
+          "type": "string",
+          "format": "date"
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "scope": {
+      "type": "object",
+      "required": [
+        "owns",
+        "delegatesToIssue6",
+        "requiresReapproval"
+      ],
+      "properties": {
+        "owns": {
+          "$ref": "#/$defs/nonEmptyUniqueStrings"
+        },
+        "delegatesToIssue6": {
+          "$ref": "#/$defs/nonEmptyUniqueStrings"
+        },
+        "requiresReapproval": {
+          "$ref": "#/$defs/nonEmptyUniqueStrings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "condition": {
+      "type": "object",
+      "required": [
+        "id",
+        "claimClass",
+        "canonicalSyntax",
+        "staticObligations",
+        "diagnostics"
+      ],
+      "properties": {
+        "id": {
+          "enum": [
+            "volt_full",
+            "static_obligations_erased",
+            "alias_permissive",
+            "diagnostics_plain"
+          ]
+        },
+        "claimClass": {
+          "const": "causal"
+        },
+        "canonicalSyntax": {
+          "type": "boolean"
+        },
+        "staticObligations": {
+          "type": "boolean"
+        },
+        "diagnostics": {
+          "enum": [
+            "diagnostic_v1",
+            "plain_same_facts"
+          ]
+        },
+        "bundledAblation": {
+          "type": "boolean"
+        },
+        "attributionLimit": {
+          "type": "string"
+        },
+        "aliasRule": {
+          "type": "string"
+        },
+        "diagnosticRule": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "baseline": {
+      "type": "object",
+      "required": [
+        "id",
+        "language",
+        "claimClass"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "claimClass": {
+          "const": "descriptive"
+        }
+      },
+      "additionalProperties": false
+    },
+    "workload": {
+      "type": "object",
+      "required": [
+        "domain",
+        "repositoryModules",
+        "taskFamilies",
+        "confirmatoryTasksPerFamily",
+        "confirmatoryTaskCount",
+        "calibrationTasksPerFamily",
+        "calibrationTaskCount",
+        "calibrationIncludedInEvidence",
+        "capabilities",
+        "networkAllowed",
+        "hiddenTestInvariants"
+      ],
+      "properties": {
+        "domain": {
+          "const": "synthetic_event_registration"
+        },
+        "repositoryModules": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "taskFamilies": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "confirmatoryTasksPerFamily": {
+          "const": 3
+        },
+        "confirmatoryTaskCount": {
+          "const": 12
+        },
+        "calibrationTasksPerFamily": {
+          "const": 1
+        },
+        "calibrationTaskCount": {
+          "const": 4
+        },
+        "calibrationIncludedInEvidence": {
+          "const": false
+        },
+        "capabilities": {
+          "$ref": "#/$defs/nonEmptyUniqueStrings"
+        },
+        "networkAllowed": {
+          "const": false
+        },
+        "hiddenTestInvariants": {
+          "$ref": "#/$defs/nonEmptyUniqueStrings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "execution": {
+      "type": "object",
+      "required": [
+        "experimentalUnit",
+        "modelFamilyCount",
+        "modelFamilyRequirements",
+        "freshContextPerTrajectory",
+        "cleanRepositoryPerTrajectory",
+        "webAccess",
+        "firstSubmissionMayRunCompilerOrTests",
+        "repairTurnLimit",
+        "temperature",
+        "topP",
+        "maxOutputTokensPerTurn",
+        "maxOutputTokensPerTrajectory",
+        "wallClockMinutesPerTrajectory",
+        "hiddenTestOutputExposed",
+        "randomizationUnit",
+        "recordUnsupportedSeeds",
+        "missingTrajectoryPolicy"
+      ],
+      "properties": {
+        "experimentalUnit": {
+          "type": "string"
+        },
+        "modelFamilyCount": {
+          "const": 2
+        },
+        "modelFamilyRequirements": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "freshContextPerTrajectory": {
+          "const": true
+        },
+        "cleanRepositoryPerTrajectory": {
+          "const": true
+        },
+        "webAccess": {
+          "const": false
+        },
+        "firstSubmissionMayRunCompilerOrTests": {
+          "const": false
+        },
+        "repairTurnLimit": {
+          "const": 3
+        },
+        "temperature": {
+          "const": 0.2
+        },
+        "topP": {
+          "const": 1
+        },
+        "maxOutputTokensPerTurn": {
+          "const": 4000
+        },
+        "maxOutputTokensPerTrajectory": {
+          "const": 16000
+        },
+        "wallClockMinutesPerTrajectory": {
+          "const": 15
+        },
+        "hiddenTestOutputExposed": {
+          "const": false
+        },
+        "randomizationUnit": {
+          "const": "task_model_block"
+        },
+        "recordUnsupportedSeeds": {
+          "const": true
+        },
+        "missingTrajectoryPolicy": {
+          "const": "count_as_failure"
+        }
+      },
+      "additionalProperties": false
+    },
+    "estimand": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "treatment",
+        "control",
+        "outcome",
+        "measure",
+        "positiveFavors"
+      ],
+      "properties": {
+        "id": {
+          "enum": [
+            "static_obligation_effect",
+            "canonical_syntax_effect",
+            "structured_diagnostic_effect"
+          ]
+        },
+        "kind": {
+          "enum": [
+            "language",
+            "diagnostic"
+          ]
+        },
+        "treatment": {
+          "type": "string"
+        },
+        "control": {
+          "type": "string"
+        },
+        "outcome": {
+          "type": "string"
+        },
+        "measure": {
+          "const": "absolute_risk_difference"
+        },
+        "positiveFavors": {
+          "const": "treatment"
+        },
+        "cohort": {
+          "type": "string"
+        },
+        "firstPassOutcomeAllowed": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "metric": {
+      "type": "object",
+      "required": [
+        "id",
+        "role",
+        "algorithm",
+        "aggregation",
+        "compositeEligible"
+      ],
+      "properties": {
+        "id": {
+          "enum": [
+            "obligation_coverage",
+            "ast_shape_entropy",
+            "ambient_dependency_count",
+            "repair_locality"
+          ]
+        },
+        "role": {
+          "const": "explanatory"
+        },
+        "algorithm": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aggregation": {
+          "type": "string"
+        },
+        "compositeEligible": {
+          "const": false
+        },
+        "fewerThanTwoPassing": {
+          "type": "string"
+        },
+        "reportPassingCount": {
+          "type": "boolean"
+        },
+        "externalLanguageUse": {
+          "type": "string"
+        },
+        "nonPassingHandling": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "analysis": {
+      "type": "object",
+      "required": [
+        "strata",
+        "pooledEstimator",
+        "reports",
+        "confidenceInterval",
+        "randomizationTest",
+        "multiplicity",
+        "missingOutcomes",
+        "outcomeDependentExclusionsAllowed"
+      ],
+      "properties": {
+        "strata": {
+          "$ref": "#/$defs/nonEmptyUniqueStrings"
+        },
+        "pooledEstimator": {
+          "const": "equal_weight_mean_of_task_model_stratum_risk_differences"
+        },
+        "reports": {
+          "$ref": "#/$defs/nonEmptyUniqueStrings"
+        },
+        "confidenceInterval": {
+          "type": "object",
+          "required": [
+            "level",
+            "method",
+            "resamples",
+            "withinClusterResampling"
+          ],
+          "properties": {
+            "level": {
+              "const": 0.95
+            },
+            "method": {
+              "const": "task_cluster_bootstrap"
+            },
+            "resamples": {
+              "const": 10000
+            },
+            "withinClusterResampling": {
+              "const": "trajectories"
+            }
+          },
+          "additionalProperties": false
+        },
+        "randomizationTest": {
+          "type": "object",
+          "required": [
+            "strata",
+            "permutations"
+          ],
+          "properties": {
+            "strata": {
+              "$ref": "#/$defs/nonEmptyUniqueStrings"
+            },
+            "permutations": {
+              "const": 100000
+            }
+          },
+          "additionalProperties": false
+        },
+        "multiplicity": {
+          "type": "object",
+          "required": [
+            "method",
+            "familyWiseAlpha",
+            "family"
+          ],
+          "properties": {
+            "method": {
+              "const": "holm"
+            },
+            "familyWiseAlpha": {
+              "const": 0.05
+            },
+            "family": {
+              "const": "three_primary_comparisons"
+            }
+          },
+          "additionalProperties": false
+        },
+        "missingOutcomes": {
+          "const": "failure"
+        },
+        "outcomeDependentExclusionsAllowed": {
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "power": {
+      "type": "object",
+      "required": [
+        "calibrationTrajectoriesPerTaskModelCondition",
+        "targetPower",
+        "detectableAbsoluteEffect",
+        "adjustForHolm",
+        "minimumConfirmatoryTrajectoriesPerTaskModelCondition",
+        "maximumConfirmatoryTrajectoriesPerTaskModelCondition",
+        "selectionRule",
+        "aboveMaximumPolicy",
+        "underpoweredNullMayFalsify"
+      ],
+      "properties": {
+        "calibrationTrajectoriesPerTaskModelCondition": {
+          "const": 5
+        },
+        "targetPower": {
+          "const": 0.8
+        },
+        "detectableAbsoluteEffect": {
+          "const": 0.1
+        },
+        "adjustForHolm": {
+          "const": true
+        },
+        "minimumConfirmatoryTrajectoriesPerTaskModelCondition": {
+          "const": 20
+        },
+        "maximumConfirmatoryTrajectoriesPerTaskModelCondition": {
+          "const": 60
+        },
+        "selectionRule": {
+          "type": "string"
+        },
+        "aboveMaximumPolicy": {
+          "const": "declare_infeasible_and_reapprove"
+        },
+        "underpoweredNullMayFalsify": {
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "guardrail": {
+      "type": "object",
+      "required": [
+        "id",
+        "comparison",
+        "threshold",
+        "unit"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "comparison": {
+          "const": "maximum"
+        },
+        "threshold": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "unit": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "decisionRules": {
+      "type": "object",
+      "required": [
+        "meaningfulBenefit",
+        "support",
+        "weakened",
+        "inconclusive",
+        "falsified"
+      ],
+      "properties": {
+        "meaningfulBenefit": {
+          "type": "object",
+          "required": [
+            "minimumAbsoluteRiskDifference",
+            "confidenceIntervalMustExcludeZeroBeneficially",
+            "maximumHolmAdjustedPValueExclusive"
+          ],
+          "properties": {
+            "minimumAbsoluteRiskDifference": {
+              "const": 0.1
+            },
+            "confidenceIntervalMustExcludeZeroBeneficially": {
+              "const": true
+            },
+            "maximumHolmAdjustedPValueExclusive": {
+              "const": 0.05
+            }
+          },
+          "additionalProperties": false
+        },
+        "support": {
+          "type": "object",
+          "required": [
+            "minimumMeaningfulPrimaryComparisons",
+            "minimumMeaningfulLanguageComparisons",
+            "maximumHarmfulModelFamilyEffectExclusive",
+            "allComplexityGuardrailsMustPass"
+          ],
+          "properties": {
+            "minimumMeaningfulPrimaryComparisons": {
+              "const": 2
+            },
+            "minimumMeaningfulLanguageComparisons": {
+              "const": 1
+            },
+            "maximumHarmfulModelFamilyEffectExclusive": {
+              "const": -0.1
+            },
+            "allComplexityGuardrailsMustPass": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "weakened": {
+          "$ref": "#/$defs/nonEmptyUniqueStrings"
+        },
+        "inconclusive": {
+          "$ref": "#/$defs/nonEmptyUniqueStrings"
+        },
+        "falsified": {
+          "type": "object",
+          "required": [
+            "allPrimaryUpperConfidenceBoundsBelow",
+            "holmSignificantHarmAtOrBelow",
+            "unresolvedComplexityGuardrail"
+          ],
+          "properties": {
+            "allPrimaryUpperConfidenceBoundsBelow": {
+              "const": 0.1
+            },
+            "holmSignificantHarmAtOrBelow": {
+              "const": -0.1
+            },
+            "unresolvedComplexityGuardrail": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "nonEmptyUniqueStrings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  }
+}

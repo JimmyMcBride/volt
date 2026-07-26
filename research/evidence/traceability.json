@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "sourceIssue": "https://github.com/JimmyMcBride/volt/issues/3",
+  "nodes": [
+    {
+      "id": "H-STATIC",
+      "type": "hypothesis",
+      "statement": "The explicit static-obligation bundle improves first-pass correctness."
+    },
+    {
+      "id": "H-SYNTAX",
+      "type": "hypothesis",
+      "statement": "Canonical-only syntax improves first-pass correctness."
+    },
+    {
+      "id": "H-DIAGNOSTICS",
+      "type": "hypothesis",
+      "statement": "Structured diagnostics improve bounded repair success."
+    },
+    {
+      "id": "H-VOLT",
+      "type": "hypothesis",
+      "statement": "At least two preregistered Volt treatments provide meaningful benefit without disproportionate complexity."
+    },
+    {
+      "id": "R-WORKLOAD",
+      "type": "requirement",
+      "statement": "Use repository-level maintenance tasks."
+    },
+    {
+      "id": "R-HIDDEN-TESTS",
+      "type": "requirement",
+      "statement": "Use strengthened hidden tests and mutation checks."
+    },
+    {
+      "id": "R-DESCRIPTIVE-BASELINES",
+      "type": "requirement",
+      "statement": "Report external-language baselines descriptively."
+    },
+    {
+      "id": "R-DIAGNOSTIC-ESTIMAND",
+      "type": "requirement",
+      "statement": "Compare representations only after an identical frozen failure."
+    },
+    {
+      "id": "R-REPAIR-LIMIT",
+      "type": "requirement",
+      "statement": "Allow at most three repair turns."
+    },
+    {
+      "id": "R-REPAIR-LOCALITY",
+      "type": "requirement",
+      "statement": "Measure changed files and Zhang-Shasha AST distance separately."
+    },
+    {
+      "id": "R-MULTIPLICITY",
+      "type": "requirement",
+      "statement": "Apply Holm correction across three primary comparisons."
+    },
+    {
+      "id": "EXP-STATIC",
+      "type": "experiment",
+      "statement": "Compare volt_full with static_obligations_erased."
+    },
+    {
+      "id": "EXP-SYNTAX",
+      "type": "experiment",
+      "statement": "Compare volt_full with alias_permissive."
+    },
+    {
+      "id": "EXP-DIAGNOSTICS",
+      "type": "experiment",
+      "statement": "Compare structured and plain rendering on identical failures."
+    },
+    {
+      "id": "D-MEANINGFUL",
+      "type": "decision",
+      "statement": "Require +10 percentage points, a beneficial nonzero interval, and Holm-adjusted p below .05."
+    },
+    {
+      "id": "D-SUPPORT",
+      "type": "decision",
+      "statement": "Require two meaningful primary benefits, including one language comparison, no harmful model-family effect, and passing guardrails."
+    },
+    {
+      "id": "D-WEAKEN",
+      "type": "decision",
+      "statement": "Classify partial, small, or materially inconsistent benefit as weakened."
+    },
+    {
+      "id": "D-INCONCLUSIVE",
+      "type": "decision",
+      "statement": "Classify unresolved powered uncertainty or validity failure as inconclusive."
+    },
+    {
+      "id": "D-FALSIFY",
+      "type": "decision",
+      "statement": "Stop promotion when meaningful benefit is excluded, significant harm occurs, or complexity remains outside a guardrail."
+    }
+  ],
+  "edges": [
+    {
+      "from": "E-REPOSITORY-TASKS",
+      "to": "R-WORKLOAD",
+      "relation": "supports"
+    },
+    {
+      "from": "E-HIDDEN-TESTS",
+      "to": "R-HIDDEN-TESTS",
+      "relation": "supports"
+    },
+    {
+      "from": "E-LANGUAGE-CONFOUNDING",
+      "to": "R-DESCRIPTIVE-BASELINES",
+      "relation": "constrains"
+    },
+    {
+      "from": "E-REPAIR-FEEDBACK",
+      "to": "R-DIAGNOSTIC-ESTIMAND",
+      "relation": "supports"
+    },
+    {
+      "from": "E-REPAIR-FEEDBACK",
+      "to": "R-REPAIR-LIMIT",
+      "relation": "supports"
+    },
+    {
+      "from": "E-TREE-DISTANCE",
+      "to": "R-REPAIR-LOCALITY",
+      "relation": "defines"
+    },
+    {
+      "from": "E-MULTIPLICITY",
+      "to": "R-MULTIPLICITY",
+      "relation": "defines"
+    },
+    {
+      "from": "H-VOLT-STATIC",
+      "to": "H-STATIC",
+      "relation": "states"
+    },
+    {
+      "from": "H-VOLT-SYNTAX",
+      "to": "H-SYNTAX",
+      "relation": "states"
+    },
+    {
+      "from": "H-VOLT-DIAGNOSTICS",
+      "to": "H-DIAGNOSTICS",
+      "relation": "states"
+    },
+    {
+      "from": "H-STATIC",
+      "to": "EXP-STATIC",
+      "relation": "tested_by"
+    },
+    {
+      "from": "H-SYNTAX",
+      "to": "EXP-SYNTAX",
+      "relation": "tested_by"
+    },
+    {
+      "from": "H-DIAGNOSTICS",
+      "to": "EXP-DIAGNOSTICS",
+      "relation": "tested_by"
+    },
+    {
+      "from": "EXP-STATIC",
+      "to": "D-MEANINGFUL",
+      "relation": "evaluated_by"
+    },
+    {
+      "from": "EXP-SYNTAX",
+      "to": "D-MEANINGFUL",
+      "relation": "evaluated_by"
+    },
+    {
+      "from": "EXP-DIAGNOSTICS",
+      "to": "D-MEANINGFUL",
+      "relation": "evaluated_by"
+    },
+    {
+      "from": "D-MEANINGFUL",
+      "to": "H-VOLT",
+      "relation": "aggregates_into"
+    },
+    {
+      "from": "H-VOLT",
+      "to": "D-SUPPORT",
+      "relation": "classified_by"
+    },
+    {
+      "from": "H-VOLT",
+      "to": "D-WEAKEN",
+      "relation": "classified_by"
+    },
+    {
+      "from": "H-VOLT",
+      "to": "D-INCONCLUSIVE",
+      "relation": "classified_by"
+    },
+    {
+      "from": "H-VOLT",
+      "to": "D-FALSIFY",
+      "relation": "classified_by"
+    }
+  ],
+  "requiredPaths": [
+    [
+      "H-STATIC",
+      "EXP-STATIC",
+      "D-MEANINGFUL",
+      "H-VOLT"
+    ],
+    [
+      "H-SYNTAX",
+      "EXP-SYNTAX",
+      "D-MEANINGFUL",
+      "H-VOLT"
+    ],
+    [
+      "H-DIAGNOSTICS",
+      "EXP-DIAGNOSTICS",
+      "D-MEANINGFUL",
+      "H-VOLT"
+    ]
+  ]
+}

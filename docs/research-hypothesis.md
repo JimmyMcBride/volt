@@ -1,83 +1,57 @@
+---
+updated: "2026-07-26T07:22:30Z"
+---
 # Volt Research Hypothesis
 
 ## Mission
 
-Volt investigates whether a programming language designed around AI coding
-models and autonomous software-engineering agents can measurably improve
-correctness, repair efficiency, and human auditability.
+Volt investigates whether a programming language designed around AI coding models and autonomous software-engineering agents can measurably improve correctness and repair efficiency.
 
-Volt is a research instrument first. A production language is a possible later
-outcome, not an initial assumption.
+Volt is a research instrument first. A production language is a possible later outcome, not an initial assumption. Human-auditability benefit is explicitly deferred to a separately approved blinded reviewer study.
 
 ## Working Hypothesis
 
-Given approximately equivalent model exposure, tasks, and tooling, a language
-with immutable defaults, algebraic data types, exhaustive matching, explicit
-effects, canonical syntax, structured diagnostics, and narrow idiomatic
-conventions will produce greater first-pass correctness and faster repair
-cycles than languages with greater semantic or stylistic ambiguity.
+Given approximately equivalent model exposure, tasks, and tooling, a language with immutable defaults, algebraic data types, exhaustive matching, explicit effects, canonical syntax, structured diagnostics, and narrow idiomatic conventions will produce greater first-pass correctness and faster repair cycles than languages with greater semantic or stylistic ambiguity.
 
 ## Semantic Compression
 
-Semantic compression is the proposed objective of maximizing how much
-programmer intent valid source communicates while minimizing ambiguity and
-plausible incorrect interpretations.
+Semantic compression is an explanatory vector, not a composite success score:
 
-This is not yet an operational metric. Research must define observable proxies,
-competing explanations, and falsification thresholds.
+- `obligation_coverage`: intended static-obligation rejections divided by preregistered static-obligation fixtures.
+- `ast_shape_entropy`: normalized entropy of identifier- and literal-erased AST shapes among passing first submissions.
+- `ambient_dependency_count`: distinct undeclared benchmark capabilities observed in typed IR.
+- `repair_locality`: changed-file count and normalized AST tree-edit distance reported separately.
 
-## What Better for Agents Means
-
-Candidate measurements:
-
-- Higher first-pass compilation and functional correctness.
-- Fewer repair iterations and repair tokens.
-- Less wall-clock time to a correct program.
-- Fewer unhandled domain states and unintended effects.
-- Better cross-file consistency.
-- Greater success using structured diagnostics without human explanation.
-- Stable results across repeated trials, prompts, and model families.
-- Acceptable human readability, review burden, and runtime/tooling cost.
+Exact algorithms and deterministic fixtures live under `research/`.
 
 ## Evidence Status
 
-No project-specific empirical evidence review has been completed yet.
+The project-specific evidence synthesis is complete for the approved v0 protocol; the Volt thesis itself remains unvalidated.
 
-- The central hypothesis is unvalidated.
-- Candidate language features are research inputs, not approved requirements.
-- Existing-language comparisons and AI performance claims require sourced
-  research.
-- Functional-first design, actor concurrency, proof obligations, semantic
-  diffs, and transactional agent changes remain speculative until evidence or
-  experiments justify them.
-- Training exposure and tool maturity are major confounders.
+- Repository-level work and strengthened hidden tests are supported as evaluation-method choices, not as proof of Volt-specific benefit.
+- Cross-language results are descriptive because exposure, tokenization, libraries, and tooling maturity cannot be equalized fully.
+- Iterative repair evidence makes feedback representation part of the treatment, but does not establish a DiagnosticV1 advantage.
+- Static obligations, canonical syntax, and structured diagnostic benefits remain preregistered causal hypotheses.
+- No controlled Volt result exists yet, and calibration data cannot count as confirmatory evidence.
+
+The sourced matrix and its limitations are in `research/evidence/evidence-matrix.json`. GitHub [Issue #3](https://github.com/JimmyMcBride/volt/issues/3) remains the canonical protocol specification.
 
 ## Definitions
 
-- **AI-friendly language:** a language whose semantics and tools measurably
-  improve agent correctness, repair efficiency, or auditability under
-  controlled comparison.
-- **Canonical syntax:** one officially preferred representation for
-  foundational constructs, enforced by grammar and formatter where practical.
-- **Ambiguity:** the number or diversity of plausible interpretations or
-  implementations consistent with a task, source fragment, or diagnostic.
-- **First-pass correctness:** a generated program satisfies compilation and
-  hidden functional tests before any repair feedback.
+- **AI-friendly language:** a language whose semantics and tools measurably improve agent correctness or repair efficiency under controlled comparison.
+- **Canonical syntax:** one officially preferred representation for foundational constructs, enforced by grammar and formatter where practical.
+- **Ambiguity:** the number or diversity of plausible interpretations or implementations consistent with a task, source fragment, or diagnostic.
+- **First-pass correctness:** a generated program satisfies compilation and hidden functional tests before any repair feedback.
 - **Repair cycle:** one generate-or-edit, check, diagnostic, and retry loop.
-- **Effect:** an observable interaction beyond pure value computation, such as
-  I/O, time, randomness, mutation, or external capability use.
-- **Invariant:** a condition required to hold across defined program states or
-  transitions.
-- **Agent-readable diagnostic:** stable structured output with
-  machine-addressable codes, locations, expected/received facts, related
-  symbols, and bounded repair possibilities.
+- **Effect:** an observable interaction beyond pure value computation, such as I/O, time, randomness, mutation, or external capability use.
+- **Invariant:** a condition required to hold across defined program states or transitions.
+- **Agent-readable diagnostic:** stable structured output with machine-addressable codes, locations, expected/received facts, related symbols, and bounded repair possibilities.
 
-## Falsification
+## Decision Boundary
 
-The hypothesis weakens or fails if controlled experiments show no meaningful
-improvement; benefits disappear when exposure and tooling are controlled;
-repair cost materially increases; or restrictions impose complexity,
-performance, or usability costs larger than correctness and auditability gains.
+Continued research is supported only when at least two of the three primary comparisons show a preregistered meaningful benefit, at least one is a language comparison, neither model family has a materially harmful result on an otherwise successful comparison, and every complexity guardrail passes.
+
+The result is weakened, inconclusive, or falsified according to the exact machine-readable rules in `research/protocol/protocol-v1.json`; no exploratory composite can override those rules.
 
 ## Durable Constraints
 
@@ -85,6 +59,5 @@ performance, or usability costs larger than correctness and auditability gains.
 - Keep the first prototype deliberately small.
 - Separate semantic requirements from implementation architecture.
 - Rank evidence and counterevidence explicitly.
-- Require traceability from evidence to hypothesis, requirement, experiment,
-  and result.
+- Preserve traceability from evidence to hypothesis, experiment, and decision.
 - Require human approval of GitHub-owned specs before implementation.

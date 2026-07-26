@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JimmyMcBride/volt/research/schema/run-manifest.schema.json",
+  "title": "Volt Frozen Study Run Manifest V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "manifestId",
+    "createdAt",
+    "frozenBeforeConfirmatory",
+    "protocolHash",
+    "corpusManifestHash",
+    "models",
+    "systemPromptHash",
+    "taskContextManifestHash",
+    "toolVersions",
+    "analysisCodeHash",
+    "randomization",
+    "confirmatoryTrajectoriesPerTaskModelCondition"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "manifestId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "frozenBeforeConfirmatory": {
+      "const": true
+    },
+    "protocolHash": {
+      "$ref": "#/$defs/hash"
+    },
+    "corpusManifestHash": {
+      "$ref": "#/$defs/hash"
+    },
+    "models": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "$ref": "#/$defs/model"
+      }
+    },
+    "systemPromptHash": {
+      "$ref": "#/$defs/hash"
+    },
+    "taskContextManifestHash": {
+      "$ref": "#/$defs/hash"
+    },
+    "toolVersions": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "analysisCodeHash": {
+      "$ref": "#/$defs/hash"
+    },
+    "randomization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unit",
+        "seed",
+        "conditionOrderHash"
+      ],
+      "properties": {
+        "unit": {
+          "const": "task_model_block"
+        },
+        "seed": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "conditionOrderHash": {
+          "$ref": "#/$defs/hash"
+        }
+      }
+    },
+    "confirmatoryTrajectoriesPerTaskModelCondition": {
+      "type": "integer",
+      "minimum": 20,
+      "maximum": 60
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "family",
+        "provider",
+        "revision",
+        "tokenizer",
+        "seedSupported"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "family": {
+          "enum": [
+            "frontier_hosted",
+            "open_weight_code"
+          ]
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tokenizer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "seedSupported": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
