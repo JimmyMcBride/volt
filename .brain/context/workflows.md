@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-26T07:23:39Z"
+updated: "2026-07-26T08:02:02Z"
 ---
 ## Startup
 
@@ -22,15 +22,20 @@ updated: "2026-07-26T07:23:39Z"
 
 ## Research Protocol Verification
 
-- Node.js 24 or newer is required by `package.json` for the Issue #3 research artifacts.
-- Run `npm ci` to reproduce the committed `package-lock.json` state.
-- Run `npm run verify` to validate the protocol/evidence/traceability artifacts and execute deterministic metric and decision-rule fixtures.
-- GitHub Actions repeats `npm run verify` for research-protocol changes.
-- Do not construct the benchmark corpus or execute study trajectories until Issue #6 is explicitly approved.
+- Node.js 24 or newer is required by `package.json`.
+- `package-lock.json` pins the dependency-free package state; run `npm ci` to reproduce it.
+- Run `npm run verify` to validate protocol, evidence, traceability, report, and schema invariants, then execute deterministic tests.
+- `research/test/protocol.test.mjs` covers approval state, traceability uniqueness, report identity, and schema contracts.
+- `research/test/decision-rules.test.mjs` covers six-endpoint Holm adjustment and every support, weakening, uncertainty, harm, guardrail, and maintenance decision path.
+- `research/test/metrics.test.mjs` covers semantic-compression and repair-locality algorithms.
+- `research/test/maintenance.test.mjs` covers strict repository-change success, propagation completeness, preservation counts, semantic blast radius, impact prediction, and descriptive reviewability using stable conceptual impact-site fixtures.
+- These are research-layer fixtures, not compiler conformance claims. No compiler exists.
+- Protocol v1.1 remains pending owner reapproval. Do not freeze or execute it.
+- Do not construct the benchmark corpus or execute trajectories until the downstream spec is explicitly approved.
 
 ## Verification and Closeout
 
 - Run available checks with `brain session run -- <command>`.
-- Run `plan check --project .` after planning configuration changes.
+- Run `plan check --project .` after planning changes.
 - Run `brain context audit --project .` after meaningful context or architecture changes.
 - Finish with `brain session finish --project .`.

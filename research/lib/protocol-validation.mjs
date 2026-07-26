@@ -17,7 +17,21 @@ function equalSet(actual, expected, label) {
 export function validateProtocol(protocol) {
   invariant(protocol.schemaVersion === 1, "protocol schemaVersion must be 1");
   invariant(protocol.protocolId === "volt-v0-evidence-ready", "unexpected protocolId");
-  invariant(protocol.status === "approved", "protocol must be approved");
+  invariant(protocol.version === "1.1.0", "protocol must be the proposed v1.1 amendment");
+  invariant(protocol.status === "pending_reapproval", "amended protocol must remain pending reapproval");
+  invariant(protocol.amendment.id === "safe_repository_evolution", "safe-evolution amendment is missing");
+  invariant(protocol.amendment.status === "pending_owner_approval", "amendment cannot imply approval");
+  equalSet(
+    protocol.amendment.approvalSensitiveChanges,
+    ["primary_outcome", "statistical_rule", "power_calculation", "falsification_gate"],
+    "approval-sensitive amendment changes"
+  );
+  equalSet(
+    protocol.hypotheses.map((hypothesis) => hypothesis.id),
+    ["greenfield_agent_correctness", "safe_repository_evolution"],
+    "hypotheses"
+  );
+  invariant(protocol.hypotheses.every((hypothesis) => hypothesis.status === "unvalidated"), "hypotheses cannot imply results");
   invariant(protocol.source.issue === "https://github.com/JimmyMcBride/volt/issues/3", "protocol source Issue is wrong");
 
   equalSet(
@@ -38,6 +52,13 @@ export function validateProtocol(protocol) {
   invariant(protocol.descriptiveBaselines.every((baseline) => baseline.claimClass === "descriptive"), "external baselines must be descriptive");
 
   invariant(protocol.workload.confirmatoryTaskCount === 12, "confirmatory task count must be 12");
+  invariant(protocol.workload.confirmatoryTasksPerFamily === 3, "each maintenance family must contain three tasks");
+  invariant(protocol.workload.taskMode === "repository_evolution", "tasks must modify existing repositories");
+  equalSet(
+    protocol.workload.taskFamilies,
+    ["state_extension", "invariant_change", "effect_addition", "cross_module_contract_change"],
+    "maintenance task families"
+  );
   invariant(protocol.workload.calibrationTaskCount === 4, "calibration task count must be 4");
   invariant(protocol.workload.calibrationIncludedInEvidence === false, "calibration cannot enter evidence");
   invariant(protocol.workload.networkAllowed === false, "network must be disabled");
@@ -51,7 +72,14 @@ export function validateProtocol(protocol) {
 
   equalSet(
     protocol.primaryEstimands.map((estimand) => estimand.id),
-    ["static_obligation_effect", "canonical_syntax_effect", "structured_diagnostic_effect"],
+    [
+      "static_obligation_effect",
+      "canonical_syntax_effect",
+      "structured_diagnostic_effect",
+      "static_obligation_maintenance_effect",
+      "canonical_syntax_maintenance_effect",
+      "structured_diagnostic_maintenance_effect"
+    ],
     "primary estimands"
   );
   const estimands = new Map(protocol.primaryEstimands.map((estimand) => [estimand.id, estimand]));
@@ -63,19 +91,65 @@ export function validateProtocol(protocol) {
     estimands.get("structured_diagnostic_effect").firstPassOutcomeAllowed === false,
     "diagnostics cannot use a first-pass outcome"
   );
+  for (const id of [
+    "static_obligation_maintenance_effect",
+    "canonical_syntax_maintenance_effect"
+  ]) {
+    invariant(
+      estimands.get(id).outcome === "repository_change_success_rate",
+      `${id} must use repository change success`
+    );
+  }
+  invariant(
+    estimands.get("structured_diagnostic_maintenance_effect").outcome === "repository_change_success_within_three_turns",
+    "maintenance diagnostics must measure bounded repository-change repair"
+  );
+  equalSet(
+    protocol.repositoryChangeSuccess.successRequiresAll,
+    [
+      "requested_behavior_implemented",
+      "contract_propagation_complete",
+      "hidden_tests_pass",
+      "unrelated_regression_count_equals_zero",
+      "effect_declarations_accurate",
+      "matches_exhaustive",
+      "stale_contract_count_equals_zero",
+      "static_guarantees_not_bypassed",
+      "unrequested_behavior_change_count_equals_zero"
+    ],
+    "repository-change success criteria"
+  );
+  invariant(protocol.repositoryChangeSuccess.partialCredit === false, "repository-change success cannot award partial credit");
 
   equalSet(
     protocol.metrics.map((metric) => metric.id),
-    ["obligation_coverage", "ast_shape_entropy", "ambient_dependency_count", "repair_locality"],
-    "semantic-compression metrics"
+    [
+      "obligation_coverage",
+      "ast_shape_entropy",
+      "ambient_dependency_count",
+      "repair_locality",
+      "contract_propagation_completeness",
+      "unrelated_regression_count",
+      "semantic_blast_radius",
+      "impact_prediction_accuracy",
+      "stale_contract_count",
+      "unrequested_behavior_change_count",
+      "change_reviewability"
+    ],
+    "protocol metrics"
   );
   invariant(protocol.metrics.every((metric) => metric.compositeEligible === false), "metrics cannot form a success composite");
+  invariant(
+    protocol.metrics.find((metric) => metric.id === "change_reviewability").role === "descriptive",
+    "change reviewability must remain descriptive"
+  );
 
   invariant(protocol.analysis.pooledEstimator === "equal_weight_mean_of_task_model_stratum_risk_differences", "pooled estimator changed");
   invariant(protocol.analysis.confidenceInterval.resamples === 10000, "bootstrap resamples must be 10,000");
   invariant(protocol.analysis.randomizationTest.permutations === 100000, "randomization permutations must be 100,000");
   invariant(protocol.analysis.multiplicity.method === "holm", "Holm correction is required");
   invariant(protocol.analysis.multiplicity.familyWiseAlpha === 0.05, "family-wise alpha must be .05");
+  invariant(protocol.analysis.multiplicity.family === "six_primary_comparisons", "Holm family must contain six primary comparisons");
   invariant(protocol.analysis.outcomeDependentExclusionsAllowed === false, "outcome-dependent exclusions are forbidden");
 
   invariant(protocol.power.calibrationTrajectoriesPerTaskModelCondition === 5, "calibration cell size must be 5");
@@ -98,7 +172,15 @@ export function validateProtocol(protocol) {
   invariant(protocol.decisionRules.meaningfulBenefit.maximumHolmAdjustedPValueExclusive === 0.05, "significance gate changed");
   invariant(protocol.decisionRules.support.minimumMeaningfulPrimaryComparisons === 2, "support count changed");
   invariant(protocol.decisionRules.support.minimumMeaningfulLanguageComparisons === 1, "language-benefit gate changed");
+  invariant(
+    protocol.decisionRules.support.minimumMeaningfulMaintenanceLanguageComparisons === 1,
+    "support must require a maintenance-language benefit"
+  );
   invariant(protocol.decisionRules.falsified.allPrimaryUpperConfidenceBoundsBelow === 0.1, "falsification bound changed");
+  invariant(
+    protocol.decisionRules.falsified.allMaintenanceLanguageUpperConfidenceBoundsBelow === 0.1,
+    "maintenance falsification bound changed"
+  );
   invariant(protocol.decisionRules.falsified.holmSignificantHarmAtOrBelow === -0.1, "harm threshold changed");
 
   invariant(
@@ -107,6 +189,30 @@ export function validateProtocol(protocol) {
   );
   invariant(protocol.claimBoundaries.externalLanguageComparisons === "descriptive_only", "external baselines cannot become causal");
   invariant(protocol.claimBoundaries.semanticCompressionComposite === "prohibited_for_success_decision", "composite scoring is forbidden");
+  invariant(
+    protocol.claimBoundaries.safeRepositoryEvolution === "unvalidated_pending_protocol_reapproval_and_confirmatory_results",
+    "safe repository evolution must remain an unvalidated hypothesis"
+  );
+  invariant(
+    protocol.downstreamContracts.status === "proposed_pending_separate_spec_approval",
+    "compiler impact contracts cannot imply implementation approval"
+  );
+  equalSet(
+    protocol.downstreamContracts.programGraph.nodes,
+    [
+      "definitions",
+      "references",
+      "imports",
+      "callers",
+      "public_contracts",
+      "adt_variants",
+      "match_sites",
+      "effects",
+      "operations",
+      "related_tests"
+    ],
+    "proposed program-graph nodes"
+  );
 }
 
 export function validateEvidenceMatrix(matrix) {
@@ -160,7 +266,9 @@ export function validateTraceability(traceability, evidenceEntryIds) {
   for (const edge of traceability.edges) {
     invariant(allIds.has(edge.from), `traceability edge has missing source: ${edge.from}`);
     invariant(allIds.has(edge.to), `traceability edge has missing target: ${edge.to}`);
-    edgeKeys.add(`${edge.from}->${edge.to}`);
+    const edgeKey = `${edge.from}->${edge.to}`;
+    invariant(!edgeKeys.has(edgeKey), `duplicate traceability edge: ${edgeKey}`);
+    edgeKeys.add(edgeKey);
   }
 
   for (const entryId of evidenceEntryIds) {
@@ -176,11 +284,19 @@ export function validateTraceability(traceability, evidenceEntryIds) {
 
 export function validateReportTemplate(report) {
   invariant(report.schemaVersion === 1, "report schemaVersion must be 1");
+  invariant(report.protocolId === "volt-v0-evidence-ready", "report protocolId is wrong");
   invariant(report.status === "not_run", "report template must not imply results exist");
   invariant(report.protocolHash === null, "protocol is not frozen for confirmatory execution yet");
   equalSet(
     report.primaryComparisons.map((comparison) => comparison.id),
-    ["static_obligation_effect", "canonical_syntax_effect", "structured_diagnostic_effect"],
+    [
+      "static_obligation_effect",
+      "canonical_syntax_effect",
+      "structured_diagnostic_effect",
+      "static_obligation_maintenance_effect",
+      "canonical_syntax_maintenance_effect",
+      "structured_diagnostic_maintenance_effect"
+    ],
     "report primary comparisons"
   );
   invariant(report.primaryComparisons.every((comparison) => comparison.pooled === null), "template cannot contain fabricated estimates");
@@ -188,27 +304,53 @@ export function validateReportTemplate(report) {
   for (const section of ["positiveResults", "negativeResults", "inconclusiveResults", "falsifyingResults"]) {
     invariant(Array.isArray(report[section]), `report is missing ${section}`);
   }
+  equalSet(
+    Object.keys(report.repositoryEvolution),
+    [
+      "contractPropagationCompleteness",
+      "unrelatedRegressionCount",
+      "semanticBlastRadius",
+      "impactPredictionAccuracy",
+      "staleContractCount",
+      "unrequestedBehaviorChangeCount",
+      "changeReviewability"
+    ],
+    "report repository-evolution metrics"
+  );
 }
 
 export function validateSchemaCoverage({ protocolSchema, manifestSchema, resultSchema, reportSchema }) {
   const protocolRequired = new Set(protocolSchema.required);
   for (const key of [
     "conditions",
+    "amendment",
+    "hypotheses",
     "primaryEstimands",
+    "repositoryChangeSuccess",
     "metrics",
     "analysis",
     "power",
     "controls",
     "complexityGuardrails",
     "decisionRules",
-    "claimBoundaries"
+    "claimBoundaries",
+    "downstreamContracts"
   ]) {
     invariant(protocolRequired.has(key), `protocol schema does not require ${key}`);
   }
 
   invariant(manifestSchema.properties.frozenBeforeConfirmatory.const === true, "manifest must be frozen before confirmation");
   invariant(manifestSchema.properties.models.minItems === 2, "manifest must pin two models");
+  invariant(
+    manifestSchema.required.includes("expectedImpactSurfaceManifestHash"),
+    "manifest must freeze expected impact surfaces"
+  );
+  invariant(
+    manifestSchema.required.includes("preservationAssertionManifestHash"),
+    "manifest must freeze preservation assertions"
+  );
   invariant(resultSchema.properties.repairs.maxItems === 3, "result schema must cap repair turns");
+  invariant(resultSchema.required.includes("maintenanceEvaluations"), "result schema must record maintenance outcomes");
   invariant(resultSchema.properties.task.properties.corpus.enum.includes("calibration"), "result schema must identify calibration data");
   invariant(resultSchema.properties.task.properties.corpus.enum.includes("confirmatory"), "result schema must identify confirmatory data");
   invariant(reportSchema.properties.outcomeDependentOmissionAllowed.const === false, "report schema must forbid selective omission");

@@ -253,7 +253,16 @@ function projectTree(files) {
   };
 }
 
+function validateFileMap(files, name) {
+  invariant(
+    files !== null && typeof files === "object" && !Array.isArray(files),
+    `${name} must be a path-to-snapshot object`
+  );
+}
+
 export function repairLocality(firstFailedFiles, firstPassingFiles) {
+  validateFileMap(firstFailedFiles, "firstFailedFiles");
+  validateFileMap(firstPassingFiles, "firstPassingFiles");
   const allPaths = new Set([
     ...Object.keys(firstFailedFiles),
     ...Object.keys(firstPassingFiles)

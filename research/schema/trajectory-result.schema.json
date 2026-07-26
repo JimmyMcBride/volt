@@ -15,6 +15,7 @@
     "status",
     "firstSubmission",
     "repairs",
+    "maintenanceEvaluations",
     "finalHiddenTestPass",
     "generatedTokens",
     "utf8OutputBytes",
@@ -155,6 +156,22 @@
         }
       }
     },
+    "maintenanceEvaluations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "firstSubmission",
+        "finalSubmission"
+      ],
+      "properties": {
+        "firstSubmission": {
+          "$ref": "#/$defs/maintenanceEvaluation"
+        },
+        "finalSubmission": {
+          "$ref": "#/$defs/maintenanceEvaluation"
+        }
+      }
+    },
     "finalHiddenTestPass": {
       "type": "boolean"
     },
@@ -191,6 +208,85 @@
     "hash": {
       "type": "string",
       "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "stableIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "maintenanceEvaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repositoryChangeSuccess",
+        "requestedBehaviorImplemented",
+        "contractPropagationComplete",
+        "hiddenTestsPass",
+        "effectDeclarationsAccurate",
+        "matchesExhaustive",
+        "guaranteesNotBypassed",
+        "unrelatedRegressionCount",
+        "staleContractCount",
+        "unrequestedBehaviorChangeCount",
+        "expectedImpactSiteIds",
+        "actualRequiredImpactSiteIds",
+        "predictedImpactSiteIds",
+        "changedSiteIds",
+        "semanticBlastRadiusArtifactHash"
+      ],
+      "properties": {
+        "repositoryChangeSuccess": {
+          "type": "boolean"
+        },
+        "requestedBehaviorImplemented": {
+          "type": "boolean"
+        },
+        "contractPropagationComplete": {
+          "type": "boolean"
+        },
+        "hiddenTestsPass": {
+          "type": "boolean"
+        },
+        "effectDeclarationsAccurate": {
+          "type": "boolean"
+        },
+        "matchesExhaustive": {
+          "type": "boolean"
+        },
+        "guaranteesNotBypassed": {
+          "type": "boolean"
+        },
+        "unrelatedRegressionCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "staleContractCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unrequestedBehaviorChangeCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "expectedImpactSiteIds": {
+          "$ref": "#/$defs/stableIds"
+        },
+        "actualRequiredImpactSiteIds": {
+          "$ref": "#/$defs/stableIds"
+        },
+        "predictedImpactSiteIds": {
+          "$ref": "#/$defs/stableIds"
+        },
+        "changedSiteIds": {
+          "$ref": "#/$defs/stableIds"
+        },
+        "semanticBlastRadiusArtifactHash": {
+          "$ref": "#/$defs/hash"
+        }
+      }
     }
   }
 }

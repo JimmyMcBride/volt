@@ -22,6 +22,24 @@
       "pooled": null,
       "perModel": [],
       "perTaskFamily": []
+    },
+    {
+      "id": "static_obligation_maintenance_effect",
+      "pooled": null,
+      "perModel": [],
+      "perTaskFamily": []
+    },
+    {
+      "id": "canonical_syntax_maintenance_effect",
+      "pooled": null,
+      "perModel": [],
+      "perTaskFamily": []
+    },
+    {
+      "id": "structured_diagnostic_maintenance_effect",
+      "pooled": null,
+      "perModel": [],
+      "perTaskFamily": []
     }
   ],
   "secondaryOutcomes": [],
@@ -30,6 +48,15 @@
     "astShapeEntropy": [],
     "ambientDependencyCount": [],
     "repairLocality": []
+  },
+  "repositoryEvolution": {
+    "contractPropagationCompleteness": [],
+    "unrelatedRegressionCount": [],
+    "semanticBlastRadius": [],
+    "impactPredictionAccuracy": [],
+    "staleContractCount": [],
+    "unrequestedBehaviorChangeCount": [],
+    "changeReviewability": []
   },
   "complexityGuardrails": [],
   "validityFailures": [],

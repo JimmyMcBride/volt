@@ -17,8 +17,51 @@ const fixturePath = path.join(
 );
 const fixtures = JSON.parse(await readFile(fixturePath, "utf8"));
 
+const maintenanceComparisons = [
+  {
+    id: "static_obligation_maintenance_effect",
+    kind: "language",
+    pointEstimate: 0.12,
+    ciLower: 0.02,
+    ciUpper: 0.2,
+    adjustedPValue: 0.01
+  },
+  {
+    id: "canonical_syntax_maintenance_effect",
+    kind: "language",
+    pointEstimate: 0.04,
+    ciLower: 0.01,
+    ciUpper: 0.09,
+    adjustedPValue: 0.2
+  },
+  {
+    id: "structured_diagnostic_maintenance_effect",
+    kind: "diagnostic",
+    pointEstimate: 0.03,
+    ciLower: 0,
+    ciUpper: 0.09,
+    adjustedPValue: 0.3
+  }
+];
+
+function amendedFixture(fixture) {
+  return {
+    ...fixture,
+    maintenanceComparisons
+  };
+}
+
 test("Holm adjustment is monotone in sorted p-value order", () => {
-  assert.deepEqual(holmAdjust(fixtures.holm.input), fixtures.holm.expected);
+  const input = [
+    ...fixtures.holm.input,
+    { id: "maintenance-static", pValue: 0.05 },
+    { id: "maintenance-syntax", pValue: 0.06 },
+    { id: "maintenance-diagnostics", pValue: 0.07 }
+  ];
+  assert.deepEqual(
+    holmAdjust(input).map(({ adjustedPValue }) => adjustedPValue),
+    [0.06, 0.15, 0.16, 0.16, 0.16, 0.16]
+  );
 });
 
 test("meaningful benefit requires effect, interval, and adjusted significance gates", () => {
@@ -34,7 +77,7 @@ test("meaningful benefit requires effect, interval, and adjusted significance ga
   }), false);
 });
 
-test("significant harm follows the approved effect and Holm gates", () => {
+test("significant harm follows the proposed amended effect and Holm gates", () => {
   assert.equal(isSignificantHarm({
     id: "static_obligation_effect",
     kind: "language",
@@ -55,14 +98,14 @@ for (const fixtureName of [
 ]) {
   test(`thesis decision fixture: ${fixtureName}`, () => {
     const fixture = fixtures[fixtureName];
-    assert.equal(classifyThesis(fixture).classification, fixture.expected);
+    assert.equal(classifyThesis(amendedFixture(fixture)).classification, fixture.expected);
   });
 }
 
 test("an incomplete confirmatory study cannot produce a thesis decision", () => {
   assert.equal(
     classifyThesis({
-      ...fixtures.supported,
+      ...amendedFixture(fixtures.supported),
       confirmatoryComplete: false
     }).classification,
     "not_run"
@@ -72,7 +115,7 @@ test("an incomplete confirmatory study cannot produce a thesis decision", () => 
 test("a preregistered validity failure is inconclusive", () => {
   assert.equal(
     classifyThesis({
-      ...fixtures.supported,
+      ...amendedFixture(fixtures.supported),
       validityFailure: true
     }).classification,
     "inconclusive"
@@ -81,7 +124,7 @@ test("a preregistered validity failure is inconclusive", () => {
 
 test("a harmful model family blocks otherwise supported pooled results", () => {
   const result = classifyThesis({
-    ...fixtures.supported,
+    ...amendedFixture(fixtures.supported),
     modelEffects: [
       ...fixtures.supported.modelEffects,
       {
@@ -93,4 +136,19 @@ test("a harmful model family blocks otherwise supported pooled results", () => {
   });
   assert.equal(result.classification, "weakened");
   assert(result.reasons.some((reason) => reason.startsWith("harmful_model_family_effect:")));
+});
+
+test("support requires a meaningful maintenance-language result", () => {
+  const result = classifyThesis({
+    ...amendedFixture(fixtures.supported),
+    maintenanceComparisons: maintenanceComparisons.map((comparison) => ({
+      ...comparison,
+      pointEstimate: 0.04,
+      ciLower: 0,
+      ciUpper: 0.12,
+      adjustedPValue: 0.2
+    }))
+  });
+  assert.equal(result.classification, "inconclusive");
+  assert(result.reasons.includes("powered_interval_spans_no_and_meaningful_benefit"));
 });

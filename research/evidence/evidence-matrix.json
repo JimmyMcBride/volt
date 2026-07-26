@@ -69,7 +69,8 @@
         "SRC-REPOBENCH"
       ],
       "supports": [
-        "R-WORKLOAD"
+        "R-WORKLOAD",
+        "R-PRESERVATION"
       ],
       "limitations": [
         "SWE-bench studies real issue resolution and RepoBench studies repository-level completion; neither evaluates a new programming language.",
@@ -185,6 +186,23 @@
       "limitations": [
         "No prior source isolates this representation-only effect.",
         "The claim applies only to trajectories with the same frozen first-submission failure."
+      ]
+    },
+    {
+      "id": "H-VOLT-EVOLUTION",
+      "classification": "speculation",
+      "statement": "Volt's explicit static obligations, canonical syntax, and structured diagnostics improve safe repository-change success and make required impact surfaces more complete and precise.",
+      "sourceIds": [],
+      "supports": [
+        "H-EVOLUTION",
+        "EXP-MAINTENANCE-STATIC",
+        "EXP-MAINTENANCE-SYNTAX",
+        "EXP-MAINTENANCE-DIAGNOSTICS"
+      ],
+      "limitations": [
+        "No prior source establishes a Volt-specific safe-evolution benefit.",
+        "Repository benchmarks motivate the task shape but do not validate Volt's proposed program graph, impact diagnostics, or semantic diff.",
+        "Impact prediction cannot be evaluated until separately approved compiler work implements the required facts."
       ]
     }
   ]

@@ -11,6 +11,8 @@
     "frozenBeforeConfirmatory",
     "protocolHash",
     "corpusManifestHash",
+    "expectedImpactSurfaceManifestHash",
+    "preservationAssertionManifestHash",
     "models",
     "systemPromptHash",
     "taskContextManifestHash",
@@ -38,6 +40,12 @@
       "$ref": "#/$defs/hash"
     },
     "corpusManifestHash": {
+      "$ref": "#/$defs/hash"
+    },
+    "expectedImpactSurfaceManifestHash": {
+      "$ref": "#/$defs/hash"
+    },
+    "preservationAssertionManifestHash": {
       "$ref": "#/$defs/hash"
     },
     "models": {

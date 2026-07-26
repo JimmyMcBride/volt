@@ -2,13 +2,39 @@
   "$schema": "../schema/protocol.schema.json",
   "schemaVersion": 1,
   "protocolId": "volt-v0-evidence-ready",
-  "version": "1.0.0",
-  "status": "approved",
+  "version": "1.1.0",
+  "status": "pending_reapproval",
   "source": {
     "issue": "https://github.com/JimmyMcBride/volt/issues/3",
     "approvedAt": "2026-07-26",
     "owner": "JimmyMcBride"
   },
+  "amendment": {
+    "id": "safe_repository_evolution",
+    "status": "pending_owner_approval",
+    "proposedAt": "2026-07-26",
+    "supersedesVersion": "1.0.0",
+    "reason": "Make safe evolution of existing Volt codebases a first-class evaluated objective rather than a secondary implication of greenfield correctness.",
+    "approvalSensitiveChanges": [
+      "primary_outcome",
+      "statistical_rule",
+      "power_calculation",
+      "falsification_gate"
+    ]
+  },
+  "hypotheses": [
+    {
+      "id": "greenfield_agent_correctness",
+      "status": "unvalidated",
+      "statement": "Volt's explicit static obligations, canonical syntax, and structured diagnostics improve first-pass correctness or bounded repair success under controlled ablation."
+    },
+    {
+      "id": "safe_repository_evolution",
+      "status": "unvalidated",
+      "statement": "AI agents can safely understand, modify, and extend existing Volt codebases with fewer unintended changes, incomplete repository-wide edits, and repair steps under controlled ablation.",
+      "guidingPrinciple": "Every requested change has an explicit machine-readable impact surface, and unrelated behavior remains unchanged."
+    }
+  ],
   "scope": {
     "owns": [
       "research_questions",
@@ -92,6 +118,8 @@
   ],
   "workload": {
     "domain": "synthetic_event_registration",
+    "taskMode": "repository_evolution",
+    "startingState": "Every task starts from a compiling, passing, content-addressed repository snapshot.",
     "repositoryModules": [
       "domain",
       "registration_service",
@@ -103,6 +131,12 @@
       "invariant_change",
       "effect_addition",
       "cross_module_contract_change"
+    ],
+    "maintenanceOperations": [
+      "extend_existing_algebraic_data_type_and_update_matches",
+      "tighten_or_add_invariant_without_weakening_existing_guarantees",
+      "add_required_effect_and_propagate_capability_contracts",
+      "change_public_cross_module_contract_and_update_all_callers"
     ],
     "confirmatoryTasksPerFamily": 3,
     "confirmatoryTaskCount": 12,
@@ -116,13 +150,22 @@
     ],
     "networkAllowed": false,
     "hiddenTestInvariants": [
+      "requested_behavior",
+      "preexisting_behavior_preservation",
       "cross_file_correctness",
       "exhaustive_state_handling",
+      "no_forgotten_callers",
+      "no_stale_types_or_contracts",
       "idempotency",
       "capacity",
       "typed_failures",
-      "effect_declarations"
-    ]
+      "exact_effect_declarations",
+      "no_unnecessary_capabilities",
+      "no_duplicate_or_weakened_invariants",
+      "no_unrelated_output_changes",
+      "no_static_guarantee_bypass"
+    ],
+    "impactSurfaceManifest": "Each task preregisters the minimum required files, symbols, contracts, effects, AST obligations, related tests, and preservation assertions before trajectories run."
   },
   "execution": {
     "experimentalUnit": "one independent trajectory for one task, model snapshot, condition, and replicate",
@@ -175,8 +218,54 @@
       "positiveFavors": "treatment",
       "cohort": "same_frozen_first_submission_failure",
       "firstPassOutcomeAllowed": false
+    },
+    {
+      "id": "static_obligation_maintenance_effect",
+      "kind": "language",
+      "treatment": "volt_full",
+      "control": "static_obligations_erased",
+      "outcome": "repository_change_success_rate",
+      "measure": "absolute_risk_difference",
+      "positiveFavors": "treatment"
+    },
+    {
+      "id": "canonical_syntax_maintenance_effect",
+      "kind": "language",
+      "treatment": "volt_full",
+      "control": "alias_permissive",
+      "outcome": "repository_change_success_rate",
+      "measure": "absolute_risk_difference",
+      "positiveFavors": "treatment"
+    },
+    {
+      "id": "structured_diagnostic_maintenance_effect",
+      "kind": "diagnostic",
+      "treatment": "volt_full",
+      "control": "diagnostics_plain",
+      "outcome": "repository_change_success_within_three_turns",
+      "measure": "absolute_risk_difference",
+      "positiveFavors": "treatment",
+      "cohort": "same_frozen_first_submission_failure",
+      "firstPassOutcomeAllowed": false
     }
   ],
+  "repositoryChangeSuccess": {
+    "role": "primary_maintenance_outcome",
+    "unit": "trajectory",
+    "successRequiresAll": [
+      "requested_behavior_implemented",
+      "contract_propagation_complete",
+      "hidden_tests_pass",
+      "unrelated_regression_count_equals_zero",
+      "effect_declarations_accurate",
+      "matches_exhaustive",
+      "stale_contract_count_equals_zero",
+      "static_guarantees_not_bypassed",
+      "unrequested_behavior_change_count_equals_zero"
+    ],
+    "missingTrajectory": "failure",
+    "partialCredit": false
+  },
   "secondaryOutcomes": [
     "first_submission_parse_success",
     "first_submission_typecheck_success",
@@ -193,7 +282,14 @@
     "diagnostic_rendering_latency",
     "implementation_effort",
     "non_test_source_lines",
-    "runtime_dependency_count"
+    "runtime_dependency_count",
+    "contract_propagation_completeness",
+    "unrelated_regression_count",
+    "semantic_blast_radius",
+    "impact_prediction_accuracy",
+    "stale_contract_count",
+    "unrequested_behavior_change_count",
+    "change_reviewability"
   ],
   "metrics": [
     {
@@ -227,6 +323,55 @@
       "aggregation": "median_among_successful_repairs",
       "nonPassingHandling": "right_censored_excluded_from_locality_median",
       "compositeEligible": false
+    },
+    {
+      "id": "contract_propagation_completeness",
+      "role": "explanatory",
+      "algorithm": "Count preregistered required propagation sites correctly updated, divided by all preregistered required propagation sites; report missing and unexpected stable symbol identifiers.",
+      "aggregation": "equal_weight_task_mean",
+      "compositeEligible": false
+    },
+    {
+      "id": "unrelated_regression_count",
+      "role": "explanatory",
+      "algorithm": "Count distinct preregistered preservation assertions that passed in the starting repository and fail after the requested change.",
+      "aggregation": "equal_weight_task_mean",
+      "compositeEligible": false
+    },
+    {
+      "id": "semantic_blast_radius",
+      "role": "explanatory",
+      "algorithm": "Report expected and actual changed files, symbols, contracts, effects, and normalized AST nodes separately, including unexpected and missing stable identifiers; do not combine dimensions.",
+      "aggregation": "per_dimension_distribution",
+      "compositeEligible": false
+    },
+    {
+      "id": "impact_prediction_accuracy",
+      "role": "explanatory",
+      "algorithm": "Compare the compiler-predicted stable impact-site set with the preregistered actually required site set; report precision, recall, exact-set match, false positives, and false negatives.",
+      "aggregation": "equal_weight_task_mean_with_exact_match_rate",
+      "compositeEligible": false
+    },
+    {
+      "id": "stale_contract_count",
+      "role": "explanatory",
+      "algorithm": "Count distinct declarations, callers, matches, effect sets, or tests whose contract remains inconsistent with the requested public change.",
+      "aggregation": "equal_weight_task_mean",
+      "compositeEligible": false
+    },
+    {
+      "id": "unrequested_behavior_change_count",
+      "role": "explanatory",
+      "algorithm": "Count distinct observable behavior changes outside the task's preregistered requested behavior and allowed impact surface.",
+      "aggregation": "equal_weight_task_mean",
+      "compositeEligible": false
+    },
+    {
+      "id": "change_reviewability",
+      "role": "descriptive",
+      "algorithm": "Report changed-site count, requested-site count, out-of-scope sites, unexplained sites, and justification coverage as a descriptive vector only.",
+      "aggregation": "descriptive_distribution",
+      "compositeEligible": false
     }
   ],
   "analysis": {
@@ -256,7 +401,7 @@
     "multiplicity": {
       "method": "holm",
       "familyWiseAlpha": 0.05,
-      "family": "three_primary_comparisons"
+      "family": "six_primary_comparisons"
     },
     "missingOutcomes": "failure",
     "outcomeDependentExclusionsAllowed": false
@@ -280,6 +425,9 @@
     "finite_preregistered_alias_set",
     "equivalent_one_page_external_language_references",
     "mutation_check_hidden_tests",
+    "preregister_expected_impact_surface_per_task",
+    "preregister_preservation_assertions_from_starting_repository",
+    "detect_broad_rewrites_and_out_of_surface_changes",
     "content_address_all_run_artifacts",
     "separate_causal_and_descriptive_reporting"
   ],
@@ -324,6 +472,7 @@
     "support": {
       "minimumMeaningfulPrimaryComparisons": 2,
       "minimumMeaningfulLanguageComparisons": 1,
+      "minimumMeaningfulMaintenanceLanguageComparisons": 1,
       "maximumHarmfulModelFamilyEffectExclusive": -0.1,
       "allComplexityGuardrailsMustPass": true
     },
@@ -339,6 +488,7 @@
     ],
     "falsified": {
       "allPrimaryUpperConfidenceBoundsBelow": 0.1,
+      "allMaintenanceLanguageUpperConfidenceBoundsBelow": 0.1,
       "holmSignificantHarmAtOrBelow": -0.1,
       "unresolvedComplexityGuardrail": true
     }
@@ -347,7 +497,60 @@
     "humanAuditability": "deferred_pending_separately_approved_blinded_reviewer_study",
     "externalLanguageComparisons": "descriptive_only",
     "semanticCompressionComposite": "prohibited_for_success_decision",
-    "voltSpecificBenefit": "unvalidated_until_confirmatory_results"
+    "voltSpecificBenefit": "unvalidated_until_confirmatory_results",
+    "safeRepositoryEvolution": "unvalidated_pending_protocol_reapproval_and_confirmatory_results",
+    "programGraphImpactAnalysis": "future_direction_pending_language_and_interpreter_spec_approval",
+    "semanticDiff": "future_direction_not_implemented_or_validated"
+  },
+  "downstreamContracts": {
+    "status": "proposed_pending_separate_spec_approval",
+    "languageDesignRule": "A public type, contract, effect, or module-boundary change must produce a deterministic list of affected symbols and diagnostics.",
+    "programGraph": {
+      "nodes": [
+        "definitions",
+        "references",
+        "imports",
+        "callers",
+        "public_contracts",
+        "adt_variants",
+        "match_sites",
+        "effects",
+        "operations",
+        "related_tests"
+      ],
+      "edges": [
+        "defines",
+        "references",
+        "imports",
+        "calls",
+        "constrains",
+        "matches",
+        "uses_effect",
+        "tested_by"
+      ],
+      "coverageRequirement": "Every supported public-change category must have explicit node and edge coverage."
+    },
+    "repositoryDiagnostics": {
+      "requiredFacts": [
+        "affected_symbols",
+        "affected_declarations",
+        "missing_propagation_sites",
+        "dependency_reasons",
+        "bounded_repair_surface"
+      ],
+      "ordering": "stable",
+      "compatibility": "DiagnosticV1 remains versioned and backward-compatible; repair actions remain declarative and are never automatically applied."
+    },
+    "semanticDiff": {
+      "requiredFacts": [
+        "public_contract_changes",
+        "effect_set_changes",
+        "adt_variant_changes",
+        "match_coverage_changes",
+        "unexpected_behavior_surface"
+      ],
+      "status": "future_direction_only"
+    }
   },
   "freezeArtifacts": [
     "protocol",
@@ -355,6 +558,8 @@
     "model_manifest",
     "prompts",
     "tool_versions",
-    "analysis_code"
+    "analysis_code",
+    "expected_impact_surface_manifests",
+    "preservation_assertion_manifests"
   ]
 }

@@ -37,7 +37,7 @@ const [
   readJson("schema/analysis-report.schema.json")
 ]);
 
-test("approved protocol retains every frozen decision rule", () => {
+test("proposed v1.1 amendment retains frozen values and exposes reapproval-sensitive changes", () => {
   assert.doesNotThrow(() => validateProtocol(protocol));
 });
 
@@ -53,8 +53,29 @@ test("traceability links evidence, hypotheses, experiments, and decisions", () =
   assert.doesNotThrow(() => validateTraceability(traceability, entryIds));
 });
 
+test("traceability rejects duplicate edges", () => {
+  const { entryIds } = validateEvidenceMatrix(evidence);
+  assert.throws(
+    () => validateTraceability({
+      ...traceability,
+      edges: [...traceability.edges, structuredClone(traceability.edges[0])]
+    }, entryIds),
+    /duplicate traceability edge/
+  );
+});
+
 test("report template exposes every result direction without fabricating outcomes", () => {
   assert.doesNotThrow(() => validateReportTemplate(report));
+});
+
+test("report template must identify the Volt protocol", () => {
+  assert.throws(
+    () => validateReportTemplate({
+      ...report,
+      protocolId: "another-protocol"
+    }),
+    /report protocolId is wrong/
+  );
 });
 
 test("machine-readable schemas cover protocol, manifests, results, and reports", () => {

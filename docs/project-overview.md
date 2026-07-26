@@ -1,34 +1,44 @@
 ---
-updated: "2026-07-26T07:22:30Z"
+updated: "2026-07-26T07:52:17Z"
 ---
 # Project Overview
 
-Volt is a greenfield research project for an experimental programming language and toolchain designed around AI coding models and autonomous software-engineering agents.
+Volt is an experimental programming-language research project for AI coding models and autonomous software-engineering agents.
 
 ## Vision
 
-Make agent-produced software easier to generate correctly, repair efficiently, and audit by humans by reducing semantic ambiguity and providing precise machine-readable feedback.
+Make agent-produced software easier to generate correctly, evolve safely, repair efficiently, and audit. The primary maintenance objective is:
 
-Volt is a research instrument first. Becoming a production language depends on evidence that its constraints and tooling improve agent outcomes enough to justify their costs.
+> AI agents should safely understand, modify, and extend existing Volt codebases with fewer unintended changes, incomplete repository-wide edits, and repair steps.
+
+The guiding principle is: **every requested change has an explicit machine-readable impact surface, and unrelated behavior remains unchanged.**
+
+Greenfield generation is necessary but insufficient. A useful agent-focused language must also make small changes stay small, expose every required propagation site, and preserve behavior outside the request.
+
+Volt remains a research instrument. Promotion toward a production language depends on controlled evidence that its constraints and tooling improve outcomes enough to justify their costs.
 
 ## Product Thesis
 
-Existing languages optimize primarily for human authors and retrofit agent workflows through prompts, linters, and external tools. Volt tests whether language semantics, canonical forms, contracts, diagnostics, and tooling can improve first-pass correctness and repair efficiency under controlled comparison.
+Volt tests whether explicit static obligations, canonical syntax, narrow modules, structured diagnostics, and future repository-aware impact analysis improve:
 
-The working principle is **semantic compression**: maximize how much programmer intent valid source communicates while minimizing ambiguity and plausible incorrect interpretations.
+1. first-pass correctness and bounded repair; and
+2. safe evolution of existing repositories.
+
+The working principle is **semantic compression**: maximize how much programmer intent valid source communicates while minimizing ambiguity and plausible incorrect interpretations. It is an explanatory vector, not an authoritative composite score.
 
 ## Current Stage
 
-- The evidence synthesis and preregistered protocol in [GitHub Issue #3](https://github.com/JimmyMcBride/volt/issues/3) are approved and implemented as executable artifacts under `research/`.
-- The evidence matrix distinguishes prior evidence, counterevidence, limitations, and unvalidated Volt hypotheses.
-- The protocol defines three causal estimands, four explanatory semantic-compression metrics, exact decision rules, and schemas for later study manifests and results.
-- No controlled Volt study has run, so the central hypothesis remains unvalidated.
-- Language semantics, compiler architecture, and benchmark execution remain blocked on separately approved GitHub specs.
-- Brain owns durable knowledge under `.brain/` and `docs/`; GitHub owns planning through Discussions, Issues, Milestones, and Projects.
+- GitHub [Issue #3](https://github.com/JimmyMcBride/volt/issues/3) is the approved v1.0 research-protocol spec.
+- This branch proposes protocol v1.1, adding safe repository evolution as a primary outcome. Because that changes primary endpoints, multiplicity, power, and falsification, the amendment is explicitly `pending_reapproval`.
+- The proposed protocol retains twelve existing-repository tasks: three each for state extension, invariant change, effect addition, and cross-module contract change.
+- Deterministic research-layer metrics and fixtures now cover propagation completeness, preservation, semantic blast radius, impact prediction, stale contracts, unrequested behavior changes, repair locality, and descriptive reviewability.
+- No controlled Volt study has run. Both Volt-specific hypotheses remain unvalidated.
+- No compiler exists. Program-graph impact analysis, repository diagnostics, and semantic diff remain proposed directions blocked on separately approved GitHub specs.
+- Brain owns concise durable knowledge under `.brain/` and `docs/`; GitHub owns planning through Discussions, Issues, Milestones, and Projects.
 
 ## Near-Term Goal
 
-Review the completed Issue #3 artifacts, then shape and explicitly approve the language-kernel spec before any compiler implementation.
+Review and approve or revise the v1.1 protocol amendment and the non-applying Plan preview before any GitHub spec promotion or downstream compiler work.
 
 ## Durable Research Context
 

@@ -12,6 +12,7 @@
     "primaryComparisons",
     "secondaryOutcomes",
     "semanticCompression",
+    "repositoryEvolution",
     "complexityGuardrails",
     "validityFailures",
     "protocolDeviations",
@@ -51,10 +52,46 @@
     },
     "primaryComparisons": {
       "type": "array",
-      "minItems": 3,
-      "maxItems": 3,
+      "minItems": 6,
+      "maxItems": 6,
       "items": {
         "$ref": "#/$defs/comparison"
+      }
+    },
+    "repositoryEvolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contractPropagationCompleteness",
+        "unrelatedRegressionCount",
+        "semanticBlastRadius",
+        "impactPredictionAccuracy",
+        "staleContractCount",
+        "unrequestedBehaviorChangeCount",
+        "changeReviewability"
+      ],
+      "properties": {
+        "contractPropagationCompleteness": {
+          "type": "array"
+        },
+        "unrelatedRegressionCount": {
+          "type": "array"
+        },
+        "semanticBlastRadius": {
+          "type": "array"
+        },
+        "impactPredictionAccuracy": {
+          "type": "array"
+        },
+        "staleContractCount": {
+          "type": "array"
+        },
+        "unrequestedBehaviorChangeCount": {
+          "type": "array"
+        },
+        "changeReviewability": {
+          "type": "array"
+        }
       }
     },
     "secondaryOutcomes": {
@@ -144,7 +181,10 @@
           "enum": [
             "static_obligation_effect",
             "canonical_syntax_effect",
-            "structured_diagnostic_effect"
+            "structured_diagnostic_effect",
+            "static_obligation_maintenance_effect",
+            "canonical_syntax_maintenance_effect",
+            "structured_diagnostic_maintenance_effect"
           ]
         },
         "pooled": {

@@ -10,12 +10,15 @@
     "version",
     "status",
     "source",
+    "amendment",
+    "hypotheses",
     "scope",
     "conditions",
     "descriptiveBaselines",
     "workload",
     "execution",
     "primaryEstimands",
+    "repositoryChangeSuccess",
     "secondaryOutcomes",
     "metrics",
     "analysis",
@@ -24,6 +27,7 @@
     "complexityGuardrails",
     "decisionRules",
     "claimBoundaries",
+    "downstreamContracts",
     "freezeArtifacts"
   ],
   "properties": {
@@ -43,12 +47,24 @@
     "status": {
       "enum": [
         "approved",
+        "pending_reapproval",
         "frozen",
         "superseded"
       ]
     },
     "source": {
       "$ref": "#/$defs/source"
+    },
+    "amendment": {
+      "$ref": "#/$defs/amendment"
+    },
+    "hypotheses": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "$ref": "#/$defs/hypothesis"
+      }
     },
     "scope": {
       "$ref": "#/$defs/scope"
@@ -77,11 +93,14 @@
     },
     "primaryEstimands": {
       "type": "array",
-      "minItems": 3,
-      "maxItems": 3,
+      "minItems": 6,
+      "maxItems": 6,
       "items": {
         "$ref": "#/$defs/estimand"
       }
+    },
+    "repositoryChangeSuccess": {
+      "$ref": "#/$defs/repositoryChangeSuccess"
     },
     "secondaryOutcomes": {
       "type": "array",
@@ -93,8 +112,8 @@
     },
     "metrics": {
       "type": "array",
-      "minItems": 4,
-      "maxItems": 4,
+      "minItems": 11,
+      "maxItems": 11,
       "items": {
         "$ref": "#/$defs/metric"
       }
@@ -130,7 +149,10 @@
         "humanAuditability",
         "externalLanguageComparisons",
         "semanticCompressionComposite",
-        "voltSpecificBenefit"
+        "voltSpecificBenefit",
+        "safeRepositoryEvolution",
+        "programGraphImpactAnalysis",
+        "semanticDiff"
       ],
       "properties": {
         "humanAuditability": {
@@ -144,13 +166,32 @@
         },
         "voltSpecificBenefit": {
           "const": "unvalidated_until_confirmatory_results"
+        },
+        "safeRepositoryEvolution": {
+          "const": "unvalidated_pending_protocol_reapproval_and_confirmatory_results"
+        },
+        "programGraphImpactAnalysis": {
+          "const": "future_direction_pending_language_and_interpreter_spec_approval"
+        },
+        "semanticDiff": {
+          "const": "future_direction_not_implemented_or_validated"
         }
       },
       "additionalProperties": false
     },
+    "downstreamContracts": {
+      "type": "object",
+      "required": [
+        "status",
+        "languageDesignRule",
+        "programGraph",
+        "repositoryDiagnostics",
+        "semanticDiff"
+      ]
+    },
     "freezeArtifacts": {
       "type": "array",
-      "minItems": 6,
+      "minItems": 8,
       "items": {
         "type": "string"
       },
@@ -158,6 +199,68 @@
     }
   },
   "$defs": {
+    "amendment": {
+      "type": "object",
+      "required": [
+        "id",
+        "status",
+        "proposedAt",
+        "supersedesVersion",
+        "reason",
+        "approvalSensitiveChanges"
+      ],
+      "properties": {
+        "id": {
+          "const": "safe_repository_evolution"
+        },
+        "status": {
+          "const": "pending_owner_approval"
+        },
+        "proposedAt": {
+          "type": "string",
+          "format": "date"
+        },
+        "supersedesVersion": {
+          "const": "1.0.0"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "approvalSensitiveChanges": {
+          "$ref": "#/$defs/nonEmptyUniqueStrings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "hypothesis": {
+      "type": "object",
+      "required": [
+        "id",
+        "status",
+        "statement"
+      ],
+      "properties": {
+        "id": {
+          "enum": [
+            "greenfield_agent_correctness",
+            "safe_repository_evolution"
+          ]
+        },
+        "status": {
+          "const": "unvalidated"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "guidingPrinciple": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
     "source": {
       "type": "object",
       "required": [
@@ -272,8 +375,11 @@
       "type": "object",
       "required": [
         "domain",
+        "taskMode",
+        "startingState",
         "repositoryModules",
         "taskFamilies",
+        "maintenanceOperations",
         "confirmatoryTasksPerFamily",
         "confirmatoryTaskCount",
         "calibrationTasksPerFamily",
@@ -281,11 +387,19 @@
         "calibrationIncludedInEvidence",
         "capabilities",
         "networkAllowed",
-        "hiddenTestInvariants"
+        "hiddenTestInvariants",
+        "impactSurfaceManifest"
       ],
       "properties": {
         "domain": {
           "const": "synthetic_event_registration"
+        },
+        "taskMode": {
+          "const": "repository_evolution"
+        },
+        "startingState": {
+          "type": "string",
+          "minLength": 1
         },
         "repositoryModules": {
           "type": "array",
@@ -304,6 +418,9 @@
             "type": "string"
           },
           "uniqueItems": true
+        },
+        "maintenanceOperations": {
+          "$ref": "#/$defs/nonEmptyUniqueStrings"
         },
         "confirmatoryTasksPerFamily": {
           "const": 3
@@ -328,6 +445,10 @@
         },
         "hiddenTestInvariants": {
           "$ref": "#/$defs/nonEmptyUniqueStrings"
+        },
+        "impactSurfaceManifest": {
+          "type": "string",
+          "minLength": 1
         }
       },
       "additionalProperties": false
@@ -430,7 +551,10 @@
           "enum": [
             "static_obligation_effect",
             "canonical_syntax_effect",
-            "structured_diagnostic_effect"
+            "structured_diagnostic_effect",
+            "static_obligation_maintenance_effect",
+            "canonical_syntax_maintenance_effect",
+            "structured_diagnostic_maintenance_effect"
           ]
         },
         "kind": {
@@ -463,6 +587,34 @@
       },
       "additionalProperties": false
     },
+    "repositoryChangeSuccess": {
+      "type": "object",
+      "required": [
+        "role",
+        "unit",
+        "successRequiresAll",
+        "missingTrajectory",
+        "partialCredit"
+      ],
+      "properties": {
+        "role": {
+          "const": "primary_maintenance_outcome"
+        },
+        "unit": {
+          "const": "trajectory"
+        },
+        "successRequiresAll": {
+          "$ref": "#/$defs/nonEmptyUniqueStrings"
+        },
+        "missingTrajectory": {
+          "const": "failure"
+        },
+        "partialCredit": {
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    },
     "metric": {
       "type": "object",
       "required": [
@@ -478,11 +630,21 @@
             "obligation_coverage",
             "ast_shape_entropy",
             "ambient_dependency_count",
-            "repair_locality"
+            "repair_locality",
+            "contract_propagation_completeness",
+            "unrelated_regression_count",
+            "semantic_blast_radius",
+            "impact_prediction_accuracy",
+            "stale_contract_count",
+            "unrequested_behavior_change_count",
+            "change_reviewability"
           ]
         },
         "role": {
-          "const": "explanatory"
+          "enum": [
+            "explanatory",
+            "descriptive"
+          ]
         },
         "algorithm": {
           "type": "string",
@@ -586,7 +748,7 @@
               "const": 0.05
             },
             "family": {
-              "const": "three_primary_comparisons"
+              "const": "six_primary_comparisons"
             }
           },
           "additionalProperties": false
@@ -704,6 +866,7 @@
           "required": [
             "minimumMeaningfulPrimaryComparisons",
             "minimumMeaningfulLanguageComparisons",
+            "minimumMeaningfulMaintenanceLanguageComparisons",
             "maximumHarmfulModelFamilyEffectExclusive",
             "allComplexityGuardrailsMustPass"
           ],
@@ -712,6 +875,9 @@
               "const": 2
             },
             "minimumMeaningfulLanguageComparisons": {
+              "const": 1
+            },
+            "minimumMeaningfulMaintenanceLanguageComparisons": {
               "const": 1
             },
             "maximumHarmfulModelFamilyEffectExclusive": {
@@ -733,11 +899,15 @@
           "type": "object",
           "required": [
             "allPrimaryUpperConfidenceBoundsBelow",
+            "allMaintenanceLanguageUpperConfidenceBoundsBelow",
             "holmSignificantHarmAtOrBelow",
             "unresolvedComplexityGuardrail"
           ],
           "properties": {
             "allPrimaryUpperConfidenceBoundsBelow": {
+              "const": 0.1
+            },
+            "allMaintenanceLanguageUpperConfidenceBoundsBelow": {
               "const": 0.1
             },
             "holmSignificantHarmAtOrBelow": {

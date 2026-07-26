@@ -1,36 +1,33 @@
 ---
-updated: "2026-07-26T07:23:39Z"
+updated: "2026-07-26T07:53:52Z"
 ---
-Volt has no approved compiler or language-runtime architecture yet. The evidence-informed candidate is recorded in [GitHub Discussion #1](https://github.com/JimmyMcBride/volt/discussions/1) and remains blocked on separately approved GitHub Issue specs.
+Volt has no approved compiler or runtime architecture. The candidate architecture remains blocked on separately approved GitHub specs.
 
 ## Current Boundaries
 
-- `.brain/`: durable project memory and agent context.
-- `.plan/`: Plan backend configuration, GitHub metadata mirror, and compatibility pointers only.
-- `docs/`: durable project knowledge that is not planning state.
-- `research/`: executable deliverables for the approved research protocol in GitHub Issue #3.
-- `AGENTS.md`: agent entry contract.
-- GitHub Discussions: canonical discovery and shaping.
+- `.brain/`: concise durable project context.
+- `.plan/`: Plan backend configuration and GitHub metadata pointers only.
+- `docs/`: durable knowledge, not canonical specifications.
+- `research/`: executable protocol, evidence, schemas, metrics, and fixtures.
+- GitHub Discussion #1: canonical shaping.
 - GitHub Issues: canonical specs and execution readiness.
-- GitHub Milestones/Projects: canonical initiative and delivery sequencing.
+- GitHub Milestones/Projects: sequencing.
 
-## Research Protocol Tooling
+## Research Tooling
 
-- `package.json` declares Node.js 24 and dependency-free ES modules for protocol validation, semantic-compression metrics, and thesis decision rules.
-- JSON Schema contracts cover the approved protocol, frozen run manifests, trajectory results, and complete analysis reports.
-- `research/test/` contains deterministic fixtures for every metric and decision path.
-- Issue #6 owns corpus construction, harnesses, model pinning, raw results, and study execution; it must consume these contracts without changing scientific decision rules.
+- Node.js 24 dependency-free ES modules implement protocol validation, metrics, and decision rules.
+- Proposed protocol v1.1 adds deterministic research-layer safe-evolution measures and remains `pending_reapproval`.
+- Issue #6 will own task construction, hidden tests, harnesses, run manifests, raw results, and execution after approval.
 
-## Candidate Reference Toolchain
+## Proposed Compiler Direction
 
-- Node.js 24 LTS with strict TypeScript 6.x.
-- Handwritten lexer and recursive-descent/Pratt parser.
-- Resolution, type, effect, and exhaustiveness passes followed by a deterministic tree-walking interpreter.
-- This remains a promotion input, not authorization to implement the compiler.
+Subject to Issues #4 and #5 approval, a future resolved/typed program graph should cover definitions, references, imports, callers, public contracts, ADT variants, matches, effects, operations, and related tests. Public type, contract, effect, or module-boundary changes should yield deterministic affected-symbol lists, missing propagation sites, and dependency reasons.
 
-## Architecture Guardrails
+DiagnosticV1 should remain versioned and backward-compatible while carrying stable repository-impact facts and declarative repair surfaces. Semantic diff is a future direction only.
 
-- Keep research-protocol tooling separate from the unapproved compiler architecture.
-- Keep semantic requirements separate from bootstrap technology choices.
-- Do not expand into production backends, package infrastructure, IDE integration, or automatic repair before evidence and approved specs justify them.
-- Promote and approve architecture through the GitHub-owned spec workflow before implementation.
+## Guardrails
+
+- Do not claim or test compiler impact behavior before a compiler exists.
+- Do not expand the v0 feature set for impact analysis.
+- Keep research tooling separate from unapproved compiler architecture.
+- Require approved GitHub specs before compiler, repository-diagnostic, or semantic-diff work.

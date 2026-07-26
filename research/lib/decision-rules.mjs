@@ -68,15 +68,22 @@ export function classifyThesis({
   confirmatoryComplete,
   validityFailure,
   comparisons,
+  maintenanceComparisons,
   modelEffects,
   complexityGuardrails
 }) {
   invariant(typeof confirmatoryComplete === "boolean", "confirmatoryComplete must be boolean");
   invariant(typeof validityFailure === "boolean", "validityFailure must be boolean");
-  invariant(Array.isArray(comparisons) && comparisons.length === 3, "exactly three primary comparisons are required");
+  invariant(Array.isArray(comparisons) && comparisons.length === 3, "exactly three first-pass primary comparisons are required");
+  invariant(
+    Array.isArray(maintenanceComparisons) && maintenanceComparisons.length === 3,
+    "exactly three maintenance primary comparisons are required"
+  );
   invariant(Array.isArray(modelEffects), "modelEffects must be an array");
   invariant(Array.isArray(complexityGuardrails) && complexityGuardrails.length > 0, "complexityGuardrails are required");
   comparisons.forEach(validateComparison);
+  maintenanceComparisons.forEach(validateComparison);
+  const allComparisons = [...comparisons, ...maintenanceComparisons];
 
   if (!confirmatoryComplete) {
     return {
@@ -102,7 +109,7 @@ export function classifyThesis({
     };
   }
 
-  const harmfulComparisons = comparisons.filter(isSignificantHarm);
+  const harmfulComparisons = allComparisons.filter(isSignificantHarm);
   if (harmfulComparisons.length > 0) {
     return {
       classification: "falsified",
@@ -117,25 +124,46 @@ export function classifyThesis({
     };
   }
 
+  const maintenanceLanguageComparisons = maintenanceComparisons.filter(
+    (comparison) => comparison.kind === "language"
+  );
+  if (
+    maintenanceLanguageComparisons.every((comparison) => comparison.ciUpper < 0.1)
+  ) {
+    return {
+      classification: "falsified",
+      reasons: ["all_maintenance_language_upper_confidence_bounds_below_meaningful_effect"]
+    };
+  }
+
   const meaningful = comparisons.filter(isMeaningfulBenefit);
+  const meaningfulMaintenance = maintenanceComparisons.filter(isMeaningfulBenefit);
   const meaningfulIds = new Set(meaningful.map((comparison) => comparison.id));
+  for (const comparison of meaningfulMaintenance) {
+    meaningfulIds.add(comparison.id);
+  }
   const harmfulModelEffects = modelEffects.filter(
     (effect) => meaningfulIds.has(effect.comparisonId) && effect.pointEstimate <= -0.1
   );
   const meaningfulLanguageComparisons = meaningful.filter((comparison) => comparison.kind === "language");
+  const meaningfulMaintenanceLanguageComparisons = meaningfulMaintenance.filter(
+    (comparison) => comparison.kind === "language"
+  );
 
   if (
     meaningful.length >= 2 &&
     meaningfulLanguageComparisons.length >= 1 &&
+    meaningfulMaintenanceLanguageComparisons.length >= 1 &&
     harmfulModelEffects.length === 0
   ) {
     return {
       classification: "supported",
-      reasons: meaningful.map((comparison) => `meaningful_benefit:${comparison.id}`)
+      reasons: [...meaningful, ...meaningfulMaintenance]
+        .map((comparison) => `meaningful_benefit:${comparison.id}`)
     };
   }
 
-  const uncertaintySpansNoAndMeaningfulBenefit = comparisons.some(
+  const uncertaintySpansNoAndMeaningfulBenefit = allComparisons.some(
     (comparison) => comparison.ciLower <= 0 && comparison.ciUpper >= 0.1
   );
   if (uncertaintySpansNoAndMeaningfulBenefit) {
@@ -151,6 +179,9 @@ export function classifyThesis({
   }
   if (meaningful.length === 0) {
     reasons.push("no_meaningful_primary_comparison_without_falsification");
+  }
+  if (meaningfulMaintenanceLanguageComparisons.length === 0) {
+    reasons.push("no_meaningful_maintenance_language_comparison_without_falsification");
   }
   if (harmfulModelEffects.length > 0) {
     reasons.push(...harmfulModelEffects.map((effect) => `harmful_model_family_effect:${effect.comparisonId}:${effect.modelId}`));
