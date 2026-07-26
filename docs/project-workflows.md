@@ -1,15 +1,20 @@
 ---
-updated: "2026-07-26T05:37:21Z"
+updated: "2026-07-26T05:51:12Z"
 ---
 ## Project Workflow
 
-1. Start work with `brain prep --task "<task>"`.
-2. Read `.plan/PROJECT.md`, `.plan/ROADMAP.md`, and relevant brainstorms/specs before product or language-design work.
-3. Use Plan brainstorms for discovery and Plan specs as canonical implementation contracts.
-4. Record durable decisions, risks, and architecture changes through Brain-managed notes.
-5. Run verification through `brain session run -- <command>` once the project has executable checks.
-6. Finish Brain sessions so memory and verification policy remain enforced.
+1. Start with `brain prep --task "<task>"`.
+2. Use Brain for durable mission, evidence, terminology, decisions, risks, and rejected alternatives.
+3. Use local `.plan/PROJECT.md` and `.plan/ROADMAP.md` only to resolve GitHub ownership and links.
+4. Use GitHub Discussions for brainstorms and shaping.
+5. Use Plan promotion commands to create GitHub-owned spec issues and milestones.
+6. Stop draft specifications at human approval before implementation.
+7. Run verification through `brain session run -- <command>` and finish the Brain session.
 
-## Inception Rule
+## Planning Ownership
 
-No language implementation checks exist yet. Generated references to Go tests/builds are placeholders and do not apply unless Volt later chooses Go for part of its toolchain.
+- Source mode: GitHub.
+- Canonical specs: GitHub Issues.
+- Canonical sequencing: GitHub Milestones and Projects.
+- Local Plan Markdown must not mirror canonical planning content.
+- Plan must authorize any manual fallback before planning objects are created outside Plan.

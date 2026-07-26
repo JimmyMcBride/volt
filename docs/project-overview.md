@@ -1,28 +1,27 @@
 ---
-updated: "2026-07-26T05:37:21Z"
+updated: "2026-07-26T05:51:31Z"
 ---
-Volt is a brand-new programming language designed for AI agents that create, inspect, transform, and verify software, while keeping programs understandable and governable by humans.
+Volt is a greenfield research and prototyping project for a programming language designed for AI coding models and autonomous software-engineering agents, while keeping programs understandable and governable by humans.
 
 ## Product Thesis
 
-Existing languages optimize primarily for human authors and retrofit agent workflows through prompts, linters, and external tools. Volt will explore whether language semantics, syntax, contracts, diagnostics, and tooling can make agent-written software safer, more deterministic, and easier to review.
+Existing languages optimize primarily for human authors and retrofit agent workflows through prompts, linters, and external tools. Volt tests whether language semantics, canonical forms, contracts, diagnostics, and tooling can improve first-pass correctness and repair efficiency for agent-written software.
+
+The working principle is **semantic compression**: maximize how much programmer intent valid source communicates while minimizing ambiguity and plausible incorrect interpretations.
 
 ## Current Stage
 
-- Inception and language discovery.
+- Research framing and language discovery.
 - No implementation language, runtime, execution model, syntax, or package model selected.
-- No source code, tests, build system, CI, or deployment surface exists yet.
-- Brain owns durable project memory under `.brain/` and `docs/`.
-- Plan owns product shaping and execution contracts under `.plan/`.
+- No compiler implementation begins before an approval-ready GitHub spec.
+- Brain owns durable knowledge under `.brain/` and `docs/`.
+- GitHub owns planning through Discussions, Issues, Milestones, and Projects.
+- Local `.plan/` is backend metadata and compatibility pointers only.
 
 ## Near-Term Goal
 
-Define a bounded language thesis and minimum viable semantic core before choosing implementation architecture.
+Turn the working hypothesis into measurable experiments, evidence-ranked requirements, and a bounded minimum language kernel before choosing implementation architecture.
 
-## Open Design Questions
+## Canonical Planning Source
 
-- What programs should Volt make unusually easy or safe for agents to produce?
-- Is Volt general-purpose, orchestration-focused, or intentionally narrower?
-- Which semantics must be deterministic, inspectable, and capability-controlled?
-- What is the smallest useful compiler/interpreter and toolchain?
-- How should agents receive structured diagnostics and machine-checkable repair guidance?
+[Volt language thesis and minimum semantic core](https://github.com/JimmyMcBride/volt/discussions/1)
