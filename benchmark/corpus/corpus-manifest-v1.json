@@ -5,10 +5,10 @@
   "protocolVersion": "1.1.0",
   "kernelId": "volt-v0",
   "protocolHash": "sha256:15b3676b15e7eb68954ca2e16924d43f9f864eb794c62e6c34aa0ef8e04e9108",
-  "kernelHash": "sha256:f44d3d3d212daf6ae6603f334341ac922a36ab44c07801dde2979abb7398671d",
-  "checkerProfileHash": "sha256:df86ebe6dba1dff8b0113bca959c57b79b661cbe60548bf76d25f75f83fd94ed",
+  "kernelHash": "sha256:5dcfffcd177fe9150c96d0c041f665f338cd3de0f656a7fbe6ac957f54b49f41",
+  "checkerProfileHash": "sha256:032f158a7c9fd49afee5ec4948d3a5ec32341d949c6675e877e26b419465c7d8",
   "aliasManifestHash": "sha256:b3fbf8ac150584475d7564d181138af2780cdb52e1e871a793ef8a63a1fd2af6",
-  "seedHash": "sha256:703c2164a42ab7bdc65b559d190af8f16d2b1b97643f241ddd53c00008479bb0",
+  "seedHash": "sha256:9639290dfecbabc4d7240f23389bff312bd911f11493112e4b28e64db20f3a5e",
   "calibrationTaskCount": 4,
   "confirmatoryTaskCount": 12,
   "calibrationIncludedInEvidence": false,
@@ -36,97 +36,97 @@
       "id": "calibration_cross_module_contract_change",
       "corpus": "calibration",
       "family": "cross_module_contract_change",
-      "manifestHash": "sha256:235c03ea5dc44ca44e3634b62991172281b062f8834cae4f22818e2ebc4f2fae"
+      "manifestHash": "sha256:1b7933e045e717497a721631f27239e1828feaf7a6284cc4d00429b670509a30"
     },
     {
       "id": "calibration_effect_addition",
       "corpus": "calibration",
       "family": "effect_addition",
-      "manifestHash": "sha256:0cc603981dbcc2512236896ccd7c78f995a881be305cbbb921b7710efedc41cb"
+      "manifestHash": "sha256:1e3b7ec1db8fef8f6e2df416e8761e265a2ff841d29e4046f674f7fcb1734998"
     },
     {
       "id": "calibration_invariant_change",
       "corpus": "calibration",
       "family": "invariant_change",
-      "manifestHash": "sha256:b77d2a3eeef1b42e237a461cd502c87ceb0a317efab6c25fe95dfc42b4d1eb91"
+      "manifestHash": "sha256:26fa830b6b5e28c0085c65be1187d3ede20de504dcd60b8bf6e215aff76fa2ef"
     },
     {
       "id": "calibration_state_extension",
       "corpus": "calibration",
       "family": "state_extension",
-      "manifestHash": "sha256:fd14af564e2bcfd91d735e8480b6d5f243bd7ba14217cc6328d2d2d112b30171"
+      "manifestHash": "sha256:2b6347e818e58190d154d34a884f9b72023ec4543ab4c388053c460800bd3c34"
     },
     {
       "id": "cross_module_contract_change_1",
       "corpus": "confirmatory",
       "family": "cross_module_contract_change",
-      "manifestHash": "sha256:496e03245f0aed1771df8daa6d776d202c51bdeece3295b1b3df4599da05aee4"
+      "manifestHash": "sha256:6746ff1f5fcc6715313d0c560c0d23dfd592d0db73a54d85e349faf8c6dcba31"
     },
     {
       "id": "cross_module_contract_change_2",
       "corpus": "confirmatory",
       "family": "cross_module_contract_change",
-      "manifestHash": "sha256:34d44136c7935dd7c753ea39a50b95a69f992a41c0dd0ebc5cadb2232df0fed9"
+      "manifestHash": "sha256:14aaaf2bd2798bb39f246d30af575a7915053eb3096c22d1d6bcbce731677d9c"
     },
     {
       "id": "cross_module_contract_change_3",
       "corpus": "confirmatory",
       "family": "cross_module_contract_change",
-      "manifestHash": "sha256:da7c92214911ee05fb430411533cdd8f332de56b9c277639b5cb091041738991"
+      "manifestHash": "sha256:fb25489a362a07160cc735f2cf99d54c6f0b865c7ee079e5e82aabd5f331fae7"
     },
     {
       "id": "effect_addition_1",
       "corpus": "confirmatory",
       "family": "effect_addition",
-      "manifestHash": "sha256:be825b4254ed47b82ad69104d91c89a1cabc8e213dd0d8918e109c5ec63e5d53"
+      "manifestHash": "sha256:51187ecbdd2e88e29d645481b5fad2f30ea15d73530b2accacca8468e98b1f47"
     },
     {
       "id": "effect_addition_2",
       "corpus": "confirmatory",
       "family": "effect_addition",
-      "manifestHash": "sha256:9d3c439f4a1054b4660a81a72785dac3effaba99a6f5a628a5cf4333f20761ef"
+      "manifestHash": "sha256:3e72fc7030419da6b3a00d97d13a596f7557ffb68c2816bce85af5d1bae42cc1"
     },
     {
       "id": "effect_addition_3",
       "corpus": "confirmatory",
       "family": "effect_addition",
-      "manifestHash": "sha256:442082805c523095874380c64f386688f05f7e079784ed3e6ef0c58aba089b91"
+      "manifestHash": "sha256:b82b8c984824075a87371b7902bceaa83fd7e9e87d94c14f1e59687dcc1dbc6a"
     },
     {
       "id": "invariant_change_1",
       "corpus": "confirmatory",
       "family": "invariant_change",
-      "manifestHash": "sha256:a10ac51c0a2c44835964f8ffa6a0ae2dab85293cf288c0298efb87ec517b588d"
+      "manifestHash": "sha256:1a7e052949c5ef249f71ef9b95af24731d67899adb87c2a39054ea8a46a6add6"
     },
     {
       "id": "invariant_change_2",
       "corpus": "confirmatory",
       "family": "invariant_change",
-      "manifestHash": "sha256:25c9bd7eb92d7bbcaf72f5a68ae44b29ff6f3ef19e9f7cf766a2bec01ed38b10"
+      "manifestHash": "sha256:8b5e598b1f22693ebd5c52ef76cc2ec0ba43c70fa3cfa903c2f3c7f66f9e49eb"
     },
     {
       "id": "invariant_change_3",
       "corpus": "confirmatory",
       "family": "invariant_change",
-      "manifestHash": "sha256:e93d33ee08735e2f665697726a78e099e578bbca538126449b364d2a04ddc0dd"
+      "manifestHash": "sha256:078f584a43f95021ee3a24e98b82aa7a875ea3d53812009c0dacdad31bd1f7f2"
     },
     {
       "id": "state_extension_1",
       "corpus": "confirmatory",
       "family": "state_extension",
-      "manifestHash": "sha256:372b711273217ac3d088c9cdd7861f5f564d38a6e8f17885e558877a3d3015b9"
+      "manifestHash": "sha256:345a373d35ea98b217b95e23729668b84b43ee047234f423dc313a60fd3a137a"
     },
     {
       "id": "state_extension_2",
       "corpus": "confirmatory",
       "family": "state_extension",
-      "manifestHash": "sha256:190db28c6fe4e5ce91f68c5a199f44f0bcf1cade2dc4f98bf2d50dfdbe4d585e"
+      "manifestHash": "sha256:5cff893ca73dae1e2db4d8746d478c5601723c4516f369ba9765d301c6c1271e"
     },
     {
       "id": "state_extension_3",
       "corpus": "confirmatory",
       "family": "state_extension",
-      "manifestHash": "sha256:8a91f962635705629a51f020b721a2d75e5bda796b38d6699a3dbab4ccff965e"
+      "manifestHash": "sha256:0a6536d76ca0bcdb3188de2b8599c864c5af9eb855c272ffa8a4ecaa8258a9aa"
     }
   ],
   "normalVerification": {

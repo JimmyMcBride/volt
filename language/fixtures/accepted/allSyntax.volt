@@ -1,4 +1,4 @@
-module all_syntax
+module allSyntax
 
 pub record Point {
   x: Int,
@@ -22,18 +22,18 @@ fn choose(flag: Bool, yes: Int, no: Int) -> Int {
   }
 }
 
-pub fn current_time() uses {Clock} -> Int {
+pub fn currentTime() uses {Clock} -> Int {
   Clock.now()
 }
 
-pub fn make_state(x: Int, y: Int) -> State {
+pub fn makeState(x: Int, y: Int) -> State {
   Active(Point {
     x: x,
     y: y
   })
 }
 
-pub fn state_x(state: State) -> Int {
+pub fn stateX(state: State) -> Int {
   match state {
     Idle -> 0
     Active(Point {
@@ -43,7 +43,7 @@ pub fn state_x(state: State) -> Int {
   }
 }
 
-pub fn point_axis(point: Point) -> Int {
+pub fn pointAxis(point: Point) -> Int {
   match point {
     Point {
       x: 0,
@@ -53,21 +53,21 @@ pub fn point_axis(point: Point) -> Int {
   }
 }
 
-pub fn first_or(items: List<Int>, fallback: Int) -> Int {
+pub fn firstOr(items: List<Int>, fallback: Int) -> Int {
   match items {
     [] -> fallback
     [head, ...tail] -> head
   }
 }
 
-pub fn option_or(value: Option<Int>, fallback: Int) -> Int {
+pub fn optionOr(value: Option<Int>, fallback: Int) -> Int {
   match value {
     None -> fallback
     Some(present) -> present
   }
 }
 
-pub fn result_or(value: Result<Int, String>, fallback: Int) -> Int {
+pub fn resultOr(value: Result<Int, String>, fallback: Int) -> Int {
   match value {
     Ok(present) -> present
     Error(message) -> fallback

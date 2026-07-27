@@ -35,7 +35,7 @@ pub effect Clock {
   fn now() -> Int
 }
 
-pub fn observed_at(state: JobState) uses {Clock} -> Int {
+pub fn observedAt(state: JobState) uses {Clock} -> Int {
   match state {
     Queued -> 0
     Running -> Clock.now()
@@ -69,6 +69,8 @@ The repository also contains the approved offline controlled-study implementatio
 - deterministic power, six-endpoint analysis, and eleven separate operational measurements.
 
 The reference implementation uses Node.js 24 and strict TypeScript 6. It is intentionally small, deterministic, and dependency-light so the research can test Volt's ideas without hiding them behind production-backend complexity.
+
+Volt source has one identifier spelling: lowerCamelCase for modules, functions, effect operations, parameters, local bindings, and record fields; UpperCamelCase for records, algebraic data types, variants, and effects. Underscores are rejected in Volt-authored identifiers. Protocol keys, diagnostic codes, CLI flags, and research artifact IDs retain their existing machine-facing conventions.
 
 ## Try the reference toolchain
 

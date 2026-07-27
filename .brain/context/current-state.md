@@ -1,8 +1,6 @@
 ---
-updated: "2026-07-27T06:58:17Z"
+updated: "2026-07-27T17:43:26Z"
 ---
-# Current State
-
 <!-- brain:begin context-current-state -->
 This file is a deterministic snapshot of the repository state at the last refresh.
 
@@ -10,14 +8,15 @@ This file is a deterministic snapshot of the repository state at the last refres
 
 - Project: `volt`
 - Root: `.`
-- Runtime: `unknown`
-- Current branch: `master`
-- Go test files: `0`
+- Runtime: `node`
+- Current branch: `codex/canonical-camelcase-identifier-migration`
+- Default branch: `main`
 <!-- brain:end context-current-state -->
 
 ## Local Notes
 
-- PR #11 review hardening makes stable JSON total for unsupported JavaScript values, canonicalizes diagnostic ordering and sequencing at both rendering boundaries, rejects malformed runtime entrypoints explicitly, and preserves diagnostic-code phase ownership in parser-originated failures.
-- Verified on the Issue #5 branch with `npm run verify` (68 tests passing) and `plan check --project .` (no findings).
-- Issue #6 offline implementation adds the deterministic event-registration benchmark corpus, causal/descriptive condition adapters, replayable trajectory harness, artifact schemas, preregistered analysis, and baseline parity scaffolds under `benchmark/`.
-- Calibration and confirmatory provider execution remain fail-closed: normal verification permits no network calls or spend, and live phases require separately approved, hash-bound authorization artifacts.
+- Issues #3–#6 are implemented, merged, and closed. Live calibration and confirmatory execution remain separately gated and have not run.
+- Owner-approved Issue #15 is the active pre-calibration breaking migration: lowerCamelCase for Volt value/module names, UpperCamelCase for type/effect/variant names, and no underscores in Volt-authored identifiers.
+- The parser emits `K_NAME_UNDERSCORE` for underscore-bearing tokens and `K_NAME_CONVENTION` for role-specific case errors. Both remain retained in the static-obligations-erased profile; alias-permissive changes keywords only.
+- The four-module seed, all 16 tasks, stable Volt identities, and module-derived filenames use canonical camelCase. Protocol/research IDs and external-baseline conventions remain unchanged.
+- Verification on the Issue #15 branch: `npm run verify` passes 82 tests; all 16 tasks pass, all 128 retained mutants are killed, generation is idempotent, and normal verification reports zero network calls and zero provider spend.

@@ -53,8 +53,11 @@ class Parser {
   private identifier(caseKind?: "lower" | "upper"): Token {
     const token = this.peek();
     if (token.kind !== "identifier") this.fail("K_PARSE_EXPECTED", "expected identifier", token, "identifier");
-    if (caseKind === "lower" && !/^[a-z][A-Za-z0-9_]*$/u.test(token.text)) {
-      this.fail("K_NAME_CONVENTION", `expected lower_snake_case name, received ${token.text}`, token);
+    if (!/^[A-Za-z][A-Za-z0-9]*$/u.test(token.text)) {
+      this.fail("K_NAME_UNDERSCORE", `underscores are not allowed in identifiers, received ${token.text}`, token);
+    }
+    if (caseKind === "lower" && !/^[a-z][A-Za-z0-9]*$/u.test(token.text)) {
+      this.fail("K_NAME_CONVENTION", `expected lowerCamelCase name, received ${token.text}`, token);
     }
     if (caseKind === "upper" && !/^[A-Z][A-Za-z0-9]*$/u.test(token.text)) {
       this.fail("K_NAME_CONVENTION", `expected UpperCamelCase name, received ${token.text}`, token);
@@ -239,7 +242,7 @@ class Parser {
   }
 
   private typeRef(): TypeRef {
-    const token = this.identifier();
+    const token = this.identifier("upper");
     const args: TypeRef[] = [];
     if (this.at("<")) {
       this.take();
@@ -380,7 +383,7 @@ class Parser {
       return { kind: "list", items, location: this.located(start, end) };
     }
     if (token.kind === "identifier") {
-      this.take();
+      this.identifier();
       if (/^[A-Z]/u.test(token.text) && this.at("{")) {
         this.take();
         const fields: Array<{ name: string; value: Expr; location: Located }> = [];

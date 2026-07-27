@@ -1,11 +1,11 @@
-module closed_catch_all
+module closedCatchAll
 
 pub type Status {
   Open
   Closed
 }
 
-pub fn is_open(status: Status) -> Bool {
+pub fn isOpen(status: Status) -> Bool {
   match status {
     Open -> true
     _ -> false

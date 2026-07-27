@@ -5,19 +5,19 @@
   "family": "state_extension",
   "publicChangeCategory": "record_field",
   "mutationSeed": 3828665728,
-  "seedHash": "sha256:703c2164a42ab7bdc65b559d190af8f16d2b1b97643f241ddd53c00008479bb0",
-  "expectedSolutionHash": "sha256:cc653519751811107b712b422b69d53f0a2df56c24c23251dcea0a7747d68dbb",
+  "seedHash": "sha256:9639290dfecbabc4d7240f23389bff312bd911f11493112e4b28e64db20f3a5e",
+  "expectedSolutionHash": "sha256:211192b813ee8973f9b147e5433747d990b8b356e724c495b6c5fb38893f5188",
   "publicTask": {
-    "wording": "Add a source_code field to Registration and propagate every constructor.",
+    "wording": "Add a sourceCode field to Registration and propagate every constructor.",
     "visibleFiles": [
       "src/capabilities.volt",
       "src/domain.volt",
-      "src/registration_service.volt",
+      "src/registrationService.volt",
       "src/tests.volt",
       "volt.json"
     ],
     "publicTests": [
-      "tests.registration_test"
+      "tests.registrationTest"
     ],
     "allowedTools": [
       "inspect",
@@ -33,7 +33,7 @@
   "expectedImpact": {
     "files": [
       "src/domain.volt",
-      "src/registration_service.volt"
+      "src/registrationService.volt"
     ],
     "symbols": [
       "state_extension_2::requested_change"
@@ -46,7 +46,7 @@
       "record_field::complete"
     ],
     "relatedTests": [
-      "tests::function::registration_test"
+      "tests::function::registrationTest"
     ]
   },
   "preservationAssertions": [
@@ -58,12 +58,12 @@
     {
       "id": "state_extension_2:preservation:capacity",
       "description": "Capacity remains a typed registration failure.",
-      "file": "src/registration_service.volt"
+      "file": "src/registrationService.volt"
     },
     {
       "id": "state_extension_2:preservation:idempotency",
       "description": "Existing registrations remain idempotently rejected.",
-      "file": "src/registration_service.volt"
+      "file": "src/registrationService.volt"
     }
   ],
   "invariants": [
@@ -74,7 +74,7 @@
       "assertion": {
         "type": "source_contains",
         "file": "src/domain.volt",
-        "text": "  source_code: Int"
+        "text": "  sourceCode: Int"
       }
     },
     {
@@ -109,7 +109,7 @@
       "assertion": {
         "type": "preserves_source",
         "file": "src/tests.volt",
-        "text": "pub fn registration_test"
+        "text": "pub fn registrationTest"
       }
     },
     {
@@ -118,7 +118,7 @@
       "hidden": true,
       "assertion": {
         "type": "preserves_source",
-        "file": "src/registration_service.volt",
+        "file": "src/registrationService.volt",
         "text": "event.registered >= event.capacity"
       }
     },
@@ -128,7 +128,7 @@
       "hidden": true,
       "assertion": {
         "type": "preserves_source",
-        "file": "src/registration_service.volt",
+        "file": "src/registrationService.volt",
         "text": "RegistrationStore.find(event.id, person.id)"
       }
     },
@@ -138,7 +138,7 @@
       "hidden": true,
       "assertion": {
         "type": "preserves_source",
-        "file": "src/registration_service.volt",
+        "file": "src/registrationService.volt",
         "text": "Result<Registration, RegistrationError>"
       }
     }
@@ -150,7 +150,7 @@
       "retained": true,
       "killedBy": "state_extension_2:compiles_full",
       "sourceOverrides": {
-        "src/registration_service.volt": "module registration_service\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn within_capacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registration_code() -> Int {\n  1\n}\n\npub fn event_code(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn person_code(person: Person) -> Int {\n  person.id\n}\n\npub fn calibration_code() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          event_id: event.id,\n          person_id: person.id,\n          created_at: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(store_error) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n"
+        "src/registrationService.volt": "module registrationService\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn withinCapacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registrationCode() -> Int {\n  1\n}\n\npub fn eventCode(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn personCode(person: Person) -> Int {\n  person.id\n}\n\npub fn calibrationCode() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          eventId: event.id,\n          personId: person.id,\n          createdAt: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(storeError) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n"
       }
     },
     {
@@ -159,7 +159,7 @@
       "retained": true,
       "killedBy": "state_extension_2:requested_behavior",
       "sourceOverrides": {
-        "src/domain.volt": "module domain\n\npub type EventState {\n  Open\n  Closed\n}\n\npub type RegistrationError {\n  EventFull\n  AlreadyRegistered\n  RegistrationClosed\n  StoreFailed\n}\n\npub type StoreError {\n  Unavailable\n}\n\npub record Event {\n  id: Int,\n  capacity: Int,\n  registered: Int,\n  state: EventState\n}\n\npub record Person {\n  id: Int,\n  name: String\n}\n\npub record Registration {\n  event_id: Int,\n  person_id: Int,\n,\n  created_at: Int\n}\n\npub record AuditStamp {\n  value: Int\n}\n"
+        "src/domain.volt": "module domain\n\npub type EventState {\n  Open\n  Closed\n}\n\npub type RegistrationError {\n  EventFull\n  AlreadyRegistered\n  RegistrationClosed\n  StoreFailed\n}\n\npub type StoreError {\n  Unavailable\n}\n\npub record Event {\n  id: Int,\n  capacity: Int,\n  registered: Int,\n  state: EventState\n}\n\npub record Person {\n  id: Int,\n  name: String\n}\n\npub record Registration {\n  eventId: Int,\n  personId: Int,\n,\n  createdAt: Int\n}\n\npub record AuditStamp {\n  value: Int\n}\n"
       }
     },
     {
@@ -168,7 +168,7 @@
       "retained": true,
       "killedBy": "state_extension_2:preservation:capacity",
       "sourceOverrides": {
-        "src/registration_service.volt": "module registration_service\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn within_capacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registration_code() -> Int {\n  1\n}\n\npub fn event_code(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn person_code(person: Person) -> Int {\n  person.id\n}\n\npub fn calibration_code() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered > event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          event_id: event.id,\n          person_id: person.id,\n          source_code: 1,\n          created_at: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(store_error) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n"
+        "src/registrationService.volt": "module registrationService\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn withinCapacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registrationCode() -> Int {\n  1\n}\n\npub fn eventCode(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn personCode(person: Person) -> Int {\n  person.id\n}\n\npub fn calibrationCode() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered > event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          eventId: event.id,\n          personId: person.id,\n          sourceCode: 1,\n          createdAt: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(storeError) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n"
       }
     },
     {
@@ -177,7 +177,7 @@
       "retained": true,
       "killedBy": "state_extension_2:compiles_full",
       "sourceOverrides": {
-        "src/registration_service.volt": "module registration_service\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn within_capacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registration_code() -> Int {\n  1\n}\n\npub fn event_code(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn person_code(person: Person) -> Int {\n  person.id\n}\n\npub fn calibration_code() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          event_id: event.id,\n          person_id: person.id,\n          source_code: 1,\n          created_at: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(store_error) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n"
+        "src/registrationService.volt": "module registrationService\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn withinCapacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registrationCode() -> Int {\n  1\n}\n\npub fn eventCode(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn personCode(person: Person) -> Int {\n  person.id\n}\n\npub fn calibrationCode() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          eventId: event.id,\n          personId: person.id,\n          sourceCode: 1,\n          createdAt: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(storeError) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n"
       }
     },
     {
@@ -186,7 +186,7 @@
       "retained": true,
       "killedBy": "state_extension_2:compiles_full",
       "sourceOverrides": {
-        "src/registration_service.volt": "module registration_service\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn within_capacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registration_code() -> Int {\n  1\n}\n\npub fn event_code(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n\n  }\n}\n\npub fn person_code(person: Person) -> Int {\n  person.id\n}\n\npub fn calibration_code() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          event_id: event.id,\n          person_id: person.id,\n          source_code: 1,\n          created_at: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(store_error) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n"
+        "src/registrationService.volt": "module registrationService\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn withinCapacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registrationCode() -> Int {\n  1\n}\n\npub fn eventCode(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n\n  }\n}\n\npub fn personCode(person: Person) -> Int {\n  person.id\n}\n\npub fn calibrationCode() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          eventId: event.id,\n          personId: person.id,\n          sourceCode: 1,\n          createdAt: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(storeError) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n"
       }
     },
     {
@@ -195,7 +195,7 @@
       "retained": true,
       "killedBy": "state_extension_2:compiles_full",
       "sourceOverrides": {
-        "src/registration_service.volt": "module registration_service\n\nimport capabilities.{Clock, Notification, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn within_capacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registration_code() -> Int {\n  1\n}\n\npub fn event_code(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn person_code(person: Person) -> Int {\n  person.id\n}\n\npub fn calibration_code() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, Notification, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          event_id: event.id,\n          person_id: person.id,\n          source_code: 1,\n          created_at: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(store_error) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n"
+        "src/registrationService.volt": "module registrationService\n\nimport capabilities.{Clock, Notification, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn withinCapacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registrationCode() -> Int {\n  1\n}\n\npub fn eventCode(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn personCode(person: Person) -> Int {\n  person.id\n}\n\npub fn calibrationCode() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, Notification, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          eventId: event.id,\n          personId: person.id,\n          sourceCode: 1,\n          createdAt: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(storeError) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n"
       }
     },
     {
@@ -204,7 +204,7 @@
       "retained": true,
       "killedBy": "state_extension_2:runtime:registration_guarantees",
       "sourceOverrides": {
-        "src/registration_service.volt": "module registration_service\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn within_capacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registration_code() -> Int {\n  1\n}\n\npub fn event_code(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn person_code(person: Person) -> Int {\n  person.id\n}\n\npub fn calibration_code() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          event_id: event.id,\n          person_id: person.id,\n          source_code: 1,\n          created_at: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(store_error) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(EventFull)\n    }\n  }\n}\n"
+        "src/registrationService.volt": "module registrationService\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn withinCapacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registrationCode() -> Int {\n  1\n}\n\npub fn eventCode(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn personCode(person: Person) -> Int {\n  person.id\n}\n\npub fn calibrationCode() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          eventId: event.id,\n          personId: person.id,\n          sourceCode: 1,\n          createdAt: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(storeError) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(EventFull)\n    }\n  }\n}\n"
       }
     },
     {
@@ -213,7 +213,7 @@
       "retained": true,
       "killedBy": "state_extension_2:runtime:registration_guarantees",
       "sourceOverrides": {
-        "src/registration_service.volt": "module registration_service\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn within_capacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registration_code() -> Int {\n  1\n}\n\npub fn event_code(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn person_code(person: Person) -> Int {\n  person.id\n}\n\npub fn calibration_code() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          event_id: event.id,\n          person_id: person.id,\n          source_code: 1,\n          created_at: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(store_error) -> Error(EventFull)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n"
+        "src/registrationService.volt": "module registrationService\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn withinCapacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registrationCode() -> Int {\n  1\n}\n\npub fn eventCode(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn personCode(person: Person) -> Int {\n  person.id\n}\n\npub fn calibrationCode() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          eventId: event.id,\n          personId: person.id,\n          sourceCode: 1,\n          createdAt: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(storeError) -> Error(EventFull)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n"
       }
     }
   ],
@@ -223,7 +223,7 @@
       "category": "duplicated_invariant",
       "retained": false,
       "removedReason": "Equivalent mutant: duplicating the same capacity predicate does not change observable behavior.",
-      "candidateHash": "sha256:7a6ab659d8b76e072561234214ab6d674c536109471f8da172e7f4fb3df53d0e"
+      "candidateHash": "sha256:3a4dadaf2725856bc87cb36050506649edc6a0bb8518c28bc0b805a03001ae73"
     }
   ],
   "seed": {
@@ -231,7 +231,7 @@
     "repositoryId": "event-registration-seed-v1",
     "modules": [
       "domain",
-      "registration_service",
+      "registrationService",
       "capabilities",
       "tests"
     ],
@@ -242,22 +242,22 @@
     ],
     "networkAllowed": false,
     "files": {
-      "src/capabilities.volt": "module capabilities\n\nimport domain.{Registration, StoreError}\n\npub effect RegistrationStore {\n  fn find(event_id: Int, person_id: Int) -> Option<Registration>\n  fn save(registration: Registration) -> Result<Unit, StoreError>\n}\n\npub effect Clock {\n  fn now() -> Int\n}\n\npub effect Notification {\n  fn send(message: String) -> Unit\n}\n",
-      "src/domain.volt": "module domain\n\npub type EventState {\n  Open\n  Closed\n}\n\npub type RegistrationError {\n  EventFull\n  AlreadyRegistered\n  RegistrationClosed\n  StoreFailed\n}\n\npub type StoreError {\n  Unavailable\n}\n\npub record Event {\n  id: Int,\n  capacity: Int,\n  registered: Int,\n  state: EventState\n}\n\npub record Person {\n  id: Int,\n  name: String\n}\n\npub record Registration {\n  event_id: Int,\n  person_id: Int,\n  created_at: Int\n}\n\npub record AuditStamp {\n  value: Int\n}\n",
-      "src/registration_service.volt": "module registration_service\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn within_capacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registration_code() -> Int {\n  1\n}\n\npub fn event_code(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn person_code(person: Person) -> Int {\n  person.id\n}\n\npub fn calibration_code() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          event_id: event.id,\n          person_id: person.id,\n          created_at: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(store_error) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n",
-      "src/tests.volt": "module tests\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person}\nimport registration_service.{register}\n\npub fn registration_test()\n  uses {Clock, RegistrationStore}\n  -> Result<Unit, String> {\n  let event = Event { id: 1, capacity: 2, registered: 0, state: Open } in\n  let person = Person { id: 7, name: \"Ada\" } in\n  match register(event, person) {\n    Ok(registration) -> Ok(())\n    Error(problem) -> Error(\"registration failed\")\n  }\n}\n",
-      "volt.json": "{\n  \"schemaVersion\": 1,\n  \"sourceRoot\": \"src\",\n  \"run\": \"tests.registration_test\",\n  \"tests\": [\n    \"tests.registration_test\"\n  ],\n  \"capabilities\": [\n    {\n      \"effect\": \"capabilities::effect::RegistrationStore\",\n      \"adapter\": \"database\"\n    },\n    {\n      \"effect\": \"capabilities::effect::Clock\",\n      \"adapter\": \"clock\",\n      \"config\": {\n        \"values\": [\n          100\n        ]\n      }\n    },\n    {\n      \"effect\": \"capabilities::effect::Notification\",\n      \"adapter\": \"notification\"\n    }\n  ]\n}\n"
+      "src/capabilities.volt": "module capabilities\n\nimport domain.{Registration, StoreError}\n\npub effect RegistrationStore {\n  fn find(eventId: Int, personId: Int) -> Option<Registration>\n  fn save(registration: Registration) -> Result<Unit, StoreError>\n}\n\npub effect Clock {\n  fn now() -> Int\n}\n\npub effect Notification {\n  fn send(message: String) -> Unit\n}\n",
+      "src/domain.volt": "module domain\n\npub type EventState {\n  Open\n  Closed\n}\n\npub type RegistrationError {\n  EventFull\n  AlreadyRegistered\n  RegistrationClosed\n  StoreFailed\n}\n\npub type StoreError {\n  Unavailable\n}\n\npub record Event {\n  id: Int,\n  capacity: Int,\n  registered: Int,\n  state: EventState\n}\n\npub record Person {\n  id: Int,\n  name: String\n}\n\npub record Registration {\n  eventId: Int,\n  personId: Int,\n  createdAt: Int\n}\n\npub record AuditStamp {\n  value: Int\n}\n",
+      "src/registrationService.volt": "module registrationService\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn withinCapacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registrationCode() -> Int {\n  1\n}\n\npub fn eventCode(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn personCode(person: Person) -> Int {\n  person.id\n}\n\npub fn calibrationCode() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          eventId: event.id,\n          personId: person.id,\n          createdAt: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(storeError) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n",
+      "src/tests.volt": "module tests\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person}\nimport registrationService.{register}\n\npub fn registrationTest()\n  uses {Clock, RegistrationStore}\n  -> Result<Unit, String> {\n  let event = Event { id: 1, capacity: 2, registered: 0, state: Open } in\n  let person = Person { id: 7, name: \"Ada\" } in\n  match register(event, person) {\n    Ok(registration) -> Ok(())\n    Error(problem) -> Error(\"registration failed\")\n  }\n}\n",
+      "volt.json": "{\n  \"schemaVersion\": 1,\n  \"sourceRoot\": \"src\",\n  \"run\": \"tests.registrationTest\",\n  \"tests\": [\n    \"tests.registrationTest\"\n  ],\n  \"capabilities\": [\n    {\n      \"effect\": \"capabilities::effect::RegistrationStore\",\n      \"adapter\": \"database\"\n    },\n    {\n      \"effect\": \"capabilities::effect::Clock\",\n      \"adapter\": \"clock\",\n      \"config\": {\n        \"values\": [\n          100\n        ]\n      }\n    },\n    {\n      \"effect\": \"capabilities::effect::Notification\",\n      \"adapter\": \"notification\"\n    }\n  ]\n}\n"
     }
   },
   "expectedSolution": {
     "schemaVersion": 1,
     "taskId": "state_extension_2",
     "files": {
-      "src/capabilities.volt": "module capabilities\n\nimport domain.{Registration, StoreError}\n\npub effect RegistrationStore {\n  fn find(event_id: Int, person_id: Int) -> Option<Registration>\n  fn save(registration: Registration) -> Result<Unit, StoreError>\n}\n\npub effect Clock {\n  fn now() -> Int\n}\n\npub effect Notification {\n  fn send(message: String) -> Unit\n}\n",
-      "src/domain.volt": "module domain\n\npub type EventState {\n  Open\n  Closed\n}\n\npub type RegistrationError {\n  EventFull\n  AlreadyRegistered\n  RegistrationClosed\n  StoreFailed\n}\n\npub type StoreError {\n  Unavailable\n}\n\npub record Event {\n  id: Int,\n  capacity: Int,\n  registered: Int,\n  state: EventState\n}\n\npub record Person {\n  id: Int,\n  name: String\n}\n\npub record Registration {\n  event_id: Int,\n  person_id: Int,\n  source_code: Int,\n  created_at: Int\n}\n\npub record AuditStamp {\n  value: Int\n}\n",
-      "src/registration_service.volt": "module registration_service\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn within_capacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registration_code() -> Int {\n  1\n}\n\npub fn event_code(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn person_code(person: Person) -> Int {\n  person.id\n}\n\npub fn calibration_code() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          event_id: event.id,\n          person_id: person.id,\n          source_code: 1,\n          created_at: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(store_error) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n",
-      "src/tests.volt": "module tests\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person}\nimport registration_service.{register}\n\npub fn registration_test()\n  uses {Clock, RegistrationStore}\n  -> Result<Unit, String> {\n  let event = Event { id: 1, capacity: 2, registered: 0, state: Open } in\n  let person = Person { id: 7, name: \"Ada\" } in\n  match register(event, person) {\n    Ok(registration) -> Ok(())\n    Error(problem) -> Error(\"registration failed\")\n  }\n}\n",
-      "volt.json": "{\n  \"schemaVersion\": 1,\n  \"sourceRoot\": \"src\",\n  \"run\": \"tests.registration_test\",\n  \"tests\": [\n    \"tests.registration_test\"\n  ],\n  \"capabilities\": [\n    {\n      \"effect\": \"capabilities::effect::RegistrationStore\",\n      \"adapter\": \"database\"\n    },\n    {\n      \"effect\": \"capabilities::effect::Clock\",\n      \"adapter\": \"clock\",\n      \"config\": {\n        \"values\": [\n          100\n        ]\n      }\n    },\n    {\n      \"effect\": \"capabilities::effect::Notification\",\n      \"adapter\": \"notification\"\n    }\n  ]\n}\n"
+      "src/capabilities.volt": "module capabilities\n\nimport domain.{Registration, StoreError}\n\npub effect RegistrationStore {\n  fn find(eventId: Int, personId: Int) -> Option<Registration>\n  fn save(registration: Registration) -> Result<Unit, StoreError>\n}\n\npub effect Clock {\n  fn now() -> Int\n}\n\npub effect Notification {\n  fn send(message: String) -> Unit\n}\n",
+      "src/domain.volt": "module domain\n\npub type EventState {\n  Open\n  Closed\n}\n\npub type RegistrationError {\n  EventFull\n  AlreadyRegistered\n  RegistrationClosed\n  StoreFailed\n}\n\npub type StoreError {\n  Unavailable\n}\n\npub record Event {\n  id: Int,\n  capacity: Int,\n  registered: Int,\n  state: EventState\n}\n\npub record Person {\n  id: Int,\n  name: String\n}\n\npub record Registration {\n  eventId: Int,\n  personId: Int,\n  sourceCode: Int,\n  createdAt: Int\n}\n\npub record AuditStamp {\n  value: Int\n}\n",
+      "src/registrationService.volt": "module registrationService\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn withinCapacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registrationCode() -> Int {\n  1\n}\n\npub fn eventCode(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn personCode(person: Person) -> Int {\n  person.id\n}\n\npub fn calibrationCode() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          eventId: event.id,\n          personId: person.id,\n          sourceCode: 1,\n          createdAt: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(storeError) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n",
+      "src/tests.volt": "module tests\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person}\nimport registrationService.{register}\n\npub fn registrationTest()\n  uses {Clock, RegistrationStore}\n  -> Result<Unit, String> {\n  let event = Event { id: 1, capacity: 2, registered: 0, state: Open } in\n  let person = Person { id: 7, name: \"Ada\" } in\n  match register(event, person) {\n    Ok(registration) -> Ok(())\n    Error(problem) -> Error(\"registration failed\")\n  }\n}\n",
+      "volt.json": "{\n  \"schemaVersion\": 1,\n  \"sourceRoot\": \"src\",\n  \"run\": \"tests.registrationTest\",\n  \"tests\": [\n    \"tests.registrationTest\"\n  ],\n  \"capabilities\": [\n    {\n      \"effect\": \"capabilities::effect::RegistrationStore\",\n      \"adapter\": \"database\"\n    },\n    {\n      \"effect\": \"capabilities::effect::Clock\",\n      \"adapter\": \"clock\",\n      \"config\": {\n        \"values\": [\n          100\n        ]\n      }\n    },\n    {\n      \"effect\": \"capabilities::effect::Notification\",\n      \"adapter\": \"notification\"\n    }\n  ]\n}\n"
     }
   }
 }

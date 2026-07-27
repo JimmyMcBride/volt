@@ -2,12 +2,12 @@
   "$schema": "../schema/kernel.schema.json",
   "schemaVersion": 1,
   "kernelId": "volt-v0",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "status": "approved",
   "source": {
-    "issue": "https://github.com/JimmyMcBride/volt/issues/4",
+    "issue": "https://github.com/JimmyMcBride/volt/issues/15",
     "discussion": "https://github.com/JimmyMcBride/volt/discussions/1",
-    "approvedAt": "2026-07-26",
+    "approvedAt": "2026-07-27",
     "approvedBy": "JimmyMcBride"
   },
   "boundaries": {
@@ -38,7 +38,7 @@
     "encoding": "UTF-8",
     "extension": ".volt",
     "lineEnding": "LF",
-    "modulePathPattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$",
+    "modulePathPattern": "^[a-z][A-Za-z0-9]*(\\.[a-z][A-Za-z0-9]*)*$",
     "moduleFileMapping": "module segments map to slash-separated paths beneath one source root",
     "oneModulePerFile": true,
     "importsExplicit": true,
@@ -63,7 +63,7 @@
     "fileModuleMismatch": "resolve_error"
   },
   "lexical": {
-    "identifierPattern": "^[A-Za-z][A-Za-z0-9_]*$",
+    "identifierPattern": "^[A-Za-z][A-Za-z0-9]*$",
     "keywords": [
       "module",
       "import",
@@ -106,19 +106,21 @@
     }
   },
   "naming": {
-    "lowerSnakeCase": [
+    "lowerCamelCase": [
       "module_segment",
       "function",
       "parameter",
       "local_binding",
       "record_field",
-      "effect_operation"
+      "effect_operation",
+      "imported_value_name"
     ],
     "upperCamelCase": [
       "record",
       "algebraic_data_type",
       "constructor",
-      "effect"
+      "effect",
+      "imported_type_name"
     ],
     "shadowing": "error",
     "duplicateTopLevelNames": "error",

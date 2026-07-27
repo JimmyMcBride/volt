@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-27T05:45:59Z"
+updated: "2026-07-27T17:41:59Z"
 ---
 ## Startup
 
@@ -14,30 +14,28 @@ updated: "2026-07-27T05:45:59Z"
 - Plan source mode and story backend are `github`.
 - GitHub Discussions are the canonical brainstorm and shaping surface.
 - GitHub Issues are canonical specifications and readiness records.
-- GitHub Milestones and Projects own initiative and delivery sequencing.
+- GitHub Milestones and Projects own sequencing.
 - Local `.plan/` Markdown contains compatibility pointers only; do not duplicate GitHub planning content there.
 - Use `plan discuss assess` and `plan discuss promote` for GitHub-backed promotion.
 - Do not create planning issues, labels, milestones, or projects manually unless Plan emits `manual_fallback_allowed=true`.
-- Specs stop at human approval before implementation. Issues #3, #4, and #5 are complete. Issue #6 is owner-approved for offline implementation only.
+- Specs stop at human approval before implementation. Issues #3–#6 are complete; Issue #15 is the active owner-approved pre-calibration naming migration.
 
 ## Repository Verification
 
-- Node.js 24 or newer is required by `package.json`.
-- `tsconfig.json` freezes strict TypeScript 6 compilation to the ignored `dist/` output tree.
-- `package-lock.json` pins the dependency-free package state; run `npm ci` to reproduce it.
-- Run `npm run check:research` for approved protocol, evidence, traceability, report, and schema invariants.
-- `research/test/` covers protocol approval and traceability, decision rules, research metrics, and maintenance measures.
-- Run `npm run check:language` for the Issue #4 kernel, grammar coverage, fixture hashes, rejection/boundary coverage, formatter goldens, public-change obligations, and twelve-slot feature coverage.
-- `language/test/kernel.test.mjs` covers approved-kernel drift, fixture addressing, grammar/static-rule coverage, all feature boundaries, formatter ordering, public-change ordering, and protocol workload compatibility.
-- Run `npm run build` for strict TypeScript 6 compilation and `npm run check:toolchain` for schemas, checker-profile fidelity, complexity, and dependency guardrails.
-- `toolchain/test/toolchain.test.mjs` covers accepted/rejected conformance, both checker modes, Unknown propagation, AST/IR/graph stability, all public-change categories, DiagnosticV1 rendering, manifests, CLI commands, interpreter behavior, capability isolation, exit classes, and latency guardrails.
-- Run `npm run check:benchmark` for all 16 task states, content hashes, public/hidden assertions, mutation kills, treatment parity, baseline equivalence, schemas, authorization gates, and offline network/spend isolation.
-- `benchmark/test/benchmark.test.mjs` covers fresh trajectory state, first-submission restrictions, three-turn repair, hidden-output secrecy, diagnostic forks, fake/replay determinism, budgets, failure retention, randomization, artifacts, approvals, six endpoints, power bounds, and eleven separate measurements.
+- `package.json` requires Node.js 24 or newer, defines the build/check/test workflows, and keeps runtime dependencies at zero.
+- `package-lock.json` pins the reproducible npm dependency state; use `npm ci` for a clean install.
+- `tsconfig.json` freezes strict TypeScript 6 compilation into ignored `dist/` output.
+- Run `npm run check:research` for protocol, evidence, traceability, report, and schema invariants. `research/test/` covers approval, evidence, decision rules, metrics, and safe-maintenance measurements.
+- Run `npm run check:language` for the kernel, canonical camelCase naming, grammar coverage, fixture hashes, rejection/boundary coverage, formatter goldens, public-change obligations, and workload feature coverage. `language/test/` freezes those validation contracts.
+- Run `npm run build` and `npm run check:toolchain` for compilation, schemas, checker-profile fidelity, complexity, and dependency guardrails.
+- `toolchain/test/toolchain.test.mjs` covers all identifier roles, rejects underscores through `K_NAME_UNDERSCORE`, rejects wrong case through `K_NAME_CONVENTION`, and proves formatting never guesses invalid renames.
+- Run `npm run benchmark:generate` after an approved source-contract change; generation must be byte-idempotent.
+- Run `npm run check:benchmark` for all 16 task states, content hashes, assertions, 128 retained mutation kills, treatment parity, baseline equivalence, schemas, authorization gates, and offline network/spend isolation. `benchmark/test/` covers conditions, trajectories, hidden-output isolation, authorization, power, analysis, and operational measures.
+- Every Volt condition uses canonical camelCase. The alias-permissive condition varies keywords only and must still reject snake_case.
+- Preserve protocol v1.1 IDs, research metric/task/condition IDs, diagnostic/JSON keys, CLI flags, artifact directory IDs, and idiomatic external-baseline naming.
 - `npm run benchmark:offline` writes ignored deterministic fake/replay artifacts and performs no provider calls.
 - Run `npm run verify` for all contract validation and deterministic tests.
 - After `npm run build`, invoke the local CLI with `node dist/toolchain/src/cli.js <check|run|test|fmt> --project <repo>`.
-- Protocol v1.1 is owner-approved. Do not change its six primary comparisons, power rules, or decision gates without reopening Issue #3.
-- Issue #6 offline implementation must remain network-free and spend-free under normal verification.
 - Do not run live calibration without its owner-approved frozen model/authorization manifest and spend ceiling.
 - Do not run confirmatory trajectories without completed calibration, a valid powered sample-size decision, and separate owner approval.
 

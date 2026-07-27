@@ -1,4 +1,4 @@
-module missing_boundary_type
+module missingBoundaryType
 
 pub fn identity(value: Int) {
   value

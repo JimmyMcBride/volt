@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-27T05:45:59Z"
+updated: "2026-07-27T17:39:10Z"
 ---
 # Project Overview
 
@@ -13,32 +13,37 @@ Make agent-produced software easier to generate correctly, evolve safely, repair
 
 The guiding principle is: **every requested change has an explicit machine-readable impact surface, and unrelated behavior remains unchanged.**
 
-Greenfield generation is necessary but insufficient. A useful agent-focused language must also make small changes stay small, expose every required propagation site, and preserve behavior outside the request.
-
 Volt remains a research instrument. Promotion toward a production language depends on controlled evidence that its constraints and tooling improve outcomes enough to justify their costs.
 
 ## Product Thesis
 
-Volt tests whether explicit static obligations, canonical syntax, narrow modules, structured diagnostics, and future repository-aware impact analysis improve:
-
-1. first-pass correctness and bounded repair; and
-2. safe evolution of existing repositories.
+Volt tests whether explicit static obligations, canonical syntax, narrow modules, structured diagnostics, and repository-aware impact analysis improve first-pass correctness, bounded repair, and safe evolution of existing repositories.
 
 The working principle is **semantic compression**: maximize how much programmer intent valid source communicates while minimizing ambiguity and plausible incorrect interpretations. It is an explanatory vector, not an authoritative composite score.
+
+## Canonical Naming
+
+Volt v0 has one spelling for every source identifier:
+
+- lowerCamelCase for module segments, functions, effect operations, parameters, local bindings, record fields, and imported value names;
+- UpperCamelCase for records, algebraic data types, variants, effects, and imported type names; and
+- ASCII letters and digits only, with no underscores.
+
+This is an intentional pre-calibration breaking change approved in [Issue #15](https://github.com/JimmyMcBride/volt/issues/15). Keywords, CLI flags, JSON fields, diagnostic codes, research metric/task/condition IDs, and artifact directory names do not change. The alias-permissive experiment varies keyword spellings only and does not permit snake_case identifiers.
 
 ## Current Stage
 
 - GitHub [Discussion #1](https://github.com/JimmyMcBride/volt/discussions/1) remains the canonical shaping source.
-- [Issue #2](https://github.com/JimmyMcBride/volt/issues/2) and Issues [#3](https://github.com/JimmyMcBride/volt/issues/3)–[#6](https://github.com/JimmyMcBride/volt/issues/6) are reconciled under [Milestone #1](https://github.com/JimmyMcBride/volt/milestone/1).
-- Issues #3, #4, and #5 are implemented, merged, and closed.
-- Issue #5 provides the strict TypeScript reference frontend, two checker modes, canonical formatter, stable AST/typed IR/program graph, repository-impact facts, DiagnosticV1, deterministic capability adapters, tree-walking interpreter, repository manifest, and `check`, `run`, `test`, and `fmt` CLI.
-- Issue #6's offline corpus, hidden-test, treatment-adapter, harness, replay, schema, baseline, authorization, and analysis scope is implemented in `benchmark/`.
-- No controlled Volt study has run. Both Volt-specific hypotheses remain unvalidated. Live calibration and confirmatory execution remain separately gated.
+- [Issue #2](https://github.com/JimmyMcBride/volt/issues/2) and Issues [#3](https://github.com/JimmyMcBride/volt/issues/3)–[#6](https://github.com/JimmyMcBride/volt/issues/6), plus the naming amendment [#15](https://github.com/JimmyMcBride/volt/issues/15), are sequenced under [Milestone #1](https://github.com/JimmyMcBride/volt/milestone/1).
+- Issues #3–#6 are implemented and merged. Issue #15 is the active pre-calibration migration.
+- The reference toolchain provides strict TypeScript implementation, two checker modes, canonical formatting, stable AST/typed IR/program graph, repository-impact facts, DiagnosticV1, deterministic capability adapters, a tree-walking interpreter, a repository manifest, and `check`, `run`, `test`, and `fmt`.
+- The offline corpus, hidden-test, treatment-adapter, harness, replay, schema, baseline, authorization, and analysis scope is implemented in `benchmark/`.
+- No controlled Volt study has run. Live calibration and confirmatory execution remain separately gated.
 - Brain owns concise durable knowledge under `.brain/` and `docs/`; GitHub owns planning through Discussions, Issues, Milestones, and Projects.
 
 ## Near-Term Goal
 
-Review and merge the offline Issue #6 implementation. Then separately freeze and approve the exact calibration model/authorization manifest; after calibration, separately approve the powered confirmatory run and cost ceiling.
+Merge the canonical camelCase migration before freezing calibration inputs. Then separately approve the exact calibration model/authorization manifest; after calibration, separately approve the powered confirmatory run and cost ceiling.
 
 ## Durable Research Context
 

@@ -30,8 +30,8 @@ async function fixture(path) {
   return readFile(resolve(root, path), "utf8");
 }
 
-test("all accepted Issue #4 fixtures parse and check in full mode", async () => {
-  const single = ["all_syntax", "containers", "effects", "matching", "records"];
+test("all accepted kernel fixtures parse and check in full mode", async () => {
+  const single = ["allSyntax", "containers", "effects", "matching", "records"];
   for (const name of single) {
     const result = compileSources([
       source(`${name}.volt`, await fixture(`language/fixtures/accepted/${name}.volt`))
@@ -47,7 +47,7 @@ test("all accepted Issue #4 fixtures parse and check in full mode", async () => 
   assert.deepEqual(modules.diagnostics, []);
 });
 
-test("every rejected Issue #4 fixture emits its frozen diagnostic code", async () => {
+test("every rejected kernel fixture emits its frozen diagnostic code", async () => {
   const manifest = JSON.parse(await fixture("language/conformance/manifest.json"));
   const domain = source(
     "modules/domain.volt",
@@ -70,7 +70,7 @@ test("deferred and excluded spellings retain their stable diagnostic categories"
     ["wildcard.volt", "module wildcard\nimport domain.*", "K_IMPORT_WILDCARD"],
     ["generic.volt", "module generic\npub fn identity<T>(value: Int) -> Int { value }", "K_FEATURE_DEFERRED"],
     ["propagate.volt", "module propagate\npub fn value() -> Int { other()? }", "K_FEATURE_DEFERRED"],
-    ["null_value.volt", "module null_value\npub fn value() -> Int { null }", "K_FEATURE_EXCLUDED"]
+    ["nullValue.volt", "module nullValue\npub fn value() -> Int { null }", "K_FEATURE_EXCLUDED"]
   ];
   for (const [path, text, code] of cases) {
     assert.ok(compileSources([source(path, text)]).diagnostics.some((item) => item.code === code), code);
@@ -86,6 +86,40 @@ test("formatter implements all approved goldens and is byte-idempotent", async (
     const second = formatSource(`${item.id}.volt`, first.output);
     assert.equal(second.output, item.expected, `${item.id} idempotence`);
   }
+});
+
+test("canonical names reject underscores and wrong case across identifier roles", () => {
+  const cases = [
+    ["module", "module bad_module", "K_NAME_UNDERSCORE"],
+    ["module casing", "module Sample", "K_NAME_CONVENTION"],
+    ["function", "module sample\npub fn bad_name() -> Int { 1 }", "K_NAME_UNDERSCORE"],
+    ["function casing", "module sample\npub fn BadName() -> Int { 1 }", "K_NAME_CONVENTION"],
+    ["record", "module sample\npub record person { id: Int }", "K_NAME_CONVENTION"],
+    ["ADT", "module sample\npub type state { Open }", "K_NAME_CONVENTION"],
+    ["variant", "module sample\npub type State { open }", "K_NAME_CONVENTION"],
+    ["effect", "module sample\npub effect clock { fn now() -> Int }", "K_NAME_CONVENTION"],
+    ["effect operation", "module sample\npub effect Clock { fn current_time() -> Int }", "K_NAME_UNDERSCORE"],
+    ["effect operation casing", "module sample\npub effect Clock { fn Now() -> Int }", "K_NAME_CONVENTION"],
+    ["parameter", "module sample\npub fn value(bad_name: Int) -> Int { bad_name }", "K_NAME_UNDERSCORE"],
+    ["parameter casing", "module sample\npub fn value(Input: Int) -> Int { Input }", "K_NAME_CONVENTION"],
+    ["record field", "module sample\npub record Person { display_name: String }", "K_NAME_UNDERSCORE"],
+    ["record field casing", "module sample\npub record Person { DisplayName: String }", "K_NAME_CONVENTION"],
+    ["local binding", "module sample\npub fn value() -> Int { let local_value = 1 in local_value }", "K_NAME_UNDERSCORE"],
+    ["local binding casing", "module sample\npub fn value() -> Int { let LocalValue = 1 in LocalValue }", "K_NAME_CONVENTION"],
+    ["type reference", "module sample\npub fn value(input: person) -> Int { 1 }", "K_NAME_CONVENTION"],
+    ["value reference", "module sample\npub fn value() -> Int { other_value() }", "K_NAME_UNDERSCORE"],
+    ["imported name", "module sample\nimport domain.{some_name}", "K_NAME_UNDERSCORE"]
+  ];
+  for (const [role, text, code] of cases) {
+    const result = compileSources([source("sample.volt", text)]);
+    assert.equal(result.diagnostics[0]?.code, code, role);
+  }
+});
+
+test("formatter never silently renames invalid identifiers", () => {
+  const result = formatSource("sample.volt", "module sample\npub fn snake_case() -> Int { 1 }\n");
+  assert.equal(result.output, undefined);
+  assert.equal(result.diagnostics[0]?.code, "K_NAME_UNDERSCORE");
 });
 
 test("erased checker disables exactly the approved obligations and propagates Unknown", () => {
@@ -124,8 +158,8 @@ test("erased checker disables exactly the approved obligations and propagates Un
 
 test("retained local errors remain visible in erased mode without cascades", () => {
   const result = compileSources([
-    source("local_error.volt", `
-      module local_error
+    source("localError.volt", `
+      module localError
       pub fn bad() -> Int {
         true + 1
       }
@@ -179,7 +213,7 @@ test("program graph has stable ordered definition, call, import, effect, match, 
       module tests
       import domain.{Status}
       import service.{Clock, work}
-      pub fn work_test() uses {Clock} -> Int { work(Open) }
+      pub fn workTest() uses {Clock} -> Int { work(Open) }
     `)
   ];
   const first = compileSources(files);
@@ -310,8 +344,8 @@ test("tree-walking interpreter is deterministic and injects synchronous capabili
 
 test("parser-originated diagnostic codes retain their owning phase", () => {
   const typeBoundary = compileSources([
-    source("missing_boundary.volt", `
-      module missing_boundary
+    source("missingBoundary.volt", `
+      module missingBoundary
       pub fn broken(value) -> Int { 1 }
     `)
   ]);
@@ -321,8 +355,8 @@ test("parser-originated diagnostic codes retain their owning phase", () => {
   );
 
   const importAlias = compileSources([
-    source("import_alias.volt", `
-      module import_alias
+    source("importAlias.volt", `
+      module importAlias
       import modules.domain.{Person as User}
     `)
   ]);
@@ -444,15 +478,15 @@ test("internal adapter failures use exit class 2 while program diagnostics use c
 });
 
 test("check and interpreter latency remain below protocol guardrails on conformance input", async () => {
-  const text = await fixture("language/fixtures/accepted/all_syntax.volt");
+  const text = await fixture("language/fixtures/accepted/allSyntax.volt");
   const checkSamples = [];
   const runSamples = [];
   for (let index = 0; index < 20; index += 1) {
     let start = performance.now();
-    const compilation = compileSources([source("all_syntax.volt", text)]);
+    const compilation = compileSources([source("allSyntax.volt", text)]);
     checkSamples.push(performance.now() - start);
     start = performance.now();
-    run(compilation, "all_syntax.selected", [], [true]);
+    run(compilation, "allSyntax.selected", [], [true]);
     runSamples.push(performance.now() - start);
   }
   const p95 = (values) => [...values].sort((a, b) => a - b)[Math.ceil(values.length * 0.95) - 1];

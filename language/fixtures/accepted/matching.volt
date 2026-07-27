@@ -5,7 +5,7 @@ pub type Status {
   Closed
 }
 
-pub fn is_open(status: Status) -> Bool {
+pub fn isOpen(status: Status) -> Bool {
   match status {
     Open -> true
     Closed -> false

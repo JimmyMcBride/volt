@@ -98,7 +98,7 @@ for (const task of tasks) {
   assert.deepEqual(seedCompilation.diagnostics, [], `${task.id} seed`);
   assert.deepEqual(expectedCompilation.diagnostics, [], `${task.id} expected solution`);
   for (const [label, compilation] of [["seed", seedCompilation], ["expected", expectedCompilation]]) {
-    const publicTest = run(compilation, "tests.registration_test", [
+    const publicTest = run(compilation, "tests.registrationTest", [
       clockAdapter("capabilities::effect::Clock", [100n]),
       databaseAdapter("capabilities::effect::RegistrationStore")
     ]);

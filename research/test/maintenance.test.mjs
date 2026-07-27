@@ -49,19 +49,19 @@ test("ADT extension propagation detects a forgotten match without blaming unrela
     contractPropagationCompleteness({
       expectedSites: [
         "domain.RegistrationState",
-        "registration_service.describe_state",
-        "tests.registration_state"
+        "registrationService.describeState",
+        "tests.registrationState"
       ],
       correctlyUpdatedSites: [
         "domain.RegistrationState",
-        "tests.registration_state"
+        "tests.registrationState"
       ]
     }),
     {
       expectedCount: 3,
       correctlyUpdatedCount: 2,
       value: 2 / 3,
-      missingSites: ["registration_service.describe_state"],
+      missingSites: ["registrationService.describeState"],
       unexpectedSites: []
     }
   );
@@ -71,14 +71,14 @@ test("impact prediction uses deterministic symbol sets for callers and effect de
   assert.deepEqual(
     impactPredictionAccuracy({
       predictedSites: [
-        "registration_service.register",
-        "tests.register_notifies",
-        "capability_interfaces.Notification"
+        "registrationService.register",
+        "tests.registerNotifies",
+        "capabilityInterfaces.Notification"
       ],
       actualRequiredSites: [
-        "capability_interfaces.Notification",
-        "registration_service.register",
-        "registration_service.register_all"
+        "capabilityInterfaces.Notification",
+        "registrationService.register",
+        "registrationService.registerAll"
       ]
     }),
     {
@@ -86,8 +86,8 @@ test("impact prediction uses deterministic symbol sets for callers and effect de
       recall: 2 / 3,
       exactSetMatch: false,
       truePositiveCount: 2,
-      falsePositives: ["tests.register_notifies"],
-      falseNegatives: ["registration_service.register_all"]
+      falsePositives: ["tests.registerNotifies"],
+      falseNegatives: ["registrationService.registerAll"]
     }
   );
 });
@@ -95,18 +95,18 @@ test("impact prediction uses deterministic symbol sets for callers and effect de
 test("semantic blast radius preserves dimensions and never invents a composite score", () => {
   const result = semanticBlastRadius({
     expectedImpact: {
-      files: ["domain.volt", "registration_service.volt"],
-      symbols: ["domain.Event", "registration_service.register"],
+      files: ["domain.volt", "registrationService.volt"],
+      symbols: ["domain.Event", "registrationService.register"],
       contracts: ["domain.Event.capacity"],
       effects: [],
-      astNodes: ["domain.Event.capacity", "registration_service.capacity_check"]
+      astNodes: ["domain.Event.capacity", "registrationService.capacityCheck"]
     },
     actualImpact: {
-      files: ["domain.volt", "registration_service.volt", "unrelated.volt"],
-      symbols: ["domain.Event", "registration_service.register", "unrelated.format"],
+      files: ["domain.volt", "registrationService.volt", "unrelated.volt"],
+      symbols: ["domain.Event", "registrationService.register", "unrelated.format"],
       contracts: ["domain.Event.capacity"],
       effects: [],
-      astNodes: ["domain.Event.capacity", "registration_service.capacity_check", "unrelated.format.body"]
+      astNodes: ["domain.Event.capacity", "registrationService.capacityCheck", "unrelated.format.body"]
     }
   });
 
@@ -126,9 +126,9 @@ test("regression, stale-contract, and unrequested-change counts are distinct and
     count: 2,
     locations: ["tests.capacity", "tests.clock"]
   });
-  assert.deepEqual(staleContractCount(["registration_service.register"]), {
+  assert.deepEqual(staleContractCount(["registrationService.register"]), {
     count: 1,
-    locations: ["registration_service.register"]
+    locations: ["registrationService.register"]
   });
   assert.deepEqual(unrequestedBehaviorChangeCount([]), {
     count: 0,
@@ -139,11 +139,11 @@ test("regression, stale-contract, and unrequested-change counts are distinct and
 test("change reviewability is descriptive and reports unexplained or out-of-scope sites", () => {
   assert.deepEqual(
     changeReviewability({
-      changedSites: ["domain.Event", "registration_service.register", "unrelated.format"],
-      requestedImpactSites: ["domain.Event", "registration_service.register"],
+      changedSites: ["domain.Event", "registrationService.register", "unrelated.format"],
+      requestedImpactSites: ["domain.Event", "registrationService.register"],
       justificationBySite: {
         "domain.Event": "Extend the public event contract.",
-        "registration_service.register": "Propagate the capacity invariant."
+        "registrationService.register": "Propagate the capacity invariant."
       }
     }),
     {

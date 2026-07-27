@@ -1,4 +1,4 @@
-module unused_effect
+module unusedEffect
 
 pub effect Clock {
   fn now() -> Int

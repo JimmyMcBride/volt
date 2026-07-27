@@ -1,20 +1,20 @@
 Program        = ModuleDecl ImportDecl* Decl* EOF
 ModuleDecl     = "module" ModulePath
-ModulePath     = lower_id ("." lower_id)*
+ModulePath     = lowerCamelName ("." lowerCamelName)*
 ImportDecl     = "import" ModulePath ".{" ImportName ("," ImportName)* "}"
-ImportName     = lower_id | UpperName
+ImportName     = lowerCamelName | UpperName
 
 Decl           = Pub? (RecordDecl | TypeDecl | EffectDecl | FunctionDecl)
 Pub            = "pub"
 RecordDecl     = "record" UpperName "{" FieldDecl ("," FieldDecl)* "}"
-FieldDecl      = lower_id ":" Type
+FieldDecl      = lowerCamelName ":" Type
 TypeDecl       = "type" UpperName "{" VariantDecl+ "}"
 VariantDecl    = UpperName | UpperName "(" Type ")"
 EffectDecl     = "effect" UpperName "{" EffectFnDecl+ "}"
-EffectFnDecl   = "fn" lower_id "(" Params? ")" "->" Type
-FunctionDecl   = "fn" lower_id "(" Params? ")" Uses? "->" Type Block
+EffectFnDecl   = "fn" lowerCamelName "(" Params? ")" "->" Type
+FunctionDecl   = "fn" lowerCamelName "(" Params? ")" Uses? "->" Type Block
 Params         = Param ("," Param)*
-Param          = lower_id ":" Type
+Param          = lowerCamelName ":" Type
 Uses           = "uses" "{" UpperName ("," UpperName)* "}"
 
 Type           = "Int" | "Bool" | "String" | "Unit" | UpperName
@@ -24,7 +24,7 @@ Type           = "Int" | "Bool" | "String" | "Unit" | UpperName
 
 Block          = "{" Expr "}"
 Expr           = LetExpr | IfExpr | MatchExpr | OrExpr
-LetExpr        = "let" lower_id TypeAnnotation? "=" Expr "in" Expr
+LetExpr        = "let" lowerCamelName TypeAnnotation? "=" Expr "in" Expr
 TypeAnnotation = ":" Type
 IfExpr         = "if" Expr Block "else" Block
 MatchExpr      = "match" Expr "{" MatchArm+ "}"
@@ -37,19 +37,19 @@ OrderExpr      = AddExpr (("<" | "<=" | ">" | ">=") AddExpr)?
 AddExpr        = MultiplyExpr (("+" | "-") MultiplyExpr)*
 MultiplyExpr   = UnaryExpr (("*" | "/" | "%") UnaryExpr)*
 UnaryExpr      = ("!" | "-") UnaryExpr | PostfixExpr
-PostfixExpr    = AtomExpr (("(" Arguments? ")") | ("." lower_id))*
+PostfixExpr    = AtomExpr (("(" Arguments? ")") | ("." lowerCamelName))*
 Arguments      = Expr ("," Expr)*
 
 AtomExpr       = Integer | StringLiteral | "true" | "false" | "()"
-               | lower_id | UpperName | ListLiteral | RecordLiteral | "(" Expr ")"
+               | lowerCamelName | UpperName | ListLiteral | RecordLiteral | "(" Expr ")"
 ListLiteral    = "[" (Expr ("," Expr)*)? "]"
 RecordLiteral  = UpperName "{" FieldValue ("," FieldValue)* "}"
-FieldValue     = lower_id ":" Expr
+FieldValue     = lowerCamelName ":" Expr
 
-Pattern        = "_" | lower_id | LiteralPattern | ConstructorPattern
+Pattern        = "_" | lowerCamelName | LiteralPattern | ConstructorPattern
                | RecordPattern | ListPattern
 LiteralPattern = Integer | StringLiteral | "true" | "false" | "()"
 ConstructorPattern = UpperName | UpperName "(" Pattern ")"
 RecordPattern  = UpperName "{" FieldPattern ("," FieldPattern)* "}"
-FieldPattern   = lower_id ":" Pattern
-ListPattern    = "[]" | "[" Pattern "," "..." lower_id "]"
+FieldPattern   = lowerCamelName ":" Pattern
+ListPattern    = "[]" | "[" Pattern "," "..." lowerCamelName "]"

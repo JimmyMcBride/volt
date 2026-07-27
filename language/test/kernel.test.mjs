@@ -52,15 +52,15 @@ test("approved kernel, grammar, schema, and protocol remain compatible", () => {
 test("accepted and rejected source fixtures are content-addressed", () => {
   assert.deepEqual(validateConformanceManifest(kernel, conformance, fixtureContents), {
     accepted: 7,
-    rejected: 12
+    rejected: 13
   });
 });
 
 test("every grammar production and approved static-rule category has fixture evidence", () => {
   assert.deepEqual(validateConformanceRules(grammar, conformance, rules), {
     grammarProductions: 44,
-    staticRules: 25,
-    rejectedCategories: 34
+    staticRules: 26,
+    rejectedCategories: 35
   });
 });
 

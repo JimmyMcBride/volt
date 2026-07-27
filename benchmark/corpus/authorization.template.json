@@ -6,7 +6,7 @@
   "approvalId": "UNAPPROVED",
   "maximumSpendUsd": 0,
   "protocolHash": "sha256:15b3676b15e7eb68954ca2e16924d43f9f864eb794c62e6c34aa0ef8e04e9108",
-  "corpusManifestHash": "sha256:efcb090b8ebf5b289c97494fd92d9adb200f0bc9ce0d76eaf82484bfb0f4287e",
+  "corpusManifestHash": "sha256:74fd7839f5a5744c375a1c2f8fa14743bc652a4b7f19e15db3882f9058ae1375",
   "modelManifestHash": "sha256:2e5c9c4067eee2275196f31b7ffc56abe52d569c40336128c40f1549533643c6",
   "systemPromptHash": "sha256:940606b5aa8e14fb279064f3b9d84390eb2b2e862ead3c09cb5a8bd781113c96",
   "taskContextManifestHash": "sha256:940606b5aa8e14fb279064f3b9d84390eb2b2e862ead3c09cb5a8bd781113c96",
