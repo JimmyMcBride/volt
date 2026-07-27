@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "kernelId": "volt-v0",
+  "assertions": [
+    "parse_preserving",
+    "byte_idempotent",
+    "utf8",
+    "lf_line_endings",
+    "two_space_indentation",
+    "sorted_import_modules",
+    "sorted_import_names",
+    "sorted_effect_names",
+    "no_semicolons",
+    "no_trailing_commas",
+    "no_trailing_whitespace"
+  ],
+  "cases": [
+    {
+      "id": "sort_imports_and_effects",
+      "input": "module registration\n\nimport time.{Clock}\nimport domain.{StoreError, Registration, Person, Event}\n\npub fn register(event: Event, person: Person) uses {RegistrationStore, Clock} -> Result<Registration, StoreError> {\n  RegistrationStore.save(Registration { event_id: event.id, person_id: person.id })\n}\n",
+      "expected": "module registration\n\nimport domain.{Event, Person, Registration, StoreError}\nimport time.{Clock}\n\npub fn register(event: Event, person: Person) uses {Clock, RegistrationStore} -> Result<Registration, StoreError> {\n  RegistrationStore.save(Registration {\n    event_id: event.id,\n    person_id: person.id\n  })\n}\n"
+    },
+    {
+      "id": "normalize_spacing",
+      "input": "module math\npub fn add(a:Int,b:Int)->Int { a+b }\n",
+      "expected": "module math\n\npub fn add(a: Int, b: Int) -> Int {\n  a + b\n}\n"
+    },
+    {
+      "id": "retain_declaration_and_field_order",
+      "input": "module domain\npub record Event { name: String,id: Int }\npub fn id(event:Event)->Int { event.id }\n",
+      "expected": "module domain\n\npub record Event {\n  name: String,\n  id: Int\n}\n\npub fn id(event: Event) -> Int {\n  event.id\n}\n"
+    }
+  ]
+}

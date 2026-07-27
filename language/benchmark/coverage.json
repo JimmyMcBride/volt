@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "kernelId": "volt-v0",
+  "protocolId": "volt-v0-evidence-ready",
+  "protocolVersion": "1.1.0",
+  "cases": [
+    {
+      "id": "state_extension_1",
+      "family": "state_extension",
+      "publicChangeCategory": "adt_variant",
+      "requiredFeatures": ["closed_adts", "match_expression", "public_change_obligations"]
+    },
+    {
+      "id": "state_extension_2",
+      "family": "state_extension",
+      "publicChangeCategory": "record_field",
+      "requiredFeatures": ["public_change_obligations", "records", "stable_public_identities"]
+    },
+    {
+      "id": "state_extension_3",
+      "family": "state_extension",
+      "publicChangeCategory": "adt_variant",
+      "requiredFeatures": ["closed_adts", "match_expression", "stable_public_identities"]
+    },
+    {
+      "id": "invariant_change_1",
+      "family": "invariant_change",
+      "publicChangeCategory": "function_contract",
+      "requiredFeatures": ["functions", "if_expression", "result"]
+    },
+    {
+      "id": "invariant_change_2",
+      "family": "invariant_change",
+      "publicChangeCategory": "function_contract",
+      "requiredFeatures": ["functions", "match_expression", "option"]
+    },
+    {
+      "id": "invariant_change_3",
+      "family": "invariant_change",
+      "publicChangeCategory": "record_field",
+      "requiredFeatures": ["if_expression", "records", "result"]
+    },
+    {
+      "id": "effect_addition_1",
+      "family": "effect_addition",
+      "publicChangeCategory": "effect_set",
+      "requiredFeatures": ["exact_effect_sets", "functions", "public_change_obligations"]
+    },
+    {
+      "id": "effect_addition_2",
+      "family": "effect_addition",
+      "publicChangeCategory": "effect_set",
+      "requiredFeatures": ["exact_effect_sets", "result", "stable_public_identities"]
+    },
+    {
+      "id": "effect_addition_3",
+      "family": "effect_addition",
+      "publicChangeCategory": "effect_set",
+      "requiredFeatures": ["exact_effect_sets", "option", "public_change_obligations"]
+    },
+    {
+      "id": "cross_module_contract_change_1",
+      "family": "cross_module_contract_change",
+      "publicChangeCategory": "function_contract",
+      "requiredFeatures": ["explicit_imports", "functions", "modules"]
+    },
+    {
+      "id": "cross_module_contract_change_2",
+      "family": "cross_module_contract_change",
+      "publicChangeCategory": "module_move",
+      "requiredFeatures": ["explicit_imports", "modules", "stable_public_identities"]
+    },
+    {
+      "id": "cross_module_contract_change_3",
+      "family": "cross_module_contract_change",
+      "publicChangeCategory": "function_contract",
+      "requiredFeatures": ["exact_effect_sets", "explicit_imports", "public_change_obligations"]
+    }
+  ]
+}

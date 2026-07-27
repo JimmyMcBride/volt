@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "kernelId": "volt-v0",
+  "deferred": [
+    {"feature": "user_defined_generics", "example": "fn identity<T>(value: T) -> T", "expectedCode": "K_FEATURE_DEFERRED"},
+    {"feature": "lambdas", "example": "let add = fn(a: Int, b: Int) -> Int { a + b } in add(1, 2)", "expectedCode": "K_FEATURE_DEFERRED"},
+    {"feature": "closures", "example": "fn make_adder(value: Int) -> Function", "expectedCode": "K_FEATURE_DEFERRED"},
+    {"feature": "higher_order_apis", "example": "List.map(items, transform)", "expectedCode": "K_FEATURE_DEFERRED"},
+    {"feature": "mutable_collections", "example": "items.push(value)", "expectedCode": "K_FEATURE_DEFERRED"},
+    {"feature": "loops", "example": "while true { () }", "expectedCode": "K_FEATURE_DEFERRED"},
+    {"feature": "async_concurrency", "example": "async fn register() -> Unit", "expectedCode": "K_FEATURE_DEFERRED"},
+    {"feature": "package_management", "example": "package registration", "expectedCode": "K_FEATURE_DEFERRED"},
+    {"feature": "ffi", "example": "extern fn host_time() -> Int", "expectedCode": "K_FEATURE_DEFERRED"},
+    {"feature": "lsp", "example": "language-server protocol support", "expectedCode": "K_FEATURE_DEFERRED"},
+    {"feature": "documentation_syntax", "example": "/// registration service", "expectedCode": "K_FEATURE_DEFERRED"},
+    {"feature": "block_comments", "example": "/* registration service */", "expectedCode": "K_FEATURE_DEFERRED"},
+    {"feature": "effect_handlers", "example": "handle Clock with FakeClock", "expectedCode": "K_FEATURE_DEFERRED"},
+    {"feature": "effect_polymorphism", "example": "fn call<E>(operation: E) uses {E} -> Unit", "expectedCode": "K_FEATURE_DEFERRED"},
+    {"feature": "implicit_result_propagation", "example": "RegistrationStore.save(value)?", "expectedCode": "K_FEATURE_DEFERRED"},
+    {"feature": "symbolic_invariants", "example": "requires event.capacity > 0", "expectedCode": "K_FEATURE_DEFERRED"},
+    {"feature": "optimizer", "example": "volt build --release", "expectedCode": "K_FEATURE_DEFERRED"},
+    {"feature": "compilation_targets", "example": "volt build --target wasm", "expectedCode": "K_FEATURE_DEFERRED"}
+  ],
+  "excluded": [
+    {"feature": "classes", "example": "class Event {}", "expectedCode": "K_FEATURE_EXCLUDED"},
+    {"feature": "inheritance", "example": "class Event extends Entity {}", "expectedCode": "K_FEATURE_EXCLUDED"},
+    {"feature": "interfaces_traits", "example": "trait Equatable {}", "expectedCode": "K_FEATURE_EXCLUDED"},
+    {"feature": "null", "example": "let person = null in person", "expectedCode": "K_FEATURE_EXCLUDED"},
+    {"feature": "expected_failure_exceptions", "example": "throw EventFull", "expectedCode": "K_FEATURE_EXCLUDED"},
+    {"feature": "macros", "example": "derive!(Registration)", "expectedCode": "K_FEATURE_EXCLUDED"},
+    {"feature": "reflection", "example": "reflect(value)", "expectedCode": "K_FEATURE_EXCLUDED"},
+    {"feature": "implicit_conversions", "example": "let text: String = 42 in text", "expectedCode": "K_FEATURE_EXCLUDED"},
+    {"feature": "operator_overloading", "example": "fn +(left: Event, right: Event) -> Event", "expectedCode": "K_FEATURE_EXCLUDED"},
+    {"feature": "global_mutable_state", "example": "global mut count = 0", "expectedCode": "K_FEATURE_EXCLUDED"},
+    {"feature": "runtime_code_loading", "example": "load(\"registration.volt\")", "expectedCode": "K_FEATURE_EXCLUDED"},
+    {"feature": "multiple_equivalent_syntax_forms", "example": "function answer(): Int = 42", "expectedCode": "K_FEATURE_EXCLUDED"},
+    {"feature": "automatic_source_repair", "example": "volt check --fix", "expectedCode": "K_FEATURE_EXCLUDED"}
+  ]
+}

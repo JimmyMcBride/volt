@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "kernelId": "volt-v0",
+  "cases": [
+    {
+      "id": "add_waitlisted_variant",
+      "category": "adt_variant",
+      "obligationCode": "K_CHANGE_ADT_VARIANT",
+      "affectedStableIds": [
+        "registration::algebraic_data_type::RegistrationError::variant::Waitlisted",
+        "registration::function::describe_error"
+      ]
+    },
+    {
+      "id": "add_event_capacity_field",
+      "category": "record_field",
+      "obligationCode": "K_CHANGE_RECORD_FIELD",
+      "affectedStableIds": [
+        "domain::record::Event::field::capacity",
+        "domain::record::Event::field::id",
+        "registration::function::register::param::0::event"
+      ]
+    },
+    {
+      "id": "change_register_result",
+      "category": "function_contract",
+      "obligationCode": "K_CHANGE_FUNCTION_CONTRACT",
+      "affectedStableIds": [
+        "registration::function::register",
+        "tests::function::registers_person"
+      ]
+    },
+    {
+      "id": "add_notification_effect",
+      "category": "effect_set",
+      "obligationCode": "K_CHANGE_EFFECT_SET",
+      "affectedStableIds": [
+        "capabilities::effect::Notification",
+        "registration::function::register"
+      ]
+    },
+    {
+      "id": "move_person_module",
+      "category": "module_move",
+      "obligationCode": "K_CHANGE_MODULE_MOVE",
+      "affectedStableIds": [
+        "domain.person::record::Person",
+        "registration::function::register::param::1::person"
+      ]
+    }
+  ]
+}
