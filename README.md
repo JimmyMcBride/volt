@@ -104,6 +104,10 @@ Volt is a research prototype, not a production language. The v0 kernel and refer
 
 The repository intentionally has no optimizer, bytecode VM, native backend, package manager, or LSP today. Those choices belong after the current evidence phase.
 
+## License
+
+Volt is available under the [MIT License](LICENSE).
+
 ## Follow the work
 
 - [Language thesis and minimum semantic core](https://github.com/JimmyMcBride/volt/discussions/1)
