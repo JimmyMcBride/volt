@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-27T03:07:00Z"
+updated: "2026-07-27T03:18:37Z"
 ---
 # Project Overview
 
@@ -30,16 +30,16 @@ The working principle is **semantic compression**: maximize how much programmer 
 
 - GitHub [Discussion #1](https://github.com/JimmyMcBride/volt/discussions/1) contains four full, distinct promotion briefs and remains the canonical shaping source.
 - [Issue #2](https://github.com/JimmyMcBride/volt/issues/2) and Issues [#3](https://github.com/JimmyMcBride/volt/issues/3)–[#6](https://github.com/JimmyMcBride/volt/issues/6) are reconciled under [Milestone #1](https://github.com/JimmyMcBride/volt/milestone/1) with the approved dependency graph.
-- Issue #3 contains the owner-approved protocol v1.1, including safe repository evolution as a primary outcome and the six-comparison multiplicity, power, support, and falsification rules.
+- Issue #3 is closed after the owner-approved protocol v1.1 and its executable research artifacts merged in PR #7.
 - The protocol retains twelve existing-repository tasks: three each for state extension, invariant change, effect addition, and cross-module contract change.
 - Deterministic research-layer metrics and fixtures cover propagation completeness, preservation, semantic blast radius, impact prediction, stale contracts, unrequested behavior changes, repair locality, and descriptive reviewability.
 - No controlled Volt study has run. Both Volt-specific hypotheses remain unvalidated.
-- No compiler exists. Program-graph impact analysis, repository diagnostics, and semantic diff remain proposed directions blocked on separately approved GitHub specs.
+- Issue #4 now locks the owner-approved v0 grammar, static semantics, exact effect sets, exhaustive matching, public-change obligations, and canonical formatting. No compiler exists; program-graph implementation, repository diagnostics, semantic diff, and runtime remain blocked on Issue #5.
 - Brain owns concise durable knowledge under `.brain/` and `docs/`; GitHub owns planning through Discussions, Issues, Milestones, and Projects.
 
 ## Near-Term Goal
 
-Merge the verified Issue #3 implementation, then review Issue #4 as the next canonical spec. Language-kernel implementation remains blocked until Issue #4 receives its own explicit approval.
+Begin Issue #4 on its linked `codex/volt-v0-language-kernel` branch. Preserve the approved kernel boundaries; do not begin Issue #5 compiler/interpreter work or Issue #6 study work.
 
 ## Durable Research Context
 

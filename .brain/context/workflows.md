@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-27T03:07:00Z"
+updated: "2026-07-27T03:18:37Z"
 ---
 ## Startup
 
@@ -18,7 +18,7 @@ updated: "2026-07-27T03:07:00Z"
 - Local `.plan/` Markdown contains compatibility pointers only; do not duplicate GitHub planning content there.
 - Use `plan discuss assess` and `plan discuss promote` for GitHub-backed promotion.
 - Do not create planning issues, labels, milestones, or projects manually unless Plan emits `manual_fallback_allowed=true`.
-- Specs stop at human approval before implementation.
+- Specs stop at human approval before implementation. Issue #4 is owner-approved; its linked branch may implement only the approved language-kernel contract. Issues #5 and #6 remain blocked.
 
 ## Research Protocol Verification
 

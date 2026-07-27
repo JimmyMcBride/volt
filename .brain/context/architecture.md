@@ -1,7 +1,7 @@
 ---
-updated: "2026-07-27T03:07:00Z"
+updated: "2026-07-27T03:18:37Z"
 ---
-Volt has no approved compiler or runtime architecture. The candidate architecture remains blocked on separately approved GitHub specs.
+Volt has no approved compiler or runtime architecture. Issue #4 now locks the Volt v0 language kernel, canonical grammar, static semantics, exact effects, exhaustive matching, public-change obligations, and formatter contract. Issue #5 still owns and blocks compiler/interpreter architecture.
 
 ## Current Boundaries
 
@@ -21,7 +21,7 @@ Volt has no approved compiler or runtime architecture. The candidate architectur
 
 ## Proposed Compiler Direction
 
-Subject to Issues #4 and #5 approval, a future resolved/typed program graph should cover definitions, references, imports, callers, public contracts, ADT variants, matches, effects, operations, and related tests. Public type, contract, effect, or module-boundary changes should yield deterministic affected-symbol lists, missing propagation sites, and dependency reasons.
+Subject to Issue #5 approval, a future resolved/typed program graph should cover definitions, references, imports, callers, public contracts, ADT variants, matches, effects, operations, and related tests. Public type, contract, effect, or module-boundary changes should yield deterministic affected-symbol lists, missing propagation sites, and dependency reasons.
 
 DiagnosticV1 should remain versioned and backward-compatible while carrying stable repository-impact facts and declarative repair surfaces. Semantic diff is a future direction only.
 
