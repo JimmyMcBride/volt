@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-27T05:12:00Z"
+updated: "2026-07-27T05:45:59Z"
 ---
 # Project Overview
 
@@ -30,15 +30,15 @@ The working principle is **semantic compression**: maximize how much programmer 
 
 - GitHub [Discussion #1](https://github.com/JimmyMcBride/volt/discussions/1) remains the canonical shaping source.
 - [Issue #2](https://github.com/JimmyMcBride/volt/issues/2) and Issues [#3](https://github.com/JimmyMcBride/volt/issues/3)–[#6](https://github.com/JimmyMcBride/volt/issues/6) are reconciled under [Milestone #1](https://github.com/JimmyMcBride/volt/milestone/1).
-- Issue #3 is closed after approved protocol v1.1 and executable research artifacts merged in PR #7.
-- Issue #4 is implemented as a machine-readable v0 kernel contract, exact EBNF, content-addressed source fixtures, full grammar/static-rule/feature-boundary coverage, formatter goldens, five public-change obligation cases, and a twelve-slot protocol coverage map.
-- Issue #5 is implemented on the current branch as a strict TypeScript reference frontend, two checker modes, canonical formatter, stable AST/typed IR/program graph, repository-impact facts, DiagnosticV1, deterministic capability adapters, tree-walking interpreter, repository manifest, and `check`, `run`, `test`, and `fmt` CLI.
-- No controlled Volt study has run. Both Volt-specific hypotheses remain unvalidated. Issue #6 owns the future corpus and study.
+- Issues #3, #4, and #5 are implemented, merged, and closed.
+- Issue #5 provides the strict TypeScript reference frontend, two checker modes, canonical formatter, stable AST/typed IR/program graph, repository-impact facts, DiagnosticV1, deterministic capability adapters, tree-walking interpreter, repository manifest, and `check`, `run`, `test`, and `fmt` CLI.
+- Issue #6 is refined and owner-approved for offline corpus, hidden-test, treatment-adapter, harness, replay, schema, and analysis implementation.
+- No controlled Volt study has run. Both Volt-specific hypotheses remain unvalidated. Live calibration and confirmatory execution remain separately gated.
 - Brain owns concise durable knowledge under `.brain/` and `docs/`; GitHub owns planning through Discussions, Issues, Milestones, and Projects.
 
 ## Near-Term Goal
 
-Review and merge the Issue #5 implementation, then refine and explicitly approve Issue #6 before constructing the benchmark corpus or running any controlled study.
+Implement the approved offline Issue #6 corpus and harness without live provider calls or model spend. After offline review, separately approve a frozen calibration manifest; after calibration, separately approve the powered confirmatory run and cost ceiling.
 
 ## Durable Research Context
 

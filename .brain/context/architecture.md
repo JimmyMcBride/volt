@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-27T05:12:53Z"
+updated: "2026-07-27T05:45:59Z"
 ---
 Volt has an approved language-kernel contract and an implemented Issue #5 reference toolchain. Issue #4 owns the canonical v0 grammar and semantics. `toolchain/` owns the strict TypeScript lexer-through-interpreter pipeline, two checker modes, versioned AST/IR/graph/diagnostic contracts, repository impact facts, deterministic capabilities, manifest loading, formatter, and CLI.
 
@@ -33,7 +33,8 @@ Volt has an approved language-kernel contract and an implemented Issue #5 refere
 
 - Node.js 24 dependency-free ES modules implement protocol and kernel validation, metrics, and decision rules.
 - Approved protocol v1.1 adds deterministic research-layer safe-evolution measures; both Volt hypotheses remain unvalidated pending confirmatory results.
-- Issue #6 owns task construction, hidden tests, harnesses, run manifests, raw results, and execution after approval.
+- Issue #6 owns offline task construction, hidden tests, treatment adapters, harnesses, run manifests, replay fixtures, raw-result schemas, and analysis tooling.
+- Live calibration and confirmatory execution sit behind separate owner-approved frozen manifests and spend ceilings.
 
 ## Reference Toolchain Boundary
 
@@ -50,3 +51,4 @@ Full and erased checker modes share syntax, resolution, runtime, AST/IR, graph f
 - Keep research tooling separate from compiler architecture.
 - Keep the twelve-case coverage map separate from the Issue #6 benchmark corpus.
 - Require approved GitHub specs before compiler, repository-diagnostic, semantic-diff, or study work.
+- Normal verification and offline harness replay must make no live provider calls or incur model spend.

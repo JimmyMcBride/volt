@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-27T03:07:00Z"
+updated: "2026-07-27T05:46:48Z"
 ---
 # Volt Research Hypothesis
 
@@ -68,21 +68,21 @@ Exact algorithms and deterministic fixtures live under `research/`.
 
 Repository-level evaluations support the workload choice, not the Volt thesis. Strengthened hidden tests reduce false positives but require validation for this corpus. Cross-language results remain descriptive because exposure, tokenization, libraries, and tooling maturity cannot be equalized fully. Repair-feedback research supports treating diagnostics as part of the intervention, but does not prove a DiagnosticV1 advantage.
 
-No existing source validates Volt's safe-evolution hypothesis, proposed program graph, impact diagnostics, or semantic diff. The evidence matrix records this explicitly as speculation with limitations.
+No existing source validates Volt's safe-evolution hypothesis or a benefit from its implemented program graph and impact diagnostics. Semantic diff remains unimplemented. The evidence matrix records Volt-specific benefit claims as speculation with limitations.
 
 ## Language and Tooling Direction
 
-The intended v0 kernel remains small: closed algebraic data types, exhaustive matching, explicit boundary types, exact named effect sets, immutable values, `Result` failures, canonical syntax, explicit imports, and narrow modules. No deferred feature has been pulled into v0.
+The approved v0 kernel remains small: closed algebraic data types, exhaustive matching, explicit boundary types, exact named effect sets, immutable values, `Result` failures, canonical syntax, explicit imports, and narrow modules. No deferred feature has been pulled into v0.
 
-A proposed downstream design rule is that a public type, contract, effect, or module-boundary change produces a deterministic affected-symbol and diagnostic list. A future compiler program graph would cover definitions, references, imports, callers, public contracts, ADT variants, matches, effects, operations, and related tests. Repository diagnostics would explain affected declarations, missing propagation, dependency reasons, and bounded repair surfaces with stable ordering.
+The implemented reference toolchain exposes deterministic affected-symbol and diagnostic facts for supported public type, contract, effect, and module changes. Its program graph covers definitions, references, imports, callers, public contracts, ADT variants, matches, effects, operations, and related tests. Repository diagnostics explain affected declarations, missing propagation, dependency reasons, and bounded repair surfaces with stable ordering.
 
-Those are planning directions only. No compiler exists on this branch, and implementation requires separate approval of the language-kernel and interpreter specs.
+These capabilities are implemented research instrumentation, not evidence that Volt improves agent outcomes. Semantic diff, production backends, and deferred language features remain outside v0.
 
 ## Decision Boundary
 
 The approved v1.1 support rule preserves the v1.0 requirement for at least two meaningful first-pass/repair comparisons, including a language comparison, and adds at least one meaningful maintenance-language comparison. Significant harm in any of the six comparisons, exclusion of meaningful benefit by both maintenance-language upper bounds, harmful model-family effects, or unresolved complexity guardrails prevents support according to the machine-readable rules.
 
-No exploratory composite can override the preregistered decision. Owner approval of v1.1 is recorded. Confirmatory execution still requires the downstream corpus and study spec, frozen artifacts, and its separate approval.
+No exploratory composite can override the preregistered decision. Owner approval of v1.1 is recorded. Issue #6 is approved for offline corpus and harness implementation; live calibration requires a separately approved frozen model and spend manifest, and confirmatory execution requires another approval after calibration produces the powered sample size and feasibility decision.
 
 ## Durable Constraints
 
