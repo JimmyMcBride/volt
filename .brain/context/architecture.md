@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-27T03:47:18Z"
+updated: "2026-07-27T04:04:52Z"
 ---
 Volt now has an approved, executable language-kernel contract. It still has no compiler or runtime implementation. Issue #4 owns the canonical v0 grammar, static semantics, exact effects, exhaustive matching, public-change obligations, formatter contract, and conformance inputs. Issue #5 owns the future compiler, interpreter, DiagnosticV1, program graph, and executable conformance behavior.
 
@@ -20,6 +20,8 @@ Volt now has an approved, executable language-kernel contract. It still has no c
 - `language/kernel/kernel-v0.json` records lexical, resolution, type, operator, effect, matching, stable-identity, public-change, formatter, feature-boundary, and protocol-compatibility rules.
 - `language/schema/kernel.schema.json` fixes the public kernel envelope.
 - `language/fixtures/` contains content-addressed accepted and representative rejected Volt sources.
+- The accepted module fixtures demonstrate sorted multi-name imports: `import modules.domain.{Person, Role}`. Importing an ADT also imports its constructors, so `Admin` is available without `Role.Admin`.
+- Canonical identifier ordering uses locale-independent lexicographic code-unit comparison; formatter goldens include mixed upper/lower import names to prevent environment drift.
 - `language/conformance/` maps every grammar production and static-rule category, records all required rejection categories, and provides one case for every deferred and excluded feature.
 - `language/formatter/golden.json` freezes canonical formatting inputs, outputs, and assertions for Issue #5.
 - `language/public-change/fixtures.json` fixes five deterministic stable-identity obligation sets.
