@@ -31,6 +31,9 @@ updated: "2026-07-27T05:45:59Z"
 - `language/test/kernel.test.mjs` covers approved-kernel drift, fixture addressing, grammar/static-rule coverage, all feature boundaries, formatter ordering, public-change ordering, and protocol workload compatibility.
 - Run `npm run build` for strict TypeScript 6 compilation and `npm run check:toolchain` for schemas, checker-profile fidelity, complexity, and dependency guardrails.
 - `toolchain/test/toolchain.test.mjs` covers accepted/rejected conformance, both checker modes, Unknown propagation, AST/IR/graph stability, all public-change categories, DiagnosticV1 rendering, manifests, CLI commands, interpreter behavior, capability isolation, exit classes, and latency guardrails.
+- Run `npm run check:benchmark` for all 16 task states, content hashes, public/hidden assertions, mutation kills, treatment parity, baseline equivalence, schemas, authorization gates, and offline network/spend isolation.
+- `benchmark/test/benchmark.test.mjs` covers fresh trajectory state, first-submission restrictions, three-turn repair, hidden-output secrecy, diagnostic forks, fake/replay determinism, budgets, failure retention, randomization, artifacts, approvals, six endpoints, power bounds, and eleven separate measurements.
+- `npm run benchmark:offline` writes ignored deterministic fake/replay artifacts and performs no provider calls.
 - Run `npm run verify` for all contract validation and deterministic tests.
 - After `npm run build`, invoke the local CLI with `node dist/toolchain/src/cli.js <check|run|test|fmt> --project <repo>`.
 - Protocol v1.1 is owner-approved. Do not change its six primary comparisons, power rules, or decision gates without reopening Issue #3.

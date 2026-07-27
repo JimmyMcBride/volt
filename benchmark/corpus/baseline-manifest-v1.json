@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "claimClass": "descriptive",
+  "baselines": [
+    {
+      "id": "typescript_strict",
+      "language": "TypeScript",
+      "reference": "benchmark/baselines/typescript-strict/REFERENCE.md",
+      "fixtures": [
+        "benchmark/baselines/typescript-strict/domain.ts",
+        "benchmark/baselines/typescript-strict/capabilities.ts",
+        "benchmark/baselines/typescript-strict/registration_service.ts",
+        "benchmark/baselines/typescript-strict/tests.ts"
+      ],
+      "capabilityBehavior": "synchronous_in_memory",
+      "taskWording": "equivalent",
+      "publicHiddenAssertions": "equivalent",
+      "toolBudget": "identical"
+    },
+    {
+      "id": "rust",
+      "language": "Rust",
+      "reference": "benchmark/baselines/rust/REFERENCE.md",
+      "fixtures": [
+        "benchmark/baselines/rust/domain.rs",
+        "benchmark/baselines/rust/capabilities.rs",
+        "benchmark/baselines/rust/registration_service.rs",
+        "benchmark/baselines/rust/tests.rs"
+      ],
+      "capabilityBehavior": "synchronous_in_memory",
+      "taskWording": "equivalent",
+      "publicHiddenAssertions": "equivalent",
+      "toolBudget": "identical"
+    },
+    {
+      "id": "gleam",
+      "language": "Gleam",
+      "reference": "benchmark/baselines/gleam/REFERENCE.md",
+      "fixtures": [
+        "benchmark/baselines/gleam/domain.gleam",
+        "benchmark/baselines/gleam/capabilities.gleam",
+        "benchmark/baselines/gleam/registration_service.gleam",
+        "benchmark/baselines/gleam/tests.gleam"
+      ],
+      "capabilityBehavior": "synchronous_in_memory",
+      "taskWording": "equivalent",
+      "publicHiddenAssertions": "equivalent",
+      "toolBudget": "identical"
+    }
+  ]
+}

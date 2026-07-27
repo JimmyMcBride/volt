@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "volt-alias-treatment-v1",
+  "version": "1.0.0",
+  "aliases": [
+    {
+      "alias": "public",
+      "canonical": "pub",
+      "documentationProminence": "equal",
+      "scope": "declaration_visibility"
+    },
+    {
+      "alias": "function",
+      "canonical": "fn",
+      "documentationProminence": "equal",
+      "scope": "function_declaration"
+    },
+    {
+      "alias": "effects",
+      "canonical": "uses",
+      "documentationProminence": "equal",
+      "scope": "function_effect_set"
+    },
+    {
+      "alias": "struct",
+      "canonical": "record",
+      "documentationProminence": "equal",
+      "scope": "record_declaration"
+    }
+  ]
+}

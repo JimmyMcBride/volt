@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "phase": "calibration",
+  "approved": false,
+  "owner": "JimmyMcBride",
+  "approvalId": "UNAPPROVED",
+  "maximumSpendUsd": 0,
+  "protocolHash": "sha256:15b3676b15e7eb68954ca2e16924d43f9f864eb794c62e6c34aa0ef8e04e9108",
+  "corpusManifestHash": "sha256:efcb090b8ebf5b289c97494fd92d9adb200f0bc9ce0d76eaf82484bfb0f4287e",
+  "modelManifestHash": "sha256:2e5c9c4067eee2275196f31b7ffc56abe52d569c40336128c40f1549533643c6",
+  "systemPromptHash": "sha256:940606b5aa8e14fb279064f3b9d84390eb2b2e862ead3c09cb5a8bd781113c96",
+  "taskContextManifestHash": "sha256:940606b5aa8e14fb279064f3b9d84390eb2b2e862ead3c09cb5a8bd781113c96",
+  "toolVersionsHash": "sha256:940606b5aa8e14fb279064f3b9d84390eb2b2e862ead3c09cb5a8bd781113c96",
+  "conditionAdaptersHash": "sha256:940606b5aa8e14fb279064f3b9d84390eb2b2e862ead3c09cb5a8bd781113c96",
+  "aliasManifestHash": "sha256:b3fbf8ac150584475d7564d181138af2780cdb52e1e871a793ef8a63a1fd2af6",
+  "credentialsBoundary": "Provider credentials are available only to the future orchestrator boundary.",
+  "storagePrivacyPolicy": "Secrets and hidden tests are excluded from model-visible context and public artifacts."
+}

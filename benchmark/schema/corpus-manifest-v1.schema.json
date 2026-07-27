@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://volt.dev/schema/benchmark/corpus-manifest-v1.schema.json",
+  "title": "corpus-manifest-v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schemaVersion",
+    "corpusId",
+    "protocolHash",
+    "kernelHash",
+    "taskIds",
+    "tasks"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "corpusId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "protocolHash": {
+      "$ref": "#/$defs/hash"
+    },
+    "kernelHash": {
+      "$ref": "#/$defs/hash"
+    },
+    "taskIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "corpus",
+          "family",
+          "manifestHash"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "corpus": {
+            "enum": [
+              "calibration",
+              "confirmatory"
+            ]
+          },
+          "family": {
+            "enum": [
+              "state_extension",
+              "invariant_change",
+              "effect_addition",
+              "cross_module_contract_change"
+            ]
+          },
+          "manifestHash": {
+            "$ref": "#/$defs/hash"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

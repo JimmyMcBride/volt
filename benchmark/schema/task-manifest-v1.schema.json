@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://volt.dev/schema/benchmark/task-manifest-v1.schema.json",
+  "title": "task-manifest-v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schemaVersion",
+    "id",
+    "corpus",
+    "family",
+    "seedHash",
+    "expectedSolutionHash"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "corpus": {
+      "enum": [
+        "calibration",
+        "confirmatory"
+      ]
+    },
+    "family": {
+      "enum": [
+        "state_extension",
+        "invariant_change",
+        "effect_addition",
+        "cross_module_contract_change"
+      ]
+    },
+    "seedHash": {
+      "$ref": "#/$defs/hash"
+    },
+    "expectedSolutionHash": {
+      "$ref": "#/$defs/hash"
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

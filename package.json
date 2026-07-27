@@ -11,10 +11,15 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "check": "npm run check:research && npm run check:language && npm run check:toolchain",
+    "check": "npm run check:research && npm run check:language && npm run check:toolchain && npm run check:benchmark",
     "check:research": "node research/scripts/validate.mjs",
     "check:language": "node language/scripts/validate.mjs",
     "check:toolchain": "npm run build && node toolchain/scripts/validate.mjs",
+    "check:benchmark": "npm run build && node benchmark/scripts/validate.mjs",
+    "benchmark:generate": "node benchmark/scripts/generate-corpus.mjs",
+    "benchmark:offline": "npm run build && node benchmark/scripts/run.mjs offline",
+    "benchmark:calibrate": "npm run build && node benchmark/scripts/run.mjs calibration",
+    "benchmark:confirmatory": "npm run build && node benchmark/scripts/run.mjs confirmatory",
     "test": "npm run build && node --test",
     "verify": "npm run check && npm test"
   },

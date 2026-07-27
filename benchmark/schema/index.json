@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "records": {
+    "corpus-manifest-v1": "benchmark/schema/corpus-manifest-v1.schema.json",
+    "task-manifest-v1": "benchmark/schema/task-manifest-v1.schema.json",
+    "invariant-manifest-v1": "benchmark/schema/invariant-manifest-v1.schema.json",
+    "impact-surface-v1": "benchmark/schema/impact-surface-v1.schema.json",
+    "preservation-v1": "benchmark/schema/preservation-v1.schema.json",
+    "mutation-v1": "benchmark/schema/mutation-v1.schema.json",
+    "alias-v1": "benchmark/schema/alias-v1.schema.json",
+    "model-v1": "benchmark/schema/model-v1.schema.json",
+    "authorization-v1": "benchmark/schema/authorization-v1.schema.json",
+    "artifact-index-v1": "benchmark/schema/artifact-index-v1.schema.json",
+    "analysis-v1": "benchmark/schema/analysis-v1.schema.json",
+    "report-v1": "benchmark/schema/report-v1.schema.json",
+    "run-v1": "research/schema/run-manifest.schema.json",
+    "trajectory-v1": "research/schema/trajectory-result.schema.json"
+  }
+}

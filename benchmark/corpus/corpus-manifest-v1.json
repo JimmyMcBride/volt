@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "corpusId": "volt-event-registration-v1",
+  "protocolId": "volt-v0-evidence-ready",
+  "protocolVersion": "1.1.0",
+  "kernelId": "volt-v0",
+  "protocolHash": "sha256:15b3676b15e7eb68954ca2e16924d43f9f864eb794c62e6c34aa0ef8e04e9108",
+  "kernelHash": "sha256:f44d3d3d212daf6ae6603f334341ac922a36ab44c07801dde2979abb7398671d",
+  "checkerProfileHash": "sha256:df86ebe6dba1dff8b0113bca959c57b79b661cbe60548bf76d25f75f83fd94ed",
+  "aliasManifestHash": "sha256:b3fbf8ac150584475d7564d181138af2780cdb52e1e871a793ef8a63a1fd2af6",
+  "seedHash": "sha256:703c2164a42ab7bdc65b559d190af8f16d2b1b97643f241ddd53c00008479bb0",
+  "calibrationTaskCount": 4,
+  "confirmatoryTaskCount": 12,
+  "calibrationIncludedInEvidence": false,
+  "confirmatoryPrivateUntilStudyComplete": true,
+  "taskIds": [
+    "calibration_cross_module_contract_change",
+    "calibration_effect_addition",
+    "calibration_invariant_change",
+    "calibration_state_extension",
+    "cross_module_contract_change_1",
+    "cross_module_contract_change_2",
+    "cross_module_contract_change_3",
+    "effect_addition_1",
+    "effect_addition_2",
+    "effect_addition_3",
+    "invariant_change_1",
+    "invariant_change_2",
+    "invariant_change_3",
+    "state_extension_1",
+    "state_extension_2",
+    "state_extension_3"
+  ],
+  "tasks": [
+    {
+      "id": "calibration_cross_module_contract_change",
+      "corpus": "calibration",
+      "family": "cross_module_contract_change",
+      "manifestHash": "sha256:235c03ea5dc44ca44e3634b62991172281b062f8834cae4f22818e2ebc4f2fae"
+    },
+    {
+      "id": "calibration_effect_addition",
+      "corpus": "calibration",
+      "family": "effect_addition",
+      "manifestHash": "sha256:0cc603981dbcc2512236896ccd7c78f995a881be305cbbb921b7710efedc41cb"
+    },
+    {
+      "id": "calibration_invariant_change",
+      "corpus": "calibration",
+      "family": "invariant_change",
+      "manifestHash": "sha256:b77d2a3eeef1b42e237a461cd502c87ceb0a317efab6c25fe95dfc42b4d1eb91"
+    },
+    {
+      "id": "calibration_state_extension",
+      "corpus": "calibration",
+      "family": "state_extension",
+      "manifestHash": "sha256:fd14af564e2bcfd91d735e8480b6d5f243bd7ba14217cc6328d2d2d112b30171"
+    },
+    {
+      "id": "cross_module_contract_change_1",
+      "corpus": "confirmatory",
+      "family": "cross_module_contract_change",
+      "manifestHash": "sha256:496e03245f0aed1771df8daa6d776d202c51bdeece3295b1b3df4599da05aee4"
+    },
+    {
+      "id": "cross_module_contract_change_2",
+      "corpus": "confirmatory",
+      "family": "cross_module_contract_change",
+      "manifestHash": "sha256:34d44136c7935dd7c753ea39a50b95a69f992a41c0dd0ebc5cadb2232df0fed9"
+    },
+    {
+      "id": "cross_module_contract_change_3",
+      "corpus": "confirmatory",
+      "family": "cross_module_contract_change",
+      "manifestHash": "sha256:da7c92214911ee05fb430411533cdd8f332de56b9c277639b5cb091041738991"
+    },
+    {
+      "id": "effect_addition_1",
+      "corpus": "confirmatory",
+      "family": "effect_addition",
+      "manifestHash": "sha256:be825b4254ed47b82ad69104d91c89a1cabc8e213dd0d8918e109c5ec63e5d53"
+    },
+    {
+      "id": "effect_addition_2",
+      "corpus": "confirmatory",
+      "family": "effect_addition",
+      "manifestHash": "sha256:9d3c439f4a1054b4660a81a72785dac3effaba99a6f5a628a5cf4333f20761ef"
+    },
+    {
+      "id": "effect_addition_3",
+      "corpus": "confirmatory",
+      "family": "effect_addition",
+      "manifestHash": "sha256:442082805c523095874380c64f386688f05f7e079784ed3e6ef0c58aba089b91"
+    },
+    {
+      "id": "invariant_change_1",
+      "corpus": "confirmatory",
+      "family": "invariant_change",
+      "manifestHash": "sha256:a10ac51c0a2c44835964f8ffa6a0ae2dab85293cf288c0298efb87ec517b588d"
+    },
+    {
+      "id": "invariant_change_2",
+      "corpus": "confirmatory",
+      "family": "invariant_change",
+      "manifestHash": "sha256:25c9bd7eb92d7bbcaf72f5a68ae44b29ff6f3ef19e9f7cf766a2bec01ed38b10"
+    },
+    {
+      "id": "invariant_change_3",
+      "corpus": "confirmatory",
+      "family": "invariant_change",
+      "manifestHash": "sha256:e93d33ee08735e2f665697726a78e099e578bbca538126449b364d2a04ddc0dd"
+    },
+    {
+      "id": "state_extension_1",
+      "corpus": "confirmatory",
+      "family": "state_extension",
+      "manifestHash": "sha256:372b711273217ac3d088c9cdd7861f5f564d38a6e8f17885e558877a3d3015b9"
+    },
+    {
+      "id": "state_extension_2",
+      "corpus": "confirmatory",
+      "family": "state_extension",
+      "manifestHash": "sha256:190db28c6fe4e5ce91f68c5a199f44f0bcf1cade2dc4f98bf2d50dfdbe4d585e"
+    },
+    {
+      "id": "state_extension_3",
+      "corpus": "confirmatory",
+      "family": "state_extension",
+      "manifestHash": "sha256:8a91f962635705629a51f020b721a2d75e5bda796b38d6699a3dbab4ccff965e"
+    }
+  ],
+  "normalVerification": {
+    "networkAllowed": false,
+    "providerCallsAllowed": false,
+    "spendAllowedUsd": 0
+  }
+}

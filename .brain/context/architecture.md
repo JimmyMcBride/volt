@@ -11,6 +11,7 @@ Volt has an approved language-kernel contract and an implemented Issue #5 refere
 - `research/`: approved protocol v1.1, evidence, schemas, metrics, and fixtures.
 - `language/`: machine-readable Issue #4 kernel contract and future compiler conformance inputs.
 - `toolchain/`: executable Issue #5 reference frontend, interpreter, schemas, and conformance tests.
+- `benchmark/`: executable offline Issue #6 corpus, treatment/baseline adapters, private hidden and mutation checks, fake/replay harness, authorization gates, artifact store, statistical analysis, schemas, and tests.
 - GitHub Discussion #1: canonical shaping.
 - GitHub Issues: canonical specs and execution readiness.
 - GitHub Milestones/Projects: sequencing.
@@ -33,7 +34,7 @@ Volt has an approved language-kernel contract and an implemented Issue #5 refere
 
 - Node.js 24 dependency-free ES modules implement protocol and kernel validation, metrics, and decision rules.
 - Approved protocol v1.1 adds deterministic research-layer safe-evolution measures; both Volt hypotheses remain unvalidated pending confirmatory results.
-- Issue #6 owns offline task construction, hidden tests, treatment adapters, harnesses, run manifests, replay fixtures, raw-result schemas, and analysis tooling.
+- Issue #6 implements offline task construction, hidden tests, treatment adapters, harnesses, run manifests, replay fixtures, raw-result schemas, and analysis tooling under `benchmark/`.
 - Live calibration and confirmatory execution sit behind separate owner-approved frozen manifests and spend ceilings.
 
 ## Reference Toolchain Boundary
@@ -44,6 +45,10 @@ The implemented pipeline is:
 
 Full and erased checker modes share syntax, resolution, runtime, AST/IR, graph facts, identities, formatting, and rendering. The erased mode is controlled by the content-hashed profile in `toolchain/profile/`. The manifest contract at `toolchain/schema/repository-manifest-v1.schema.json` explicitly names the source root, run entrypoint, tests, checker mode, and deterministic capability adapters. Semantic diff remains deferred.
 
+## Benchmark Boundary
+
+`benchmark/corpus/` contains one content-addressed four-module seed, four calibration tasks, twelve private confirmatory tasks, complete expected impact and preservation manifests, retained mutation catalogs, finite treatment aliases, three four-module descriptive baselines, and unapproved authorization/model templates. `benchmark/lib/` implements deterministic condition adaptation, private hidden checks, fake/replay trajectories, budgets, artifact hashes, authorization enforcement, six estimands, power selection, and eleven non-composite measurements. Normal verification contains no provider boundary or network import.
+
 ## Guardrails
 
 - Do not claim behavior outside the executable Issue #5 conformance surface.
@@ -52,3 +57,4 @@ Full and erased checker modes share syntax, resolution, runtime, AST/IR, graph f
 - Keep the twelve-case coverage map separate from the Issue #6 benchmark corpus.
 - Require approved GitHub specs before compiler, repository-diagnostic, semantic-diff, or study work.
 - Normal verification and offline harness replay must make no live provider calls or incur model spend.
+- Calibration and confirmatory commands must remain fail-closed until their separate exact owner approvals.
