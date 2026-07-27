@@ -29,6 +29,11 @@
       "id": "retain_declaration_and_field_order",
       "input": "module domain\npub record Event { name: String,id: Int }\npub fn id(event:Event)->Int { event.id }\n",
       "expected": "module domain\n\npub record Event {\n  name: String,\n  id: Int\n}\n\npub fn id(event: Event) -> Int {\n  event.id\n}\n"
+    },
+    {
+      "id": "ascii_lexicographic_import_order",
+      "input": "module sorting\nimport domain.{zebra,Person,apple,Event}\n",
+      "expected": "module sorting\n\nimport domain.{Event, Person, apple, zebra}\n"
     }
   ]
 }

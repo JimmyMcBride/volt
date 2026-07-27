@@ -92,7 +92,7 @@
       "title": "Volt v0 language kernel and canonical syntax",
       "issue_number": 4,
       "issue_url": "https://github.com/JimmyMcBride/volt/issues/4",
-      "remote_state": "open",
+      "remote_state": "OPEN",
       "readiness": "ready",
       "ownership_mode": "github",
       "entry_mode": "github_collaborative",

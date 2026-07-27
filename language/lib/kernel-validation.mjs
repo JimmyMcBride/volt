@@ -145,8 +145,18 @@ function assertExactSet(actual, expected, label) {
   );
 }
 
+function compareLexicographically(left, right) {
+  if (left < right) {
+    return -1;
+  }
+  if (left > right) {
+    return 1;
+  }
+  return 0;
+}
+
 function assertSorted(values, label) {
-  const sorted = [...values].sort((left, right) => left.localeCompare(right));
+  const sorted = [...values].sort(compareLexicographically);
   invariant(
     values.every((value, index) => value === sorted[index]),
     `${label} must be lexicographically sorted`

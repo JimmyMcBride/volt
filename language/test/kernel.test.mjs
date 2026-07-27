@@ -72,7 +72,7 @@ test("every deferred and excluded feature has an explicit rejection fixture", ()
 });
 
 test("formatter goldens freeze canonical ordering, spacing, and line endings", () => {
-  assert.deepEqual(validateFormatterGoldens(kernel, formatterGoldens), { cases: 3 });
+  assert.deepEqual(validateFormatterGoldens(kernel, formatterGoldens), { cases: 4 });
 });
 
 test("each public-change category has a deterministic affected declaration fixture", () => {
