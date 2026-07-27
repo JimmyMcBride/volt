@@ -1,0 +1,292 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JimmyMcBride/volt/research/schema/trajectory-result.schema.json",
+  "title": "Volt Trajectory Result V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "trajectoryId",
+    "runManifestHash",
+    "task",
+    "modelId",
+    "condition",
+    "replicate",
+    "status",
+    "firstSubmission",
+    "repairs",
+    "maintenanceEvaluations",
+    "finalHiddenTestPass",
+    "generatedTokens",
+    "utf8OutputBytes",
+    "wallClockMilliseconds",
+    "failureCategory",
+    "artifacts"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "trajectoryId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runManifestHash": {
+      "$ref": "#/$defs/hash"
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "family",
+        "corpus"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "family": {
+          "enum": [
+            "state_extension",
+            "invariant_change",
+            "effect_addition",
+            "cross_module_contract_change"
+          ]
+        },
+        "corpus": {
+          "enum": [
+            "calibration",
+            "confirmatory"
+          ]
+        }
+      }
+    },
+    "modelId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "condition": {
+      "enum": [
+        "volt_full",
+        "static_obligations_erased",
+        "alias_permissive",
+        "diagnostics_plain",
+        "typescript_strict",
+        "rust",
+        "gleam"
+      ]
+    },
+    "replicate": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "status": {
+      "enum": [
+        "completed",
+        "crashed",
+        "timed_out",
+        "budget_exhausted",
+        "missing"
+      ]
+    },
+    "firstSubmission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceHash",
+        "parseSuccess",
+        "typecheckSuccess",
+        "hiddenTestPass",
+        "diagnosticsHash"
+      ],
+      "properties": {
+        "sourceHash": {
+          "$ref": "#/$defs/hash"
+        },
+        "parseSuccess": {
+          "type": "boolean"
+        },
+        "typecheckSuccess": {
+          "type": "boolean"
+        },
+        "hiddenTestPass": {
+          "type": "boolean"
+        },
+        "diagnosticsHash": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/hash"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "repairs": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "turn",
+          "sourceHash",
+          "feedbackHash",
+          "hiddenTestPass"
+        ],
+        "properties": {
+          "turn": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 3
+          },
+          "sourceHash": {
+            "$ref": "#/$defs/hash"
+          },
+          "feedbackHash": {
+            "$ref": "#/$defs/hash"
+          },
+          "hiddenTestPass": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "maintenanceEvaluations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "firstSubmission",
+        "finalSubmission"
+      ],
+      "properties": {
+        "firstSubmission": {
+          "$ref": "#/$defs/maintenanceEvaluation"
+        },
+        "finalSubmission": {
+          "$ref": "#/$defs/maintenanceEvaluation"
+        }
+      }
+    },
+    "finalHiddenTestPass": {
+      "type": "boolean"
+    },
+    "generatedTokens": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "utf8OutputBytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "wallClockMilliseconds": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "failureCategory": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "artifacts": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/$defs/hash"
+      }
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "stableIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "maintenanceEvaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repositoryChangeSuccess",
+        "requestedBehaviorImplemented",
+        "contractPropagationComplete",
+        "hiddenTestsPass",
+        "effectDeclarationsAccurate",
+        "matchesExhaustive",
+        "guaranteesNotBypassed",
+        "unrelatedRegressionCount",
+        "staleContractCount",
+        "unrequestedBehaviorChangeCount",
+        "expectedImpactSiteIds",
+        "actualRequiredImpactSiteIds",
+        "predictedImpactSiteIds",
+        "changedSiteIds",
+        "semanticBlastRadiusArtifactHash"
+      ],
+      "properties": {
+        "repositoryChangeSuccess": {
+          "type": "boolean"
+        },
+        "requestedBehaviorImplemented": {
+          "type": "boolean"
+        },
+        "contractPropagationComplete": {
+          "type": "boolean"
+        },
+        "hiddenTestsPass": {
+          "type": "boolean"
+        },
+        "effectDeclarationsAccurate": {
+          "type": "boolean"
+        },
+        "matchesExhaustive": {
+          "type": "boolean"
+        },
+        "guaranteesNotBypassed": {
+          "type": "boolean"
+        },
+        "unrelatedRegressionCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "staleContractCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unrequestedBehaviorChangeCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "expectedImpactSiteIds": {
+          "$ref": "#/$defs/stableIds"
+        },
+        "actualRequiredImpactSiteIds": {
+          "$ref": "#/$defs/stableIds"
+        },
+        "predictedImpactSiteIds": {
+          "$ref": "#/$defs/stableIds"
+        },
+        "changedSiteIds": {
+          "$ref": "#/$defs/stableIds"
+        },
+        "semanticBlastRadiusArtifactHash": {
+          "$ref": "#/$defs/hash"
+        }
+      }
+    }
+  }
+}

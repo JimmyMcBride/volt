@@ -1,27 +1,33 @@
 ---
-updated: "2026-07-26T06:34:31Z"
+updated: "2026-07-27T03:07:00Z"
 ---
-Volt has no approved implementation architecture yet. The evidence-informed candidate architecture is recorded in [GitHub Discussion #1](https://github.com/JimmyMcBride/volt/discussions/1) and must be promoted into, reviewed in, and approved as a GitHub Issue spec before implementation.
+Volt has no approved compiler or runtime architecture. The candidate architecture remains blocked on separately approved GitHub specs.
 
 ## Current Boundaries
 
-- `.brain/`: durable project memory and agent context.
-- `.plan/`: Plan backend configuration, GitHub metadata mirror, and compatibility pointers only.
-- `docs/`: durable project knowledge that is not planning state.
-- `AGENTS.md`: agent entry contract.
-- GitHub Discussions: canonical discovery and shaping.
+- `.brain/`: concise durable project context.
+- `.plan/`: Plan backend configuration and GitHub metadata pointers only.
+- `docs/`: durable knowledge, not canonical specifications.
+- `research/`: executable protocol, evidence, schemas, metrics, and fixtures.
+- GitHub Discussion #1: canonical shaping.
 - GitHub Issues: canonical specs and execution readiness.
-- GitHub Milestones/Projects: canonical initiative and delivery sequencing.
+- GitHub Milestones/Projects: sequencing.
 
-## Candidate Reference Toolchain
+## Research Tooling
 
-- Node.js 24 LTS with strict TypeScript 6.x.
-- Handwritten lexer and recursive-descent/Pratt parser.
-- Resolution, type, effect, and exhaustiveness passes followed by a deterministic tree-walking interpreter.
-- This is a promotion input, not authorization to implement.
+- Node.js 24 dependency-free ES modules implement protocol validation, metrics, and decision rules.
+- Approved protocol v1.1 adds deterministic research-layer safe-evolution measures; both Volt hypotheses remain unvalidated pending confirmatory results.
+- Issue #6 will own task construction, hidden tests, harnesses, run manifests, raw results, and execution after approval.
 
-## Architecture Guardrails
+## Proposed Compiler Direction
 
-- Keep semantic requirements separate from bootstrap technology choices.
-- Do not expand into production backends, package infrastructure, IDE integration, or automatic repair before evidence and approved specs justify them.
-- Promote and approve architecture through the GitHub-owned spec workflow before implementation.
+Subject to Issues #4 and #5 approval, a future resolved/typed program graph should cover definitions, references, imports, callers, public contracts, ADT variants, matches, effects, operations, and related tests. Public type, contract, effect, or module-boundary changes should yield deterministic affected-symbol lists, missing propagation sites, and dependency reasons.
+
+DiagnosticV1 should remain versioned and backward-compatible while carrying stable repository-impact facts and declarative repair surfaces. Semantic diff is a future direction only.
+
+## Guardrails
+
+- Do not claim or test compiler impact behavior before a compiler exists.
+- Do not expand the v0 feature set for impact analysis.
+- Keep research tooling separate from unapproved compiler architecture.
+- Require approved GitHub specs before compiler, repository-diagnostic, or semantic-diff work.

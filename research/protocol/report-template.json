@@ -1,0 +1,71 @@
+{
+  "$schema": "../schema/analysis-report.schema.json",
+  "schemaVersion": 1,
+  "protocolId": "volt-v0-evidence-ready",
+  "protocolHash": null,
+  "status": "not_run",
+  "primaryComparisons": [
+    {
+      "id": "static_obligation_effect",
+      "pooled": null,
+      "perModel": [],
+      "perTaskFamily": []
+    },
+    {
+      "id": "canonical_syntax_effect",
+      "pooled": null,
+      "perModel": [],
+      "perTaskFamily": []
+    },
+    {
+      "id": "structured_diagnostic_effect",
+      "pooled": null,
+      "perModel": [],
+      "perTaskFamily": []
+    },
+    {
+      "id": "static_obligation_maintenance_effect",
+      "pooled": null,
+      "perModel": [],
+      "perTaskFamily": []
+    },
+    {
+      "id": "canonical_syntax_maintenance_effect",
+      "pooled": null,
+      "perModel": [],
+      "perTaskFamily": []
+    },
+    {
+      "id": "structured_diagnostic_maintenance_effect",
+      "pooled": null,
+      "perModel": [],
+      "perTaskFamily": []
+    }
+  ],
+  "secondaryOutcomes": [],
+  "semanticCompression": {
+    "obligationCoverage": [],
+    "astShapeEntropy": [],
+    "ambientDependencyCount": [],
+    "repairLocality": []
+  },
+  "repositoryEvolution": {
+    "contractPropagationCompleteness": [],
+    "unrelatedRegressionCount": [],
+    "semanticBlastRadius": [],
+    "impactPredictionAccuracy": [],
+    "staleContractCount": [],
+    "unrequestedBehaviorChangeCount": [],
+    "changeReviewability": []
+  },
+  "complexityGuardrails": [],
+  "validityFailures": [],
+  "protocolDeviations": [],
+  "excludedTrajectories": [],
+  "outcomeDependentOmissionAllowed": false,
+  "decision": null,
+  "positiveResults": [],
+  "negativeResults": [],
+  "inconclusiveResults": [],
+  "falsifyingResults": []
+}

@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JimmyMcBride/volt/research/schema/analysis-report.schema.json",
+  "title": "Volt Analysis Report V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "protocolId",
+    "protocolHash",
+    "status",
+    "primaryComparisons",
+    "secondaryOutcomes",
+    "semanticCompression",
+    "repositoryEvolution",
+    "complexityGuardrails",
+    "validityFailures",
+    "protocolDeviations",
+    "excludedTrajectories",
+    "outcomeDependentOmissionAllowed",
+    "decision",
+    "positiveResults",
+    "negativeResults",
+    "inconclusiveResults",
+    "falsifyingResults"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "protocolId": {
+      "const": "volt-v0-evidence-ready"
+    },
+    "protocolHash": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/hash"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "status": {
+      "enum": [
+        "not_run",
+        "complete"
+      ]
+    },
+    "primaryComparisons": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "$ref": "#/$defs/comparison"
+      }
+    },
+    "repositoryEvolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contractPropagationCompleteness",
+        "unrelatedRegressionCount",
+        "semanticBlastRadius",
+        "impactPredictionAccuracy",
+        "staleContractCount",
+        "unrequestedBehaviorChangeCount",
+        "changeReviewability"
+      ],
+      "properties": {
+        "contractPropagationCompleteness": {
+          "type": "array"
+        },
+        "unrelatedRegressionCount": {
+          "type": "array"
+        },
+        "semanticBlastRadius": {
+          "type": "array"
+        },
+        "impactPredictionAccuracy": {
+          "type": "array"
+        },
+        "staleContractCount": {
+          "type": "array"
+        },
+        "unrequestedBehaviorChangeCount": {
+          "type": "array"
+        },
+        "changeReviewability": {
+          "type": "array"
+        }
+      }
+    },
+    "secondaryOutcomes": {
+      "type": "array"
+    },
+    "semanticCompression": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "obligationCoverage",
+        "astShapeEntropy",
+        "ambientDependencyCount",
+        "repairLocality"
+      ],
+      "properties": {
+        "obligationCoverage": {
+          "type": "array"
+        },
+        "astShapeEntropy": {
+          "type": "array"
+        },
+        "ambientDependencyCount": {
+          "type": "array"
+        },
+        "repairLocality": {
+          "type": "array"
+        }
+      }
+    },
+    "complexityGuardrails": {
+      "type": "array"
+    },
+    "validityFailures": {
+      "type": "array"
+    },
+    "protocolDeviations": {
+      "type": "array"
+    },
+    "excludedTrajectories": {
+      "type": "array"
+    },
+    "outcomeDependentOmissionAllowed": {
+      "const": false
+    },
+    "decision": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "supported",
+        "weakened",
+        "inconclusive",
+        "falsified"
+      ]
+    },
+    "positiveResults": {
+      "type": "array"
+    },
+    "negativeResults": {
+      "type": "array"
+    },
+    "inconclusiveResults": {
+      "type": "array"
+    },
+    "falsifyingResults": {
+      "type": "array"
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "pooled",
+        "perModel",
+        "perTaskFamily"
+      ],
+      "properties": {
+        "id": {
+          "enum": [
+            "static_obligation_effect",
+            "canonical_syntax_effect",
+            "structured_diagnostic_effect",
+            "static_obligation_maintenance_effect",
+            "canonical_syntax_maintenance_effect",
+            "structured_diagnostic_maintenance_effect"
+          ]
+        },
+        "pooled": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "perModel": {
+          "type": "array"
+        },
+        "perTaskFamily": {
+          "type": "array"
+        }
+      }
+    }
+  }
+}

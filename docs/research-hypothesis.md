@@ -1,90 +1,95 @@
+---
+updated: "2026-07-27T03:07:00Z"
+---
 # Volt Research Hypothesis
 
 ## Mission
 
-Volt investigates whether a programming language designed around AI coding
-models and autonomous software-engineering agents can measurably improve
-correctness, repair efficiency, and human auditability.
+Volt investigates whether a programming language designed around AI coding models and autonomous software-engineering agents can measurably improve both initial correctness and safe evolution of existing codebases.
 
-Volt is a research instrument first. A production language is a possible later
-outcome, not an initial assumption.
+Volt is a research instrument first. A production language is a possible later outcome, not an assumption. Human-auditability benefit remains deferred to a separately approved blinded reviewer study.
 
-## Working Hypothesis
+## Testable Hypotheses
 
-Given approximately equivalent model exposure, tasks, and tooling, a language
-with immutable defaults, algebraic data types, exhaustive matching, explicit
-effects, canonical syntax, structured diagnostics, and narrow idiomatic
-conventions will produce greater first-pass correctness and faster repair
-cycles than languages with greater semantic or stylistic ambiguity.
+### H1: generation and repair
 
-## Semantic Compression
+Given equivalent tasks, context, tool access, repair limits, and token budgets, Volt's explicit static obligations, canonical syntax, and structured diagnostics improve first-submission hidden-test success or bounded repair success under causal ablation.
 
-Semantic compression is the proposed objective of maximizing how much
-programmer intent valid source communicates while minimizing ambiguity and
-plausible incorrect interpretations.
+### H2: safe repository evolution
 
-This is not yet an operational metric. Research must define observable proxies,
-competing explanations, and falsification thresholds.
+Given an existing passing Volt repository and a requested change, the same treatments improve strict repository-change success: requested behavior is implemented, every required contract is propagated, hidden tests pass, effects and matches remain accurate, static guarantees are not bypassed, and unrelated behavior remains unchanged.
 
-## What Better for Agents Means
+The guiding principle is:
 
-Candidate measurements:
+> Every requested change has an explicit machine-readable impact surface, and unrelated behavior remains unchanged.
 
-- Higher first-pass compilation and functional correctness.
-- Fewer repair iterations and repair tokens.
-- Less wall-clock time to a correct program.
-- Fewer unhandled domain states and unintended effects.
-- Better cross-file consistency.
-- Greater success using structured diagnostics without human explanation.
-- Stable results across repeated trials, prompts, and model families.
-- Acceptable human readability, review burden, and runtime/tooling cost.
+Both are Volt-specific hypotheses, not established facts.
+
+## Evaluation Workload
+
+The confirmatory corpus remains a synthetic four-module event-registration repository with twelve maintenance tasks:
+
+- three state extensions;
+- three invariant changes;
+- three effect additions; and
+- three cross-module contract changes.
+
+Every task begins from a compiling, passing, content-addressed repository snapshot. Before execution, it freezes the requested behavior, minimum required impact surface, preservation assertions, and hidden tests. Hidden tests check the requested behavior and detect incomplete matches, forgotten callers, stale contracts, undeclared or unnecessary effects, duplicated or weakened invariants, unrelated output changes, and bypassed guarantees.
+
+Function-sized exercises remain compiler conformance tests, not the primary language evaluation.
+
+## Primary Outcomes
+
+The approved v1.1 protocol retains the v1.0 first-pass and bounded-repair estimands and adds `repository_change_success_rate` as the primary maintenance outcome for the static-obligation and canonical-syntax ablations, plus repository-change success within three turns for the diagnostic representation ablation.
+
+Repository-change success is binary and awards no partial credit. Missing trajectories are failures.
+
+The primary Holm family now contains six comparisons. The corresponding power calculation and falsification gate are owner-approved protocol rules; changing them requires reopening and reapproving Issue #3.
+
+## Operational Metrics
+
+Semantic compression and maintenance behavior are reported as separate preregistered values. No composite may determine success.
+
+- `obligation_coverage`: intended static-obligation rejections divided by preregistered static-obligation fixtures.
+- `ast_shape_entropy`: normalized entropy of identifier- and literal-erased AST shapes among passing first submissions.
+- `ambient_dependency_count`: distinct undeclared benchmark capabilities observed in typed IR.
+- `repair_locality`: changed-file count and normalized AST tree-edit distance between the first failure and first passing repair.
+- `contract_propagation_completeness`: correctly updated required sites divided by all preregistered required sites, with missing and unexpected identifiers.
+- `unrelated_regression_count`: previously passing preservation assertions that fail after the change.
+- `semantic_blast_radius`: expected and actual files, symbols, contracts, effects, and AST nodes, reported separately.
+- `impact_prediction_accuracy`: precision, recall, exact-set match, false positives, and false negatives for predicted versus actually required impact sites.
+- `stale_contract_count`: declarations, callers, matches, effect sets, or tests left inconsistent with the requested public change.
+- `unrequested_behavior_change_count`: observable changes outside the request and allowed impact surface.
+- `change_reviewability`: changed-site counts, out-of-scope sites, unexplained sites, and justification coverage; descriptive only.
+
+Exact algorithms and deterministic fixtures live under `research/`.
 
 ## Evidence Status
 
-No project-specific empirical evidence review has been completed yet.
+Repository-level evaluations support the workload choice, not the Volt thesis. Strengthened hidden tests reduce false positives but require validation for this corpus. Cross-language results remain descriptive because exposure, tokenization, libraries, and tooling maturity cannot be equalized fully. Repair-feedback research supports treating diagnostics as part of the intervention, but does not prove a DiagnosticV1 advantage.
 
-- The central hypothesis is unvalidated.
-- Candidate language features are research inputs, not approved requirements.
-- Existing-language comparisons and AI performance claims require sourced
-  research.
-- Functional-first design, actor concurrency, proof obligations, semantic
-  diffs, and transactional agent changes remain speculative until evidence or
-  experiments justify them.
-- Training exposure and tool maturity are major confounders.
+No existing source validates Volt's safe-evolution hypothesis, proposed program graph, impact diagnostics, or semantic diff. The evidence matrix records this explicitly as speculation with limitations.
 
-## Definitions
+## Language and Tooling Direction
 
-- **AI-friendly language:** a language whose semantics and tools measurably
-  improve agent correctness, repair efficiency, or auditability under
-  controlled comparison.
-- **Canonical syntax:** one officially preferred representation for
-  foundational constructs, enforced by grammar and formatter where practical.
-- **Ambiguity:** the number or diversity of plausible interpretations or
-  implementations consistent with a task, source fragment, or diagnostic.
-- **First-pass correctness:** a generated program satisfies compilation and
-  hidden functional tests before any repair feedback.
-- **Repair cycle:** one generate-or-edit, check, diagnostic, and retry loop.
-- **Effect:** an observable interaction beyond pure value computation, such as
-  I/O, time, randomness, mutation, or external capability use.
-- **Invariant:** a condition required to hold across defined program states or
-  transitions.
-- **Agent-readable diagnostic:** stable structured output with
-  machine-addressable codes, locations, expected/received facts, related
-  symbols, and bounded repair possibilities.
+The intended v0 kernel remains small: closed algebraic data types, exhaustive matching, explicit boundary types, exact named effect sets, immutable values, `Result` failures, canonical syntax, explicit imports, and narrow modules. No deferred feature has been pulled into v0.
 
-## Falsification
+A proposed downstream design rule is that a public type, contract, effect, or module-boundary change produces a deterministic affected-symbol and diagnostic list. A future compiler program graph would cover definitions, references, imports, callers, public contracts, ADT variants, matches, effects, operations, and related tests. Repository diagnostics would explain affected declarations, missing propagation, dependency reasons, and bounded repair surfaces with stable ordering.
 
-The hypothesis weakens or fails if controlled experiments show no meaningful
-improvement; benefits disappear when exposure and tooling are controlled;
-repair cost materially increases; or restrictions impose complexity,
-performance, or usability costs larger than correctness and auditability gains.
+Those are planning directions only. No compiler exists on this branch, and implementation requires separate approval of the language-kernel and interpreter specs.
+
+## Decision Boundary
+
+The approved v1.1 support rule preserves the v1.0 requirement for at least two meaningful first-pass/repair comparisons, including a language comparison, and adds at least one meaningful maintenance-language comparison. Significant harm in any of the six comparisons, exclusion of meaningful benefit by both maintenance-language upper bounds, harmful model-family effects, or unresolved complexity guardrails prevents support according to the machine-readable rules.
+
+No exploratory composite can override the preregistered decision. Owner approval of v1.1 is recorded. Confirmatory execution still requires the downstream corpus and study spec, frozen artifacts, and its separate approval.
 
 ## Durable Constraints
 
 - Define evaluation before language design hardens.
+- Treat safe evolution of existing code as a primary use case.
+- Make small requested changes produce explicit, deterministic impact surfaces.
+- Test preservation and requested behavior together.
 - Keep the first prototype deliberately small.
-- Separate semantic requirements from implementation architecture.
-- Rank evidence and counterevidence explicitly.
-- Require traceability from evidence to hypothesis, requirement, experiment,
-  and result.
+- Separate evidence, hypotheses, implementation directions, and results.
 - Require human approval of GitHub-owned specs before implementation.

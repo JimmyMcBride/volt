@@ -1,0 +1,41 @@
+name: Research protocol
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/research-protocol.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "research/**"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/research-protocol.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "research/**"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Verify protocol artifacts
+        run: npm run verify

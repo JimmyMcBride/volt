@@ -1,0 +1,138 @@
+{
+  "obligationCoverage": {
+    "fixtures": [
+      {
+        "scope": "static",
+        "rejectedBeforeExecution": true,
+        "intendedInvariantObserved": true
+      },
+      {
+        "scope": "static",
+        "rejectedBeforeExecution": true,
+        "intendedInvariantObserved": true
+      },
+      {
+        "scope": "static",
+        "rejectedBeforeExecution": false,
+        "intendedInvariantObserved": false
+      },
+      {
+        "scope": "runtime",
+        "rejectedBeforeExecution": true,
+        "intendedInvariantObserved": true
+      }
+    ],
+    "expected": {
+      "rejected": 2,
+      "total": 3,
+      "value": 0.6666666666666666
+    }
+  },
+  "astShapeEntropy": {
+    "shapeHashes": [
+      "shape-a",
+      "shape-a",
+      "shape-b",
+      "shape-b"
+    ],
+    "expected": {
+      "passingCount": 4,
+      "entropyBits": 1,
+      "normalizedEntropy": 0.5
+    }
+  },
+  "ambientDependencyCount": {
+    "input": {
+      "observedCapabilities": [
+        "RegistrationStore",
+        "Clock",
+        "Notification",
+        "RegistrationStore"
+      ],
+      "capabilityRegistry": [
+        "RegistrationStore",
+        "Clock",
+        "Notification"
+      ],
+      "parameters": [],
+      "imports": [
+        "RegistrationStore"
+      ],
+      "uses": [
+        "Clock"
+      ]
+    },
+    "expected": {
+      "capabilities": [
+        "Notification"
+      ],
+      "count": 1
+    }
+  },
+  "repairLocality": {
+    "firstFailedFiles": {
+      "domain.volt": {
+        "sourceHash": "domain-v1",
+        "ast": {
+          "kind": "Module",
+          "moduleBoundary": "domain",
+          "children": [
+            {
+              "kind": "Type",
+              "children": []
+            }
+          ]
+        }
+      },
+      "service.volt": {
+        "sourceHash": "service-v1",
+        "ast": {
+          "kind": "Module",
+          "moduleBoundary": "service",
+          "children": [
+            {
+              "kind": "Call",
+              "children": []
+            }
+          ]
+        }
+      }
+    },
+    "firstPassingFiles": {
+      "domain.volt": {
+        "sourceHash": "domain-v1",
+        "ast": {
+          "kind": "Module",
+          "moduleBoundary": "domain",
+          "children": [
+            {
+              "kind": "Type",
+              "children": []
+            }
+          ]
+        }
+      },
+      "service.volt": {
+        "sourceHash": "service-v2",
+        "ast": {
+          "kind": "Module",
+          "moduleBoundary": "service",
+          "children": [
+            {
+              "kind": "Value",
+              "children": []
+            },
+            {
+              "kind": "Effect",
+              "children": []
+            }
+          ]
+        }
+      }
+    },
+    "expected": {
+      "changedFiles": 1,
+      "astTreeEditDistance": 2
+    }
+  }
+}

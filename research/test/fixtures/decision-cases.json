@@ -1,0 +1,288 @@
+{
+  "holm": {
+    "input": [
+      {
+        "id": "static",
+        "pValue": 0.01
+      },
+      {
+        "id": "syntax",
+        "pValue": 0.03
+      },
+      {
+        "id": "diagnostics",
+        "pValue": 0.04
+      }
+    ],
+    "expected": [
+      {
+        "id": "static",
+        "pValue": 0.01,
+        "adjustedPValue": 0.03
+      },
+      {
+        "id": "syntax",
+        "pValue": 0.03,
+        "adjustedPValue": 0.06
+      },
+      {
+        "id": "diagnostics",
+        "pValue": 0.04,
+        "adjustedPValue": 0.06
+      }
+    ]
+  },
+  "supported": {
+    "confirmatoryComplete": true,
+    "validityFailure": false,
+    "comparisons": [
+      {
+        "id": "static_obligation_effect",
+        "kind": "language",
+        "pointEstimate": 0.12,
+        "ciLower": 0.02,
+        "ciUpper": 0.2,
+        "adjustedPValue": 0.01
+      },
+      {
+        "id": "canonical_syntax_effect",
+        "kind": "language",
+        "pointEstimate": 0.11,
+        "ciLower": 0.01,
+        "ciUpper": 0.18,
+        "adjustedPValue": 0.04
+      },
+      {
+        "id": "structured_diagnostic_effect",
+        "kind": "diagnostic",
+        "pointEstimate": 0.05,
+        "ciLower": -0.01,
+        "ciUpper": 0.09,
+        "adjustedPValue": 0.2
+      }
+    ],
+    "modelEffects": [
+      {
+        "comparisonId": "static_obligation_effect",
+        "modelId": "frontier",
+        "pointEstimate": 0.13
+      },
+      {
+        "comparisonId": "static_obligation_effect",
+        "modelId": "open_weight",
+        "pointEstimate": 0.11
+      },
+      {
+        "comparisonId": "canonical_syntax_effect",
+        "modelId": "frontier",
+        "pointEstimate": 0.12
+      },
+      {
+        "comparisonId": "canonical_syntax_effect",
+        "modelId": "open_weight",
+        "pointEstimate": 0.1
+      }
+    ],
+    "complexityGuardrails": [
+      {
+        "id": "source_lines",
+        "passed": true
+      },
+      {
+        "id": "latency",
+        "passed": true
+      }
+    ],
+    "expected": "supported"
+  },
+  "weakened": {
+    "confirmatoryComplete": true,
+    "validityFailure": false,
+    "comparisons": [
+      {
+        "id": "static_obligation_effect",
+        "kind": "language",
+        "pointEstimate": 0.12,
+        "ciLower": 0.02,
+        "ciUpper": 0.18,
+        "adjustedPValue": 0.01
+      },
+      {
+        "id": "canonical_syntax_effect",
+        "kind": "language",
+        "pointEstimate": 0.04,
+        "ciLower": 0.01,
+        "ciUpper": 0.08,
+        "adjustedPValue": 0.2
+      },
+      {
+        "id": "structured_diagnostic_effect",
+        "kind": "diagnostic",
+        "pointEstimate": 0.03,
+        "ciLower": 0,
+        "ciUpper": 0.09,
+        "adjustedPValue": 0.3
+      }
+    ],
+    "modelEffects": [],
+    "complexityGuardrails": [
+      {
+        "id": "all",
+        "passed": true
+      }
+    ],
+    "expected": "weakened"
+  },
+  "inconclusive": {
+    "confirmatoryComplete": true,
+    "validityFailure": false,
+    "comparisons": [
+      {
+        "id": "static_obligation_effect",
+        "kind": "language",
+        "pointEstimate": 0.06,
+        "ciLower": -0.02,
+        "ciUpper": 0.12,
+        "adjustedPValue": 0.2
+      },
+      {
+        "id": "canonical_syntax_effect",
+        "kind": "language",
+        "pointEstimate": 0.03,
+        "ciLower": -0.01,
+        "ciUpper": 0.08,
+        "adjustedPValue": 0.3
+      },
+      {
+        "id": "structured_diagnostic_effect",
+        "kind": "diagnostic",
+        "pointEstimate": 0.02,
+        "ciLower": -0.02,
+        "ciUpper": 0.07,
+        "adjustedPValue": 0.4
+      }
+    ],
+    "modelEffects": [],
+    "complexityGuardrails": [
+      {
+        "id": "all",
+        "passed": true
+      }
+    ],
+    "expected": "inconclusive"
+  },
+  "falsifiedByBounds": {
+    "confirmatoryComplete": true,
+    "validityFailure": false,
+    "comparisons": [
+      {
+        "id": "static_obligation_effect",
+        "kind": "language",
+        "pointEstimate": 0.02,
+        "ciLower": -0.01,
+        "ciUpper": 0.09,
+        "adjustedPValue": 0.5
+      },
+      {
+        "id": "canonical_syntax_effect",
+        "kind": "language",
+        "pointEstimate": 0.01,
+        "ciLower": -0.02,
+        "ciUpper": 0.08,
+        "adjustedPValue": 0.6
+      },
+      {
+        "id": "structured_diagnostic_effect",
+        "kind": "diagnostic",
+        "pointEstimate": 0,
+        "ciLower": -0.03,
+        "ciUpper": 0.07,
+        "adjustedPValue": 0.7
+      }
+    ],
+    "modelEffects": [],
+    "complexityGuardrails": [
+      {
+        "id": "all",
+        "passed": true
+      }
+    ],
+    "expected": "falsified"
+  },
+  "falsifiedByHarm": {
+    "confirmatoryComplete": true,
+    "validityFailure": false,
+    "comparisons": [
+      {
+        "id": "static_obligation_effect",
+        "kind": "language",
+        "pointEstimate": -0.12,
+        "ciLower": -0.2,
+        "ciUpper": -0.03,
+        "adjustedPValue": 0.01
+      },
+      {
+        "id": "canonical_syntax_effect",
+        "kind": "language",
+        "pointEstimate": 0.05,
+        "ciLower": -0.02,
+        "ciUpper": 0.12,
+        "adjustedPValue": 0.2
+      },
+      {
+        "id": "structured_diagnostic_effect",
+        "kind": "diagnostic",
+        "pointEstimate": 0.04,
+        "ciLower": -0.03,
+        "ciUpper": 0.11,
+        "adjustedPValue": 0.3
+      }
+    ],
+    "modelEffects": [],
+    "complexityGuardrails": [
+      {
+        "id": "all",
+        "passed": true
+      }
+    ],
+    "expected": "falsified"
+  },
+  "falsifiedByGuardrail": {
+    "confirmatoryComplete": true,
+    "validityFailure": false,
+    "comparisons": [
+      {
+        "id": "static_obligation_effect",
+        "kind": "language",
+        "pointEstimate": 0.12,
+        "ciLower": 0.02,
+        "ciUpper": 0.2,
+        "adjustedPValue": 0.01
+      },
+      {
+        "id": "canonical_syntax_effect",
+        "kind": "language",
+        "pointEstimate": 0.11,
+        "ciLower": 0.01,
+        "ciUpper": 0.18,
+        "adjustedPValue": 0.04
+      },
+      {
+        "id": "structured_diagnostic_effect",
+        "kind": "diagnostic",
+        "pointEstimate": 0.1,
+        "ciLower": 0.01,
+        "ciUpper": 0.18,
+        "adjustedPValue": 0.04
+      }
+    ],
+    "modelEffects": [],
+    "complexityGuardrails": [
+      {
+        "id": "runtime_dependencies",
+        "passed": false
+      }
+    ],
+    "expected": "falsified"
+  }
+}
