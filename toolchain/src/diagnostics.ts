@@ -55,12 +55,13 @@ export function orderDiagnostics(inputs: DiagnosticV1[]): DiagnosticV1[] {
 }
 
 export function renderNdjson(diagnostics: DiagnosticV1[]): string {
-  return diagnostics.map((diagnostic) => JSON.stringify(diagnostic)).join("\n") +
+  const ordered = orderDiagnostics(diagnostics);
+  return ordered.map((diagnostic) => JSON.stringify(diagnostic)).join("\n") +
     (diagnostics.length === 0 ? "" : "\n");
 }
 
 export function renderText(diagnostics: DiagnosticV1[]): string {
-  return diagnostics
+  return orderDiagnostics(diagnostics)
     .map((diagnostic) => {
       const position = `${diagnostic.file}:${diagnostic.range.startLine + 1}:${diagnostic.range.startColumn + 1}`;
       const facts = {

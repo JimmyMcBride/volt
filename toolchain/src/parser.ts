@@ -62,8 +62,23 @@ class Parser {
     return this.take();
   }
   private fail(code: string, message: string, token: Token, expected?: string): never {
+    const phase =
+      code.startsWith("K_LEX")
+        ? "lex"
+        : code.startsWith("K_NAME") ||
+            code.startsWith("K_IMPORT") ||
+            code.startsWith("K_RESOLVE") ||
+            code.startsWith("K_MODULE")
+          ? "resolve"
+          : code.startsWith("K_TYPE")
+            ? "type"
+            : code.startsWith("K_EFFECT")
+              ? "effect"
+              : code.startsWith("K_MATCH")
+                ? "exhaustiveness"
+                : "parse";
     throw new ParseFailure(makeDiagnostic({
-      phase: code.startsWith("K_NAME") ? "resolve" : "parse",
+      phase,
       code,
       message,
       file: this.file,

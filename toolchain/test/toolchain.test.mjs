@@ -18,7 +18,8 @@ import {
   renderNdjson,
   renderText,
   run,
-  serializeValue
+  serializeValue,
+  stableJson
 } from "../../dist/toolchain/src/index.js";
 
 const root = resolve(import.meta.dirname, "../..");
@@ -209,6 +210,75 @@ test("text and NDJSON diagnostics carry the same ordered facts and UTF-8 byte ra
   assert.deepEqual(JSON.parse(ndjson), result.diagnostics[0]);
 });
 
+test("diagnostic renderers canonically order and resequence their input", () => {
+  const range = {
+    startByte: 0,
+    endByte: 1,
+    startLine: 0,
+    startColumn: 0,
+    endLine: 0,
+    endColumn: 1
+  };
+  const diagnostics = [
+    {
+      schemaVersion: 1,
+      sequence: 77,
+      phase: "type",
+      code: "K_TYPE_Z",
+      severity: "error",
+      message: "z",
+      file: "z.volt",
+      range,
+      related: [],
+      repairs: []
+    },
+    {
+      schemaVersion: 1,
+      sequence: 99,
+      phase: "parse",
+      code: "K_PARSE_A",
+      severity: "error",
+      message: "a",
+      file: "a.volt",
+      range,
+      related: [],
+      repairs: []
+    }
+  ];
+
+  const ndjson = renderNdjson(diagnostics)
+    .trimEnd()
+    .split("\n")
+    .map((line) => JSON.parse(line));
+  assert.deepEqual(
+    ndjson.map(({ file, sequence }) => ({ file, sequence })),
+    [
+      { file: "a.volt", sequence: 0 },
+      { file: "z.volt", sequence: 1 }
+    ]
+  );
+  assert.match(renderText(diagnostics), /^v1#0 a\.volt:/u);
+  assert.match(renderText(diagnostics), /\nv1#1 z\.volt:/u);
+  assert.deepEqual(
+    diagnostics.map(({ file, sequence }) => ({ file, sequence })),
+    [
+      { file: "z.volt", sequence: 77 },
+      { file: "a.volt", sequence: 99 }
+    ]
+  );
+});
+
+test("stable JSON maps unsupported JavaScript values to null", () => {
+  assert.equal(stableJson(undefined), "null");
+  assert.equal(stableJson(() => undefined), "null");
+  assert.equal(stableJson(Symbol("unsupported")), "null");
+  assert.equal(stableJson([undefined]), "[null]");
+  assert.equal(stableJson({ unsupported: undefined }), '{"unsupported":null}');
+  assert.deepEqual(JSON.parse(stableJson({ unsupported: undefined })), {
+    unsupported: null
+  });
+});
+
 test("tree-walking interpreter is deterministic and injects synchronous capabilities", () => {
   const pure = compileSources([source("main.volt", `
     module main
@@ -216,6 +286,10 @@ test("tree-walking interpreter is deterministic and injects synchronous capabili
   `)]);
   assert.deepEqual(pure.diagnostics, []);
   assert.equal(run(pure, "main.calculate").value, 7n);
+  const unqualified = run(pure, "calculate");
+  assert.equal(unqualified.internalFailure, true);
+  assert.equal(unqualified.diagnostics[0].code, "V_RUNTIME_ENTRYPOINT");
+  assert.match(unqualified.diagnostics[0].message, /fully qualified/u);
 
   const effectful = compileSources([source("time.volt", `
     module time
@@ -232,6 +306,30 @@ test("tree-walking interpreter is deterministic and injects synchronous capabili
   const extra = run(pure, "main.calculate", [clockAdapter("time::effect::Clock")]);
   assert.equal(extra.internalFailure, true);
   assert.equal(extra.diagnostics[0].code, "V_RUNTIME_ADAPTER_SET");
+});
+
+test("parser-originated diagnostic codes retain their owning phase", () => {
+  const typeBoundary = compileSources([
+    source("missing_boundary.volt", `
+      module missing_boundary
+      pub fn broken(value) -> Int { 1 }
+    `)
+  ]);
+  assert.equal(
+    typeBoundary.diagnostics.find((diagnostic) => diagnostic.code === "K_TYPE_BOUNDARY")?.phase,
+    "type"
+  );
+
+  const importAlias = compileSources([
+    source("import_alias.volt", `
+      module import_alias
+      import modules.domain.{Person as User}
+    `)
+  ]);
+  assert.equal(
+    importAlias.diagnostics.find((diagnostic) => diagnostic.code === "K_IMPORT_ALIAS")?.phase,
+    "resolve"
+  );
 });
 
 test("deterministic database and notification adapters isolate state", () => {

@@ -409,6 +409,13 @@ export function run(
       return { diagnostics: compilation.diagnostics, internalFailure: false };
     }
     const separator = entry.lastIndexOf(".");
+    if (separator <= 0 || separator === entry.length - 1) {
+      throw new RuntimeFailure(
+        "V_RUNTIME_ENTRYPOINT",
+        `entrypoint ${entry} must be fully qualified as module.function`,
+        true
+      );
+    }
     const moduleName = entry.slice(0, separator);
     const functionName = entry.slice(separator + 1);
     const ast = compilation.ast.find((item) => item.module === moduleName);

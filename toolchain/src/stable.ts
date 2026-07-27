@@ -20,7 +20,14 @@ export function stableJson(value: unknown): string {
       .join(",")}}`;
   }
   if (typeof value === "bigint") return JSON.stringify(value.toString());
-  return JSON.stringify(value);
+  if (
+    value === undefined ||
+    typeof value === "function" ||
+    typeof value === "symbol"
+  ) {
+    return "null";
+  }
+  return JSON.stringify(value) ?? "null";
 }
 
 export function typeText(type: TypeRef): string {
