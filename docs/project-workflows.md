@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-27T05:12:53Z"
+updated: "2026-07-27T17:39:10Z"
 ---
 ## Project Workflow
 
@@ -18,15 +18,27 @@ updated: "2026-07-27T05:12:53Z"
 - Canonical sequencing: GitHub Milestones and Projects.
 - Local Plan Markdown must not mirror canonical planning content.
 - Plan must authorize any manual fallback before planning objects are created outside Plan.
+- The active pre-calibration amendment is [Issue #15](https://github.com/JimmyMcBride/volt/issues/15), canonical camelCase identifiers.
+
+## Naming-Migration Workflow
+
+- Treat snake_case-to-camelCase as a breaking source migration, not a formatter rewrite.
+- Keep the lexer broad enough to report source-located naming diagnostics.
+- Reject underscores and wrong case before semantic resolution.
+- Preserve research metric/task/condition IDs, diagnostic codes, JSON keys, CLI flags, and baseline-language conventions.
+- Regenerate the content-addressed benchmark corpus from its generator; never hand-edit generated task JSON.
+- Verify generation is idempotent and all 16 expected solutions plus 128 retained mutants still satisfy their frozen outcomes.
+- Do not run live calibration or consume provider spend as part of migration verification.
 
 ## Verification Commands
 
 - `npm run check:research`: validate approved protocol v1.1 and research evidence contracts.
-- `npm run check:language`: validate the Issue #4 kernel contract and all conformance inputs.
+- `npm run check:language`: validate the kernel contract and all conformance inputs.
 - `npm run build`: compile the reference toolchain with strict TypeScript 6.
-- `npm run check:toolchain`: validate toolchain schemas, the ablation profile hash, source-size guardrail, and zero runtime dependencies.
-- `npm run check:benchmark`: validate all 16 tasks, hashes, public and hidden assertions, retained mutants, treatment parity, descriptive baseline parity, schemas, authorization gates, and offline network/spend isolation.
-- `npm run benchmark:offline`: run deterministic fake/replay calibration trajectories and write ignored content-addressed artifacts without provider calls.
+- `npm run check:toolchain`: validate toolchain schemas, checker-profile hash, source-size guardrail, and zero runtime dependencies.
+- `npm run check:benchmark`: validate all 16 tasks, hashes, assertions, 128 retained mutants, treatment parity, descriptive baseline parity, schemas, authorization gates, and offline network/spend isolation.
+- `npm run benchmark:generate`: regenerate content-addressed corpus and baseline artifacts after approved source-contract changes.
+- `npm run benchmark:offline`: run deterministic fake/replay trajectories and write ignored content-addressed artifacts without provider calls.
 - `npm run verify`: run all contract validators, compile the toolchain, and execute all deterministic tests.
 - `plan check --project .`: validate Plan/GitHub-backed project state.
 - `brain context audit --project .`: audit durable context after meaningful changes.

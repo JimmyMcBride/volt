@@ -4,6 +4,6 @@ pub effect Clock {
   fn now() -> Int
 }
 
-pub fn current_time() uses {Clock} -> Int {
+pub fn currentTime() uses {Clock} -> Int {
   Clock.now()
 }

@@ -1,4 +1,4 @@
-module bad_naming
+module badNaming
 
 pub fn BadName() -> Int {
   1

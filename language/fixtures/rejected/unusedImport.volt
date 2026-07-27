@@ -1,4 +1,4 @@
-module unused_import
+module unusedImport
 
 import modules.domain.{Person}
 

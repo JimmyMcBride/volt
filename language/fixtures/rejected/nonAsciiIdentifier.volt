@@ -1,4 +1,4 @@
-module non_ascii_identifier
+module nonAsciiIdentifier
 
 pub fn café() -> Int {
   1

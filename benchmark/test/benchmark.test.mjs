@@ -95,6 +95,12 @@ test("condition adapters isolate their named treatment and preserve diagnostic f
     compileCondition("alias_permissive", aliased, { aliasManifest: aliases }).normalizedAstHash,
     compileCondition("volt_full", canonical).normalizedAstHash
   );
+  assert.equal(
+    compileCondition("alias_permissive", {
+      "aliases.volt": "module aliases\npublic function snake_case() -> Int { 1 }\n"
+    }, { aliasManifest: aliases }).compilation.diagnostics[0]?.code,
+    "K_NAME_UNDERSCORE"
+  );
 });
 
 test("trajectory runner captures first submission, limits repair, hides private outcomes, and replays", async () => {

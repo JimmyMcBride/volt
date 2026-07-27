@@ -19,6 +19,7 @@ export const ABLATION_PROFILE = {
     "K_IMPORT_WILDCARD", "K_LEX_IDENTIFIER_ASCII", "K_LEX_LITERAL", "K_LEX_SEMICOLON",
     "K_LEX_TOKEN", "K_LEX_TRAILING_COMMA", "K_MODULE_FILE_MISMATCH", "K_NAME_CONSTRUCTOR_COLLISION",
     "K_NAME_CONVENTION", "K_NAME_DUPLICATE", "K_NAME_PATTERN_DUPLICATE", "K_NAME_SHADOWING",
+    "K_NAME_UNDERSCORE",
     "K_PARSE_ALTERNATIVE_SPELLING", "K_PARSE_EXPECTED", "K_RESOLVE_NAME", "K_TYPE_BOUNDARY",
     "K_TYPE_CONDITION", "K_TYPE_LOCAL_OPERATOR"
   ],
@@ -182,7 +183,7 @@ function addTyped(
 }
 
 function namingValid(name: string, upper: boolean): boolean {
-  return upper ? /^[A-Z][A-Za-z0-9]*$/u.test(name) : /^[a-z][a-z0-9_]*$/u.test(name);
+  return upper ? /^[A-Z][A-Za-z0-9]*$/u.test(name) : /^[a-z][A-Za-z0-9]*$/u.test(name);
 }
 
 function buildState(asts: AstV1[], mode: CheckerMode): CheckState {
@@ -643,7 +644,7 @@ function validateDeclarations(state: CheckState): void {
         for (const field of declaration.fields) {
           if (!namingValid(field.name, false)) {
             addDiagnostic(state, {
-              phase: "resolve", code: "K_NAME_CONVENTION", message: `${field.name} violates lower_snake_case`,
+              phase: "resolve", code: "K_NAME_CONVENTION", message: `${field.name} violates lowerCamelCase`,
               file: field.location.file, range: field.location.range
             });
           }
@@ -661,7 +662,7 @@ function validateDeclarations(state: CheckState): void {
         for (const operation of declaration.operations) {
           if (!namingValid(operation.name, false)) {
             addDiagnostic(state, {
-              phase: "resolve", code: "K_NAME_CONVENTION", message: `${operation.name} violates lower_snake_case`,
+              phase: "resolve", code: "K_NAME_CONVENTION", message: `${operation.name} violates lowerCamelCase`,
               file: operation.location.file, range: operation.location.range
             });
           }
@@ -681,7 +682,7 @@ function validateDeclarations(state: CheckState): void {
         for (const param of declaration.params) {
           if (!namingValid(param.name, false)) {
             addDiagnostic(state, {
-              phase: "resolve", code: "K_NAME_CONVENTION", message: `${param.name} violates lower_snake_case`,
+              phase: "resolve", code: "K_NAME_CONVENTION", message: `${param.name} violates lowerCamelCase`,
               file: param.location.file, range: param.location.range
             });
           }

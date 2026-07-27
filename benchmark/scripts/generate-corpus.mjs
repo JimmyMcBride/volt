@@ -24,7 +24,7 @@ const seedFiles = {
 import domain.{Registration, StoreError}
 
 pub effect RegistrationStore {
-  fn find(event_id: Int, person_id: Int) -> Option<Registration>
+  fn find(eventId: Int, personId: Int) -> Option<Registration>
   fn save(registration: Registration) -> Result<Unit, StoreError>
 }
 
@@ -67,40 +67,40 @@ pub record Person {
 }
 
 pub record Registration {
-  event_id: Int,
-  person_id: Int,
-  created_at: Int
+  eventId: Int,
+  personId: Int,
+  createdAt: Int
 }
 
 pub record AuditStamp {
   value: Int
 }
 `,
-  "src/registration_service.volt": `module registration_service
+  "src/registrationService.volt": `module registrationService
 
 import capabilities.{Clock, RegistrationStore}
 import domain.{Event, EventState, Person, Registration, RegistrationError}
 
-pub fn within_capacity(event: Event) -> Bool {
+pub fn withinCapacity(event: Event) -> Bool {
   event.registered < event.capacity
 }
 
-pub fn registration_code() -> Int {
+pub fn registrationCode() -> Int {
   1
 }
 
-pub fn event_code(event: Event) -> Int {
+pub fn eventCode(event: Event) -> Int {
   match event.state {
     Open -> 1
     Closed -> 0
   }
 }
 
-pub fn person_code(person: Person) -> Int {
+pub fn personCode(person: Person) -> Int {
   person.id
 }
 
-pub fn calibration_code() -> Int {
+pub fn calibrationCode() -> Int {
   7
 }
 
@@ -114,13 +114,13 @@ pub fn register(event: Event, person: Person)
         Error(EventFull)
       } else {
         let registration = Registration {
-          event_id: event.id,
-          person_id: person.id,
-          created_at: Clock.now()
+          eventId: event.id,
+          personId: person.id,
+          createdAt: Clock.now()
         } in
         match RegistrationStore.save(registration) {
           Ok(saved) -> Ok(registration)
-          Error(store_error) -> Error(StoreFailed)
+          Error(storeError) -> Error(StoreFailed)
         }
       }
       Closed -> Error(RegistrationClosed)
@@ -132,9 +132,9 @@ pub fn register(event: Event, person: Person)
 
 import capabilities.{Clock, RegistrationStore}
 import domain.{Event, EventState, Person}
-import registration_service.{register}
+import registrationService.{register}
 
-pub fn registration_test()
+pub fn registrationTest()
   uses {Clock, RegistrationStore}
   -> Result<Unit, String> {
   let event = Event { id: 1, capacity: 2, registered: 0, state: Open } in
@@ -148,8 +148,8 @@ pub fn registration_test()
   "volt.json": `${JSON.stringify({
     schemaVersion: 1,
     sourceRoot: "src",
-    run: "tests.registration_test",
-    tests: ["tests.registration_test"],
+    run: "tests.registrationTest",
+    tests: ["tests.registrationTest"],
     capabilities: [
       { effect: "capabilities::effect::RegistrationStore", adapter: "database" },
       { effect: "capabilities::effect::Clock", adapter: "clock", config: { values: [100] } },
@@ -174,13 +174,13 @@ function addState(files, variant) {
   );
   next = replace(
     next,
-    "src/registration_service.volt",
+    "src/registrationService.volt",
     "    Closed -> 0",
     `    Closed -> 0\n    ${variant} -> 0`
   );
   next = replace(
     next,
-    "src/registration_service.volt",
+    "src/registrationService.volt",
     "      Closed -> Error(RegistrationClosed)",
     `      Closed -> Error(RegistrationClosed)\n      ${variant} -> Error(RegistrationClosed)`
   );
@@ -191,14 +191,14 @@ function addRegistrationField(files, field, value) {
   let next = replace(
     files,
     "src/domain.volt",
-    "  person_id: Int,\n  created_at: Int",
-    `  person_id: Int,\n  ${field}: Int,\n  created_at: Int`
+    "  personId: Int,\n  createdAt: Int",
+    `  personId: Int,\n  ${field}: Int,\n  createdAt: Int`
   );
   next = replace(
     next,
-    "src/registration_service.volt",
-    "          person_id: person.id,\n          created_at: Clock.now()",
-    `          person_id: person.id,\n          ${field}: ${value},\n          created_at: Clock.now()`
+    "src/registrationService.volt",
+    "          personId: person.id,\n          createdAt: Clock.now()",
+    `          personId: person.id,\n          ${field}: ${value},\n          createdAt: Clock.now()`
   );
   return next;
 }
@@ -222,24 +222,24 @@ function addPersonField(files, field, value) {
 function contractChange(files, functionName, beforeParams, afterParams, beforeExpression, afterExpression) {
   let next = replace(
     files,
-    "src/registration_service.volt",
+    "src/registrationService.volt",
     `pub fn ${functionName}(${beforeParams})`,
     `pub fn ${functionName}(${afterParams})`
   );
-  next = replace(next, "src/registration_service.volt", beforeExpression, afterExpression);
+  next = replace(next, "src/registrationService.volt", beforeExpression, afterExpression);
   return next;
 }
 
 function addNotificationEffect(files, functionName, parameterText, returnType, originalBody, message) {
   let next = replace(
     files,
-    "src/registration_service.volt",
+    "src/registrationService.volt",
     "import capabilities.{Clock, RegistrationStore}",
     "import capabilities.{Clock, Notification, RegistrationStore}"
   );
   next = replace(
     next,
-    "src/registration_service.volt",
+    "src/registrationService.volt",
     `pub fn ${functionName}(${parameterText}) -> ${returnType} {\n  ${originalBody}\n}`,
     `pub fn ${functionName}(${parameterText}) uses {Notification} -> ${returnType} {\n  let sent = Notification.send("${message}") in\n  ${originalBody}\n}`
   );
@@ -249,15 +249,15 @@ function addNotificationEffect(files, functionName, parameterText, returnType, o
 function changeRegisterContract(files) {
   let next = replace(
     files,
-    "src/registration_service.volt",
+    "src/registrationService.volt",
     "pub fn register(event: Event, person: Person)",
-    "pub fn register(event: Event, person: Person, request_id: Int)"
+    "pub fn register(event: Event, person: Person, requestId: Int)"
   );
   next = replace(
     next,
-    "src/registration_service.volt",
-    "created_at: Clock.now()",
-    "created_at: Clock.now() + request_id - request_id"
+    "src/registrationService.volt",
+    "createdAt: Clock.now()",
+    "createdAt: Clock.now() + requestId - requestId"
   );
   next = replace(
     next,
@@ -290,7 +290,7 @@ const operations = {
     family: "state_extension",
     category: "adt_variant",
     wording: "Add the Paused event state and preserve closed-registration behavior.",
-    files: ["src/domain.volt", "src/registration_service.volt"],
+    files: ["src/domain.volt", "src/registrationService.volt"],
     targetFile: "src/domain.volt",
     targetText: "  Paused",
     apply: (files) => addState(files, "Paused")
@@ -299,40 +299,40 @@ const operations = {
     corpus: "calibration",
     family: "invariant_change",
     category: "function_contract",
-    wording: "Require a minimum person identifier in person_code without weakening existing registration checks.",
-    files: ["src/registration_service.volt"],
-    targetFile: "src/registration_service.volt",
-    targetText: "minimum_id: Int",
+    wording: "Require a minimum person identifier in personCode without weakening existing registration checks.",
+    files: ["src/registrationService.volt"],
+    targetFile: "src/registrationService.volt",
+    targetText: "minimumId: Int",
     apply: (files) => contractChange(
       files,
-      "person_code",
+      "personCode",
       "person: Person",
-      "person: Person, minimum_id: Int",
+      "person: Person, minimumId: Int",
       "  person.id\n}",
-      "  if person.id >= minimum_id { person.id } else { 0 }\n}"
+      "  if person.id >= minimumId { person.id } else { 0 }\n}"
     )
   },
   calibration_effect_addition: {
     corpus: "calibration",
     family: "effect_addition",
     category: "effect_set",
-    wording: "Make calibration_code announce its use through Notification.",
-    files: ["src/registration_service.volt"],
-    targetFile: "src/registration_service.volt",
-    targetText: "calibration_code() uses {Notification}",
-    apply: (files) => addNotificationEffect(files, "calibration_code", "", "Int", "7", "calibration")
+    wording: "Make calibrationCode announce its use through Notification.",
+    files: ["src/registrationService.volt"],
+    targetFile: "src/registrationService.volt",
+    targetText: "calibrationCode() uses {Notification}",
+    apply: (files) => addNotificationEffect(files, "calibrationCode", "", "Int", "7", "calibration")
   },
   calibration_cross_module_contract_change: {
     corpus: "calibration",
     family: "cross_module_contract_change",
     category: "function_contract",
-    wording: "Add an offset parameter to registration_code and preserve all registration behavior.",
-    files: ["src/registration_service.volt"],
-    targetFile: "src/registration_service.volt",
-    targetText: "registration_code(offset: Int)",
+    wording: "Add an offset parameter to registrationCode and preserve all registration behavior.",
+    files: ["src/registrationService.volt"],
+    targetFile: "src/registrationService.volt",
+    targetText: "registrationCode(offset: Int)",
     apply: (files) => contractChange(
       files,
-      "registration_code",
+      "registrationCode",
       "",
       "offset: Int",
       "  1\n}",
@@ -344,7 +344,7 @@ const operations = {
     family: "state_extension",
     category: "adt_variant",
     wording: "Add Waitlisted to EventState and update every exhaustive match.",
-    files: ["src/domain.volt", "src/registration_service.volt"],
+    files: ["src/domain.volt", "src/registrationService.volt"],
     targetFile: "src/domain.volt",
     targetText: "  Waitlisted",
     apply: (files) => addState(files, "Waitlisted")
@@ -353,18 +353,18 @@ const operations = {
     corpus: "confirmatory",
     family: "state_extension",
     category: "record_field",
-    wording: "Add a source_code field to Registration and propagate every constructor.",
-    files: ["src/domain.volt", "src/registration_service.volt"],
+    wording: "Add a sourceCode field to Registration and propagate every constructor.",
+    files: ["src/domain.volt", "src/registrationService.volt"],
     targetFile: "src/domain.volt",
-    targetText: "  source_code: Int",
-    apply: (files) => addRegistrationField(files, "source_code", "1")
+    targetText: "  sourceCode: Int",
+    apply: (files) => addRegistrationField(files, "sourceCode", "1")
   },
   state_extension_3: {
     corpus: "confirmatory",
     family: "state_extension",
     category: "adt_variant",
     wording: "Add Cancelled to EventState and preserve all non-open rejection behavior.",
-    files: ["src/domain.volt", "src/registration_service.volt"],
+    files: ["src/domain.volt", "src/registrationService.volt"],
     targetFile: "src/domain.volt",
     targetText: "  Cancelled",
     apply: (files) => addState(files, "Cancelled")
@@ -373,13 +373,13 @@ const operations = {
     corpus: "confirmatory",
     family: "invariant_change",
     category: "function_contract",
-    wording: "Reserve capacity in within_capacity through an explicit reserve parameter.",
-    files: ["src/registration_service.volt"],
-    targetFile: "src/registration_service.volt",
+    wording: "Reserve capacity in withinCapacity through an explicit reserve parameter.",
+    files: ["src/registrationService.volt"],
+    targetFile: "src/registrationService.volt",
     targetText: "reserve: Int",
     apply: (files) => contractChange(
       files,
-      "within_capacity",
+      "withinCapacity",
       "event: Event",
       "event: Event, reserve: Int",
       "  event.registered < event.capacity\n}",
@@ -390,13 +390,13 @@ const operations = {
     corpus: "confirmatory",
     family: "invariant_change",
     category: "function_contract",
-    wording: "Make registration_code accept a non-negative offset as an explicit contract input.",
-    files: ["src/registration_service.volt"],
-    targetFile: "src/registration_service.volt",
+    wording: "Make registrationCode accept a non-negative offset as an explicit contract input.",
+    files: ["src/registrationService.volt"],
+    targetFile: "src/registrationService.volt",
     targetText: "offset: Int",
     apply: (files) => contractChange(
       files,
-      "registration_code",
+      "registrationCode",
       "",
       "offset: Int",
       "  1\n}",
@@ -417,23 +417,23 @@ const operations = {
     corpus: "confirmatory",
     family: "effect_addition",
     category: "effect_set",
-    wording: "Declare and invoke Notification from registration_code.",
-    files: ["src/registration_service.volt"],
-    targetFile: "src/registration_service.volt",
-    targetText: "registration_code() uses {Notification}",
-    apply: (files) => addNotificationEffect(files, "registration_code", "", "Int", "1", "registration")
+    wording: "Declare and invoke Notification from registrationCode.",
+    files: ["src/registrationService.volt"],
+    targetFile: "src/registrationService.volt",
+    targetText: "registrationCode() uses {Notification}",
+    apply: (files) => addNotificationEffect(files, "registrationCode", "", "Int", "1", "registration")
   },
   effect_addition_2: {
     corpus: "confirmatory",
     family: "effect_addition",
     category: "effect_set",
-    wording: "Declare and invoke Notification from event_code.",
-    files: ["src/registration_service.volt"],
-    targetFile: "src/registration_service.volt",
-    targetText: "event_code(event: Event) uses {Notification}",
+    wording: "Declare and invoke Notification from eventCode.",
+    files: ["src/registrationService.volt"],
+    targetFile: "src/registrationService.volt",
+    targetText: "eventCode(event: Event) uses {Notification}",
     apply: (files) => addNotificationEffect(
       files,
-      "event_code",
+      "eventCode",
       "event: Event",
       "Int",
       "match event.state {\n    Open -> 1\n    Closed -> 0\n  }",
@@ -444,20 +444,20 @@ const operations = {
     corpus: "confirmatory",
     family: "effect_addition",
     category: "effect_set",
-    wording: "Declare and invoke Notification from person_code.",
-    files: ["src/registration_service.volt"],
-    targetFile: "src/registration_service.volt",
-    targetText: "person_code(person: Person) uses {Notification}",
-    apply: (files) => addNotificationEffect(files, "person_code", "person: Person", "Int", "person.id", "person")
+    wording: "Declare and invoke Notification from personCode.",
+    files: ["src/registrationService.volt"],
+    targetFile: "src/registrationService.volt",
+    targetText: "personCode(person: Person) uses {Notification}",
+    apply: (files) => addNotificationEffect(files, "personCode", "person: Person", "Int", "person.id", "person")
   },
   cross_module_contract_change_1: {
     corpus: "confirmatory",
     family: "cross_module_contract_change",
     category: "function_contract",
-    wording: "Add a request_id parameter to register and update every caller.",
-    files: ["src/registration_service.volt", "src/tests.volt"],
-    targetFile: "src/registration_service.volt",
-    targetText: "request_id: Int",
+    wording: "Add a requestId parameter to register and update every caller.",
+    files: ["src/registrationService.volt", "src/tests.volt"],
+    targetFile: "src/registrationService.volt",
+    targetText: "requestId: Int",
     apply: changeRegisterContract
   },
   cross_module_contract_change_2: {
@@ -474,13 +474,13 @@ const operations = {
     corpus: "confirmatory",
     family: "cross_module_contract_change",
     category: "function_contract",
-    wording: "Add an explicit fallback parameter to event_code and preserve exhaustive state handling.",
-    files: ["src/registration_service.volt"],
-    targetFile: "src/registration_service.volt",
+    wording: "Add an explicit fallback parameter to eventCode and preserve exhaustive state handling.",
+    files: ["src/registrationService.volt"],
+    targetFile: "src/registrationService.volt",
     targetText: "fallback: Int",
     apply: (files) => contractChange(
       files,
-      "event_code",
+      "eventCode",
       "event: Event",
       "event: Event, fallback: Int",
       "    Closed -> 0",
@@ -500,7 +500,7 @@ function mutation(id, category, killedBy, path, source) {
 }
 
 function taskMutations(id, operation, expectedFiles) {
-  const servicePath = "src/registration_service.volt";
+  const servicePath = "src/registrationService.volt";
   const service = expectedFiles[servicePath];
   const targetSource = expectedFiles[operation.targetFile];
   const withoutTarget = targetSource.replace(operation.targetText, "");
@@ -543,8 +543,8 @@ function taskMutations(id, operation, expectedFiles) {
   );
   assert.notEqual(unrelatedRegression, service);
   const outputDrift = service.replace(
-    "Error(store_error) -> Error(StoreFailed)",
-    "Error(store_error) -> Error(EventFull)"
+    "Error(storeError) -> Error(StoreFailed)",
+    "Error(storeError) -> Error(EventFull)"
   );
   assert.notEqual(outputDrift, service);
 
@@ -611,7 +611,7 @@ const aliasManifest = {
 const seed = {
   schemaVersion: 1,
   repositoryId: "event-registration-seed-v1",
-  modules: ["domain", "registration_service", "capabilities", "tests"],
+  modules: ["domain", "registrationService", "capabilities", "tests"],
   capabilities: ["in_memory_database", "clock", "notification"],
   networkAllowed: false,
   files: seedFiles
@@ -640,7 +640,7 @@ const tasks = Object.entries(operations)
       publicTask: {
         wording: operation.wording,
         visibleFiles: Object.keys(seedFiles).sort(),
-        publicTests: ["tests.registration_test"],
+        publicTests: ["tests.registrationTest"],
         allowedTools: ["inspect", "edit", "submit"],
         nonGoals: [
           "Do not add language features.",
@@ -654,7 +654,7 @@ const tasks = Object.entries(operations)
         contracts: [`${operation.category}::${id}`],
         effects: operation.category === "effect_set" ? ["capabilities::effect::Notification"] : [],
         astObligations: [`${operation.category}::complete`],
-        relatedTests: ["tests::function::registration_test"]
+        relatedTests: ["tests::function::registrationTest"]
       },
       preservationAssertions: [
         {
@@ -665,12 +665,12 @@ const tasks = Object.entries(operations)
         {
           id: `${id}:preservation:capacity`,
           description: "Capacity remains a typed registration failure.",
-          file: "src/registration_service.volt"
+          file: "src/registrationService.volt"
         },
         {
           id: `${id}:preservation:idempotency`,
           description: "Existing registrations remain idempotently rejected.",
-          file: "src/registration_service.volt"
+          file: "src/registrationService.volt"
         }
       ],
       invariants: [
@@ -714,7 +714,7 @@ const tasks = Object.entries(operations)
           assertion: {
             type: "preserves_source",
             file: "src/tests.volt",
-            text: "pub fn registration_test"
+            text: "pub fn registrationTest"
           }
         },
         {
@@ -723,7 +723,7 @@ const tasks = Object.entries(operations)
           hidden: true,
           assertion: {
             type: "preserves_source",
-            file: "src/registration_service.volt",
+            file: "src/registrationService.volt",
             text: "event.registered >= event.capacity"
           }
         },
@@ -733,7 +733,7 @@ const tasks = Object.entries(operations)
           hidden: true,
           assertion: {
             type: "preserves_source",
-            file: "src/registration_service.volt",
+            file: "src/registrationService.volt",
             text: "RegistrationStore.find(event.id, person.id)"
           }
         },
@@ -743,7 +743,7 @@ const tasks = Object.entries(operations)
           hidden: true,
           assertion: {
             type: "preserves_source",
-            file: "src/registration_service.volt",
+            file: "src/registrationService.volt",
             text: "Result<Registration, RegistrationError>"
           }
         }

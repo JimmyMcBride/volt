@@ -17,8 +17,8 @@
   "cases": [
     {
       "id": "sort_imports_and_effects",
-      "input": "module registration\n\nimport time.{Clock}\nimport domain.{StoreError, Registration, Person, Event}\n\npub fn register(event: Event, person: Person) uses {RegistrationStore, Clock} -> Result<Registration, StoreError> {\n  RegistrationStore.save(Registration { event_id: event.id, person_id: person.id })\n}\n",
-      "expected": "module registration\n\nimport domain.{Event, Person, Registration, StoreError}\nimport time.{Clock}\n\npub fn register(event: Event, person: Person) uses {Clock, RegistrationStore} -> Result<Registration, StoreError> {\n  RegistrationStore.save(Registration {\n    event_id: event.id,\n    person_id: person.id\n  })\n}\n"
+      "input": "module registration\n\nimport time.{Clock}\nimport domain.{StoreError, Registration, Person, Event}\n\npub fn register(event: Event, person: Person) uses {RegistrationStore, Clock} -> Result<Registration, StoreError> {\n  RegistrationStore.save(Registration { eventId: event.id, personId: person.id })\n}\n",
+      "expected": "module registration\n\nimport domain.{Event, Person, Registration, StoreError}\nimport time.{Clock}\n\npub fn register(event: Event, person: Person) uses {Clock, RegistrationStore} -> Result<Registration, StoreError> {\n  RegistrationStore.save(Registration {\n    eventId: event.id,\n    personId: person.id\n  })\n}\n"
     },
     {
       "id": "normalize_spacing",

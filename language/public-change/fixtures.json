@@ -8,7 +8,7 @@
       "obligationCode": "K_CHANGE_ADT_VARIANT",
       "affectedStableIds": [
         "registration::algebraic_data_type::RegistrationError::variant::Waitlisted",
-        "registration::function::describe_error"
+        "registration::function::describeError"
       ]
     },
     {
@@ -27,7 +27,7 @@
       "obligationCode": "K_CHANGE_FUNCTION_CONTRACT",
       "affectedStableIds": [
         "registration::function::register",
-        "tests::function::registers_person"
+        "tests::function::registersPerson"
       ]
     },
     {

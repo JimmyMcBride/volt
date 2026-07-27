@@ -36,6 +36,7 @@ const EXPECTED_REJECTION_CODES = new Set([
   "K_LEX_TRAILING_COMMA",
   "K_MATCH_CATCH_ALL",
   "K_NAME_CONVENTION",
+  "K_NAME_UNDERSCORE",
   "K_NAME_SHADOWING",
   "K_TYPE_BOUNDARY",
   "K_TYPE_RECORD_FIELDS"
@@ -53,6 +54,7 @@ const EXPECTED_STATIC_RULES = new Set([
   "explicit_imports",
   "ascii_identifiers",
   "canonical_naming",
+  "underscore_free_identifiers",
   "literal_contract",
   "function_boundary_types",
   "local_inference_only",
@@ -82,6 +84,7 @@ const EXPECTED_REJECTED_CATEGORIES = new Set([
   "trailing_comma",
   "non_ascii_identifier",
   "invalid_naming",
+  "underscore_identifier",
   "unsupported_literal",
   "missing_boundary_type",
   "implicit_conversion",
@@ -175,9 +178,9 @@ export function validateKernel({ kernel, grammar, schema, protocol }) {
   assertObject(kernel, "kernel");
   invariant(kernel.schemaVersion === 1, "kernel schemaVersion must be 1");
   invariant(kernel.kernelId === "volt-v0", "kernelId must be volt-v0");
-  invariant(kernel.version === "0.1.0", "kernel version must be 0.1.0");
+  invariant(kernel.version === "0.2.0", "kernel version must be 0.2.0");
   invariant(kernel.status === "approved", "kernel must remain approved");
-  invariant(kernel.source.issue === "https://github.com/JimmyMcBride/volt/issues/4", "kernel must cite Issue #4");
+  invariant(kernel.source.issue === "https://github.com/JimmyMcBride/volt/issues/15", "kernel must cite Issue #15");
   invariant(kernel.source.discussion === "https://github.com/JimmyMcBride/volt/discussions/1", "kernel must cite Discussion #1");
   assertExactSet(
     kernel.boundaries.owns,
@@ -212,6 +215,10 @@ export function validateKernel({ kernel, grammar, schema, protocol }) {
 
   invariant(kernel.sourceModel.encoding === "UTF-8", "source encoding must be UTF-8");
   invariant(kernel.sourceModel.extension === ".volt", "source extension must be .volt");
+  invariant(
+    kernel.sourceModel.modulePathPattern === "^[a-z][A-Za-z0-9]*(\\.[a-z][A-Za-z0-9]*)*$",
+    "module paths must use lowerCamelCase segments"
+  );
   invariant(kernel.sourceModel.oneModulePerFile === true, "one module per file is required");
   invariant(kernel.sourceModel.importAliasesAllowed === false, "import aliases must remain rejected");
   invariant(kernel.sourceModel.globImportsAllowed === false, "glob imports must remain rejected");
@@ -226,7 +233,28 @@ export function validateKernel({ kernel, grammar, schema, protocol }) {
   invariant(kernel.lexical.semicolons === false, "semicolons must remain rejected");
   invariant(kernel.lexical.trailingCommas === false, "trailing commas must remain rejected");
   invariant(kernel.lexical.blockComments === false, "block comments must remain deferred");
-  invariant(kernel.lexical.identifierPattern === "^[A-Za-z][A-Za-z0-9_]*$", "identifiers must remain ASCII");
+  invariant(
+    kernel.lexical.identifierPattern === "^[A-Za-z][A-Za-z0-9]*$",
+    "identifiers must be ASCII alphanumeric without underscores"
+  );
+  assertExactSet(
+    kernel.naming.lowerCamelCase,
+    new Set([
+      "module_segment",
+      "function",
+      "parameter",
+      "local_binding",
+      "record_field",
+      "effect_operation",
+      "imported_value_name"
+    ]),
+    "lowerCamelCase naming categories"
+  );
+  assertExactSet(
+    kernel.naming.upperCamelCase,
+    new Set(["record", "algebraic_data_type", "constructor", "effect", "imported_type_name"]),
+    "UpperCamelCase naming categories"
+  );
   invariant(kernel.lexical.string.normalization === "none", "strings must not be normalized");
   invariant(
     kernel.lexical.string.hashing === "exact_unicode_scalar_sequence",

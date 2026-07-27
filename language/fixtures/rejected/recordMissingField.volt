@@ -1,11 +1,11 @@
-module record_missing_field
+module recordMissingField
 
 pub record Person {
   id: Int,
   name: String
 }
 
-pub fn create_person(id: Int) -> Person {
+pub fn createPerson(id: Int) -> Person {
   Person {
     id: id
   }

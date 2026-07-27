@@ -44,13 +44,13 @@ function registrationScenario(compilation, {
       ?.fields.some((field) => field.name === "age") ? { age: 36n } : {})
   });
   const registration = record("domain::Registration", {
-    event_id: 1n,
-    person_id: 7n,
+    eventId: 1n,
+    personId: 7n,
     ...(compilation.ast
       .find((ast) => ast.module === "domain")
       ?.declarations.find((declaration) => declaration.kind === "record" && declaration.name === "Registration")
-      ?.fields.some((field) => field.name === "source_code") ? { source_code: 1n } : {}),
-    created_at: 100n
+      ?.fields.some((field) => field.name === "sourceCode") ? { sourceCode: 1n } : {}),
+    createdAt: 100n
   });
   const storeError = variant("domain::StoreError", "Unavailable");
   const adapters = [
@@ -71,12 +71,12 @@ function registrationScenario(compilation, {
     }
   ];
   const register = compilation.ast
-    .find((ast) => ast.module === "registration_service")
+    .find((ast) => ast.module === "registrationService")
     ?.declarations.find((declaration) => declaration.kind === "function" && declaration.name === "register");
   const args = register?.kind === "function" && register.params.length === 3
     ? [event, person, 99n]
     : [event, person];
-  return run(compilation, "registration_service.register", adapters, args);
+  return run(compilation, "registrationService.register", adapters, args);
 }
 
 function errorConstructor(result) {
