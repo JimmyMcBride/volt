@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://volt.dev/schema/diagnostic-v1.json",
+  "title": "DiagnosticV1",
+  "type": "object",
+  "required": ["schemaVersion", "sequence", "phase", "code", "severity", "message", "file", "range", "related", "repairs"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "sequence": {"type": "integer", "minimum": 0},
+    "phase": {"enum": ["lex", "parse", "resolve", "type", "effect", "exhaustiveness", "runtime"]},
+    "code": {"type": "string"},
+    "severity": {"enum": ["error", "warning"]},
+    "message": {"type": "string"},
+    "file": {"type": "string"},
+    "range": {"$ref": "#/$defs/range"},
+    "expected": {"type": "string"},
+    "actual": {"type": "string"},
+    "related": {"type": "array", "items": {"type": "object"}},
+    "repairs": {"type": "array", "items": {"type": "object"}},
+    "repository": {
+      "type": "object",
+      "required": ["affectedSymbols", "affectedDeclarations", "affectedFiles", "affectedSites", "missingPropagationSites", "dependencyReasons", "boundedRepairSurface"]
+    }
+  },
+  "$defs": {
+    "range": {
+      "type": "object",
+      "required": ["startByte", "endByte", "startLine", "startColumn", "endLine", "endColumn"],
+      "properties": {
+        "startByte": {"type": "integer", "minimum": 0},
+        "endByte": {"type": "integer", "minimum": 0},
+        "startLine": {"type": "integer", "minimum": 0},
+        "startColumn": {"type": "integer", "minimum": 0},
+        "endLine": {"type": "integer", "minimum": 0},
+        "endColumn": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

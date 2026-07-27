@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://volt.dev/schema/program-graph-v1.json",
+  "title": "ProgramGraphV1",
+  "type": "object",
+  "required": ["schemaVersion", "nodes", "edges"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "nodes": {"type": "array", "items": {"type": "object", "required": ["id", "kind", "module", "file"]}},
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["from", "to", "reason", "siteId"],
+        "properties": {
+          "from": {"type": "string"},
+          "to": {"type": "string"},
+          "reason": {"enum": ["defines", "references", "imports", "calls", "constrains", "matches", "uses-effect", "tested-by"]},
+          "siteId": {"type": "string"}
+        }
+      }
+    }
+  }
+}

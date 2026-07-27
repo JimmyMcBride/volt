@@ -1,7 +1,7 @@
 ---
-updated: "2026-07-27T04:04:52Z"
+updated: "2026-07-27T05:12:53Z"
 ---
-Volt now has an approved, executable language-kernel contract. It still has no compiler or runtime implementation. Issue #4 owns the canonical v0 grammar, static semantics, exact effects, exhaustive matching, public-change obligations, formatter contract, and conformance inputs. Issue #5 owns the future compiler, interpreter, DiagnosticV1, program graph, and executable conformance behavior.
+Volt has an approved language-kernel contract and an implemented Issue #5 reference toolchain. Issue #4 owns the canonical v0 grammar and semantics. `toolchain/` owns the strict TypeScript lexer-through-interpreter pipeline, two checker modes, versioned AST/IR/graph/diagnostic contracts, repository impact facts, deterministic capabilities, manifest loading, formatter, and CLI.
 
 ## Current Boundaries
 
@@ -10,6 +10,7 @@ Volt now has an approved, executable language-kernel contract. It still has no c
 - `docs/`: durable knowledge, not canonical specifications.
 - `research/`: approved protocol v1.1, evidence, schemas, metrics, and fixtures.
 - `language/`: machine-readable Issue #4 kernel contract and future compiler conformance inputs.
+- `toolchain/`: executable Issue #5 reference frontend, interpreter, schemas, and conformance tests.
 - GitHub Discussion #1: canonical shaping.
 - GitHub Issues: canonical specs and execution readiness.
 - GitHub Milestones/Projects: sequencing.
@@ -34,17 +35,17 @@ Volt now has an approved, executable language-kernel contract. It still has no c
 - Approved protocol v1.1 adds deterministic research-layer safe-evolution measures; both Volt hypotheses remain unvalidated pending confirmatory results.
 - Issue #6 owns task construction, hidden tests, harnesses, run manifests, raw results, and execution after approval.
 
-## Downstream Compiler Boundary
+## Reference Toolchain Boundary
 
-Subject to Issue #5 approval, the future pipeline remains:
+The implemented pipeline is:
 
 `SourceFile → tokens → AST → resolved program → typed/effect-checked program → interpreter`
 
-The resolved/typed program graph should cover definitions, references, imports, callers, public contracts, ADT variants, matches, effects, operations, and related tests. DiagnosticV1 should remain versioned and backward-compatible while carrying stable repository-impact facts and declarative repair surfaces. Semantic diff remains a future direction.
+Full and erased checker modes share syntax, resolution, runtime, AST/IR, graph facts, identities, formatting, and rendering. The erased mode is controlled by the content-hashed profile in `toolchain/profile/`. The manifest contract at `toolchain/schema/repository-manifest-v1.schema.json` explicitly names the source root, run entrypoint, tests, checker mode, and deterministic capability adapters. Semantic diff remains deferred.
 
 ## Guardrails
 
-- Do not claim parser, formatter, resolver, checker, interpreter, or impact behavior before Issue #5 implements and tests it.
+- Do not claim behavior outside the executable Issue #5 conformance surface.
 - Do not expand the approved v0 feature set without reopening Issue #4.
 - Keep research tooling separate from compiler architecture.
 - Keep the twelve-case coverage map separate from the Issue #6 benchmark corpus.

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://volt.dev/schema/repository-manifest-v1.json",
+  "title": "RepositoryManifestV1",
+  "type": "object",
+  "required": ["schemaVersion", "sourceRoot", "tests"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "sourceRoot": {"type": "string", "minLength": 1},
+    "run": {"type": "string", "pattern": "^[a-z][a-z0-9_.]*\\.[a-z][a-z0-9_]*$"},
+    "tests": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "checkerMode": {"enum": ["full", "static_obligations_erased"]},
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["effect", "adapter"],
+        "properties": {
+          "effect": {"type": "string"},
+          "adapter": {"enum": ["database", "clock", "notification"]},
+          "config": {"type": "object"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

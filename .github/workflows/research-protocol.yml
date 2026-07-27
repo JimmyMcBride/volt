@@ -8,6 +8,8 @@ on:
       - "package-lock.json"
       - "language/**"
       - "research/**"
+      - "toolchain/**"
+      - "tsconfig.json"
   push:
     branches:
       - main
@@ -17,6 +19,8 @@ on:
       - "package-lock.json"
       - "language/**"
       - "research/**"
+      - "toolchain/**"
+      - "tsconfig.json"
 
 permissions:
   contents: read

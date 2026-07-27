@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://volt.dev/schema/typed-ir-v1.json",
+  "title": "TypedIrV1",
+  "type": "object",
+  "required": ["schemaVersion", "module", "expressions"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "module": {"type": "string"},
+    "expressions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["siteId", "inferredType", "declaredEffects"],
+        "properties": {
+          "siteId": {"type": "string"},
+          "declaredType": {"type": "string"},
+          "inferredType": {"type": "string"},
+          "resolvedTarget": {"type": "string"},
+          "declaredEffects": {"type": "array", "items": {"type": "string"}},
+          "runtimeCapability": {"type": "string"}
+        }
+      }
+    }
+  }
+}

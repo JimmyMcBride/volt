@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://volt.dev/schema/run-manifest-v1.json",
+  "title": "RunManifestV1",
+  "type": "object",
+  "required": ["schemaVersion", "checkerMode", "checkerProfileVersion", "checkerProfileHash", "sourceHashes"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "checkerMode": {"enum": ["full", "static_obligations_erased"]},
+    "checkerProfileVersion": {"type": "string"},
+    "checkerProfileHash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "sourceHashes": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+  },
+  "additionalProperties": false
+}
