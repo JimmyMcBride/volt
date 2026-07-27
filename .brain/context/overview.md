@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-26T07:53:40Z"
+updated: "2026-07-27T03:00:08Z"
 ---
 Volt is an experimental programming-language research project for AI coding models and autonomous software-engineering agents.
 
@@ -11,10 +11,11 @@ Guiding principle: every requested change has an explicit machine-readable impac
 
 ## Stage
 
-- [GitHub Discussion #1](https://github.com/JimmyMcBride/volt/discussions/1) is the canonical shaping source.
-- [Issue #2](https://github.com/JimmyMcBride/volt/issues/2) is the research initiative under the [Volt v0 milestone](https://github.com/JimmyMcBride/volt/milestone/1).
-- [Issue #3](https://github.com/JimmyMcBride/volt/issues/3) owns the approved v1.0 research protocol. This branch proposes v1.1 safe-evolution endpoints and is `pending_reapproval` because primary outcomes, multiplicity, power, and falsification change.
-- Issues [#4](https://github.com/JimmyMcBride/volt/issues/4), [#5](https://github.com/JimmyMcBride/volt/issues/5), and [#6](https://github.com/JimmyMcBride/volt/issues/6) remain unapproved.
+- [GitHub Discussion #1](https://github.com/JimmyMcBride/volt/discussions/1) is the canonical shaping source and contains four full, distinct promotion briefs.
+- [Issue #2](https://github.com/JimmyMcBride/volt/issues/2) is the reconciled research initiative under the [Volt v0 milestone](https://github.com/JimmyMcBride/volt/milestone/1).
+- [Issue #3](https://github.com/JimmyMcBride/volt/issues/3) now contains the v1.1 safe-evolution research protocol and remains `needs-refinement` pending explicit owner reapproval.
+- Issues [#4](https://github.com/JimmyMcBride/volt/issues/4), [#5](https://github.com/JimmyMcBride/volt/issues/5), and [#6](https://github.com/JimmyMcBride/volt/issues/6) are reconciled, materially distinct, and blocked by the approved dependency graph.
+- Repeated Plan promotion preview is idempotent: Issues #2–#6 are unchanged, Milestone #1 and all ten relationships are reused, and no GitHub Project was created.
 - No compiler or controlled Volt study exists. Both Volt hypotheses remain unvalidated.
 - GitHub owns planning; Brain retains concise status, mission, risks, and links.
 

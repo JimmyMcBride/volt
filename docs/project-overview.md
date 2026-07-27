@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-26T07:52:17Z"
+updated: "2026-07-27T03:00:08Z"
 ---
 # Project Overview
 
@@ -28,17 +28,18 @@ The working principle is **semantic compression**: maximize how much programmer 
 
 ## Current Stage
 
-- GitHub [Issue #3](https://github.com/JimmyMcBride/volt/issues/3) is the approved v1.0 research-protocol spec.
-- This branch proposes protocol v1.1, adding safe repository evolution as a primary outcome. Because that changes primary endpoints, multiplicity, power, and falsification, the amendment is explicitly `pending_reapproval`.
-- The proposed protocol retains twelve existing-repository tasks: three each for state extension, invariant change, effect addition, and cross-module contract change.
-- Deterministic research-layer metrics and fixtures now cover propagation completeness, preservation, semantic blast radius, impact prediction, stale contracts, unrequested behavior changes, repair locality, and descriptive reviewability.
+- GitHub [Discussion #1](https://github.com/JimmyMcBride/volt/discussions/1) contains four full, distinct promotion briefs and remains the canonical shaping source.
+- [Issue #2](https://github.com/JimmyMcBride/volt/issues/2) and Issues [#3](https://github.com/JimmyMcBride/volt/issues/3)–[#6](https://github.com/JimmyMcBride/volt/issues/6) are reconciled under [Milestone #1](https://github.com/JimmyMcBride/volt/milestone/1) with the approved dependency graph.
+- Issue #3 now contains protocol v1.1, adding safe repository evolution as a primary outcome. Because that changes primary endpoints, multiplicity, power, and falsification, it remains `needs-refinement` pending explicit owner reapproval.
+- The protocol retains twelve existing-repository tasks: three each for state extension, invariant change, effect addition, and cross-module contract change.
+- Deterministic research-layer metrics and fixtures cover propagation completeness, preservation, semantic blast radius, impact prediction, stale contracts, unrequested behavior changes, repair locality, and descriptive reviewability.
 - No controlled Volt study has run. Both Volt-specific hypotheses remain unvalidated.
 - No compiler exists. Program-graph impact analysis, repository diagnostics, and semantic diff remain proposed directions blocked on separately approved GitHub specs.
 - Brain owns concise durable knowledge under `.brain/` and `docs/`; GitHub owns planning through Discussions, Issues, Milestones, and Projects.
 
 ## Near-Term Goal
 
-Review and approve or revise the v1.1 protocol amendment and the non-applying Plan preview before any GitHub spec promotion or downstream compiler work.
+Review and explicitly approve or revise Issue #3's v1.1 protocol amendment. Only then review Issue #4 for execution readiness; implementation remains blocked until its own explicit approval.
 
 ## Durable Research Context
 

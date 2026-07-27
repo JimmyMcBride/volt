@@ -3,7 +3,7 @@
   "repo_url": "https://github.com/JimmyMcBride/volt",
   "default_branch": "main",
   "last_enabled_at": "2026-07-26T05:48:25Z",
-  "last_updated_at": "2026-07-26T06:39:33Z",
+  "last_updated_at": "2026-07-27T02:58:56Z",
   "stories": {},
   "planning": {
     "benchmark-corpus-and-controlled-agent-study": {
@@ -12,8 +12,8 @@
       "title": "Benchmark corpus and controlled agent study",
       "issue_number": 6,
       "issue_url": "https://github.com/JimmyMcBride/volt/issues/6",
-      "remote_state": "open",
-      "readiness": "ready",
+      "remote_state": "OPEN",
+      "readiness": "blocked",
       "ownership_mode": "github",
       "entry_mode": "github_collaborative",
       "source_mode": "github_discussion",
@@ -22,16 +22,21 @@
       "parent_issue_number": 2,
       "milestone_number": 1,
       "milestone_title": "Volt v0 — Evidence-Ready Research Prototype",
-      "updated_at": "2026-07-26T06:39:33Z"
+      "blocked_by": [
+        "research-evidence-and-evaluation-protocol",
+        "volt-v0-language-kernel-and-canonical-syntax",
+        "reference-interpreter-program-graph-and-diagnosticv1-protocol"
+      ],
+      "updated_at": "2026-07-27T02:58:56Z"
     },
-    "reference-interpreter-and-diagnosticv1-protocol": {
-      "slug": "reference-interpreter-and-diagnosticv1-protocol",
+    "reference-interpreter-program-graph-and-diagnosticv1-protocol": {
+      "slug": "reference-interpreter-program-graph-and-diagnosticv1-protocol",
       "kind": "spec",
-      "title": "Reference interpreter and DiagnosticV1 protocol",
+      "title": "Reference interpreter, program graph, and DiagnosticV1 protocol",
       "issue_number": 5,
       "issue_url": "https://github.com/JimmyMcBride/volt/issues/5",
-      "remote_state": "open",
-      "readiness": "ready",
+      "remote_state": "OPEN",
+      "readiness": "blocked",
       "ownership_mode": "github",
       "entry_mode": "github_collaborative",
       "source_mode": "github_discussion",
@@ -40,7 +45,11 @@
       "parent_issue_number": 2,
       "milestone_number": 1,
       "milestone_title": "Volt v0 — Evidence-Ready Research Prototype",
-      "updated_at": "2026-07-26T06:39:33Z"
+      "blocked_by": [
+        "research-evidence-and-evaluation-protocol",
+        "volt-v0-language-kernel-and-canonical-syntax"
+      ],
+      "updated_at": "2026-07-27T02:58:56Z"
     },
     "research-evidence-and-evaluation-protocol": {
       "slug": "research-evidence-and-evaluation-protocol",
@@ -48,8 +57,8 @@
       "title": "Research evidence and evaluation protocol",
       "issue_number": 3,
       "issue_url": "https://github.com/JimmyMcBride/volt/issues/3",
-      "remote_state": "open",
-      "readiness": "ready",
+      "remote_state": "OPEN",
+      "readiness": "needs-refinement",
       "ownership_mode": "github",
       "entry_mode": "github_collaborative",
       "source_mode": "github_discussion",
@@ -58,7 +67,7 @@
       "parent_issue_number": 2,
       "milestone_number": 1,
       "milestone_title": "Volt v0 — Evidence-Ready Research Prototype",
-      "updated_at": "2026-07-26T06:39:33Z"
+      "updated_at": "2026-07-27T02:58:56Z"
     },
     "volt-language-thesis-and-minimum-semantic-core": {
       "slug": "volt-language-thesis-and-minimum-semantic-core",
@@ -75,7 +84,7 @@
       "discussion_url": "https://github.com/JimmyMcBride/volt/discussions/1",
       "milestone_number": 1,
       "milestone_title": "Volt v0 — Evidence-Ready Research Prototype",
-      "updated_at": "2026-07-26T06:39:26Z"
+      "updated_at": "2026-07-27T02:58:56Z"
     },
     "volt-v0-language-kernel-and-canonical-syntax": {
       "slug": "volt-v0-language-kernel-and-canonical-syntax",
@@ -83,8 +92,8 @@
       "title": "Volt v0 language kernel and canonical syntax",
       "issue_number": 4,
       "issue_url": "https://github.com/JimmyMcBride/volt/issues/4",
-      "remote_state": "open",
-      "readiness": "ready",
+      "remote_state": "OPEN",
+      "readiness": "blocked",
       "ownership_mode": "github",
       "entry_mode": "github_collaborative",
       "source_mode": "github_discussion",
@@ -93,7 +102,26 @@
       "parent_issue_number": 2,
       "milestone_number": 1,
       "milestone_title": "Volt v0 — Evidence-Ready Research Prototype",
-      "updated_at": "2026-07-26T06:39:33Z"
+      "blocked_by": [
+        "research-evidence-and-evaluation-protocol"
+      ],
+      "updated_at": "2026-07-27T02:58:56Z"
+    }
+  },
+  "project_decisions": {
+    "volt-language-thesis-and-minimum-semantic-core": {
+      "slug": "volt-language-thesis-and-minimum-semantic-core",
+      "decision": "skip",
+      "reason": "This promotion crosses the coordination threshold for project tracking.",
+      "initiative_slug": "volt-language-thesis-and-minimum-semantic-core",
+      "spec_count": 4,
+      "milestone_number": 1,
+      "milestone_title": "Volt v0 — Evidence-Ready Research Prototype",
+      "source_mode": "github_discussion",
+      "entry_mode": "github_collaborative",
+      "discussion_number": 1,
+      "discussion_url": "https://github.com/JimmyMcBride/volt/discussions/1",
+      "updated_at": "2026-07-27T02:58:55Z"
     }
   }
 }
