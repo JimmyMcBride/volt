@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "status": "template_requires_owner_freeze_before_calibration",
+  "models": [
+    {
+      "id": "UNSET_FRONTIER_MODEL",
+      "family": "frontier_hosted",
+      "provider": "UNSET",
+      "revision": "UNSET",
+      "tokenizer": "UNSET",
+      "seedSupported": false
+    },
+    {
+      "id": "UNSET_OPEN_WEIGHT_MODEL",
+      "family": "open_weight_code",
+      "provider": "UNSET",
+      "revision": "UNSET",
+      "tokenizer": "UNSET",
+      "seedSupported": true
+    }
+  ],
+  "sampling": {
+    "temperature": 0.2,
+    "topP": 1,
+    "maxOutputTokensPerTurn": 4000,
+    "maxOutputTokensPerTrajectory": 16000
+  }
+}

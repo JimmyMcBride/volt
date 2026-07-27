@@ -14,7 +14,7 @@ Guiding principle: every requested change has an explicit machine-readable impac
 - [GitHub Discussion #1](https://github.com/JimmyMcBride/volt/discussions/1) is the canonical shaping source and contains four full, distinct promotion briefs.
 - [Issue #2](https://github.com/JimmyMcBride/volt/issues/2) is the reconciled research initiative under the [Volt v0 milestone](https://github.com/JimmyMcBride/volt/milestone/1).
 - [Issue #3](https://github.com/JimmyMcBride/volt/issues/3), [Issue #4](https://github.com/JimmyMcBride/volt/issues/4), and [Issue #5](https://github.com/JimmyMcBride/volt/issues/5) are implemented, merged, and closed.
-- [Issue #6](https://github.com/JimmyMcBride/volt/issues/6) is refined and owner-approved for offline corpus, harness, treatment-adapter, replay, schema, and analysis implementation.
+- [Issue #6](https://github.com/JimmyMcBride/volt/issues/6) has an offline corpus, hidden/mutation suite, treatment and baseline adapters, isolated fake/replay harness, schemas, authorization gates, and analysis implementation on its execution branch.
 - Live calibration and confirmatory execution remain separately gated by exact frozen manifests and owner-approved spend ceilings.
 - No controlled Volt study has run. Both Volt hypotheses remain unvalidated.
 - GitHub owns planning; Brain retains concise status, mission, risks, and links.

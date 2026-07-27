@@ -13,9 +13,10 @@ Volt now has an approved language-kernel contract and a reference Node.js 24 / s
 - `research/`: approved protocol, schemas, evidence traceability, metrics, and deterministic fixtures.
 - `language/`: Issue #4 kernel contract, canonical grammar, conformance inputs, formatter goldens, public-change fixtures, and protocol feature coverage.
 - `toolchain/`: lexer, parser, resolver, checker modes, formatter, typed IR, program graph, impact facts, DiagnosticV1, repository loader, capability adapters, interpreter, CLI, schemas, and executable conformance tests.
+- `benchmark/`: Issue #6 corpus generation, content-addressed task manifests, hidden and mutation checks, treatment and baseline adapters, isolated fake/replay trajectory harness, artifact storage, authorization gates, statistical analysis, schemas, and offline tests.
 - `AGENTS.md`: agent entry contract.
 
-The repository intentionally contains no semantic-diff engine, optimizer, transpiler, VM, native backend, package manager, LSP, benchmark corpus, or controlled study harness.
+The repository intentionally contains no semantic-diff engine, optimizer, transpiler, VM, native backend, package manager, LSP, live model-provider adapter, calibration results, or confirmatory results.
 
 ## Kernel Contract Surface
 
@@ -39,10 +40,20 @@ The `volt check`, `run`, `test`, and `fmt` commands load the explicit repository
 
 A future semantic diff may report public-contract, effect-set, ADT-variant, match-coverage, and unexpected behavior-surface changes. It must distinguish facts from heuristics and must not collapse dimensions into an authoritative score. This remains deferred.
 
+## Controlled-Study Harness
+
+`benchmark/corpus/` freezes one deterministic four-module event-registration seed, four non-scored calibration tasks, twelve private confirmatory tasks, finite treatment aliases, descriptive baseline parity, model templates, and fail-closed authorization templates. Each task contains requested behavior, non-goals, expected impact sites, preservation assertions, static/runtime invariants, hidden checks, retained mutants, expected solutions, and content hashes.
+
+`benchmark/lib/` implements the four causal Volt conditions, descriptive baseline descriptors, private hidden-test execution, deterministic fake/replay models, fresh in-memory trajectory state, first-submission tool restrictions, three-turn repair limits, randomization, failure retention, artifact indexing, authorization/spend enforcement, all six estimands, the approved bootstrap/permutation/Holm procedures, power bounds, and all eleven separate measurements. Normal verification imports no network modules and performs no provider calls.
+
+Calibration and confirmatory commands remain inactive beyond validation of an exact owner-approved manifest. The offline implementation cannot authorize or perform either phase.
+
 ## Guardrails
 
 - Do not claim behavior outside the executable conformance suite.
 - Do not expand the approved v0 language feature set without reopening Issue #4.
 - Keep language contracts separate from executable compiler architecture.
-- Keep the protocol coverage map separate from the Issue #6 benchmark corpus.
-- Require approved GitHub specs before semantic-diff or study implementation.
+- Keep the protocol coverage map separate from generated Issue #6 task manifests.
+- Keep calibration, causal Volt, and descriptive baseline artifacts in distinct namespaces.
+- Never expose hidden outcomes, credentials, or provider secrets to model-visible context.
+- Require separate owner approval before calibration and again before confirmatory execution.

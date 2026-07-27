@@ -1,0 +1,263 @@
+{
+  "schemaVersion": 1,
+  "id": "cross_module_contract_change_2",
+  "corpus": "confirmatory",
+  "family": "cross_module_contract_change",
+  "publicChangeCategory": "module_move",
+  "mutationSeed": 4214315921,
+  "seedHash": "sha256:703c2164a42ab7bdc65b559d190af8f16d2b1b97643f241ddd53c00008479bb0",
+  "expectedSolutionHash": "sha256:f03f8209cf47afe668155208f578577f8aa65a394b0ecc8325b4ece76d630d94",
+  "publicTask": {
+    "wording": "Move AuditStamp from domain to capabilities without changing its public shape.",
+    "visibleFiles": [
+      "src/capabilities.volt",
+      "src/domain.volt",
+      "src/registration_service.volt",
+      "src/tests.volt",
+      "volt.json"
+    ],
+    "publicTests": [
+      "tests.registration_test"
+    ],
+    "allowedTools": [
+      "inspect",
+      "edit",
+      "submit"
+    ],
+    "nonGoals": [
+      "Do not add language features.",
+      "Do not weaken capacity, idempotency, typed-failure, or effect guarantees.",
+      "Do not access the network or external services."
+    ]
+  },
+  "expectedImpact": {
+    "files": [
+      "src/capabilities.volt",
+      "src/domain.volt"
+    ],
+    "symbols": [
+      "cross_module_contract_change_2::requested_change"
+    ],
+    "contracts": [
+      "module_move::cross_module_contract_change_2"
+    ],
+    "effects": [],
+    "astObligations": [
+      "module_move::complete"
+    ],
+    "relatedTests": [
+      "tests::function::registration_test"
+    ]
+  },
+  "preservationAssertions": [
+    {
+      "id": "cross_module_contract_change_2:preservation:registration_test",
+      "description": "The preexisting registration test remains present.",
+      "file": "src/tests.volt"
+    },
+    {
+      "id": "cross_module_contract_change_2:preservation:capacity",
+      "description": "Capacity remains a typed registration failure.",
+      "file": "src/registration_service.volt"
+    },
+    {
+      "id": "cross_module_contract_change_2:preservation:idempotency",
+      "description": "Existing registrations remain idempotently rejected.",
+      "file": "src/registration_service.volt"
+    }
+  ],
+  "invariants": [
+    {
+      "id": "cross_module_contract_change_2:requested_behavior",
+      "kind": "static",
+      "hidden": true,
+      "assertion": {
+        "type": "source_contains",
+        "file": "src/capabilities.volt",
+        "text": "pub record AuditStamp"
+      }
+    },
+    {
+      "id": "cross_module_contract_change_2:compiles_full",
+      "kind": "static",
+      "hidden": true,
+      "assertion": {
+        "type": "compiles_full"
+      }
+    },
+    {
+      "id": "cross_module_contract_change_2:contract_category",
+      "kind": "static",
+      "hidden": true,
+      "assertion": {
+        "type": "public_change_category",
+        "category": "module_move"
+      }
+    },
+    {
+      "id": "cross_module_contract_change_2:runtime:registration_guarantees",
+      "kind": "runtime",
+      "hidden": true,
+      "assertion": {
+        "type": "runtime_registration_scenarios"
+      }
+    },
+    {
+      "id": "cross_module_contract_change_2:preservation:registration_test",
+      "kind": "runtime",
+      "hidden": true,
+      "assertion": {
+        "type": "preserves_source",
+        "file": "src/tests.volt",
+        "text": "pub fn registration_test"
+      }
+    },
+    {
+      "id": "cross_module_contract_change_2:preservation:capacity",
+      "kind": "runtime",
+      "hidden": true,
+      "assertion": {
+        "type": "preserves_source",
+        "file": "src/registration_service.volt",
+        "text": "event.registered >= event.capacity"
+      }
+    },
+    {
+      "id": "cross_module_contract_change_2:preservation:idempotency",
+      "kind": "runtime",
+      "hidden": true,
+      "assertion": {
+        "type": "preserves_source",
+        "file": "src/registration_service.volt",
+        "text": "RegistrationStore.find(event.id, person.id)"
+      }
+    },
+    {
+      "id": "cross_module_contract_change_2:preservation:typed_failures",
+      "kind": "static",
+      "hidden": true,
+      "assertion": {
+        "type": "preserves_source",
+        "file": "src/registration_service.volt",
+        "text": "Result<Registration, RegistrationError>"
+      }
+    }
+  ],
+  "mutations": [
+    {
+      "id": "cross_module_contract_change_2:mutant:incomplete_propagation",
+      "category": "incomplete_propagation",
+      "retained": true,
+      "killedBy": "cross_module_contract_change_2:requested_behavior",
+      "sourceOverrides": {
+        "src/capabilities.volt": "module capabilities\n\nimport domain.{Registration, StoreError}\n\n {\n  value: Int\n}\n\npub effect RegistrationStore {\n  fn find(event_id: Int, person_id: Int) -> Option<Registration>\n  fn save(registration: Registration) -> Result<Unit, StoreError>\n}\n\npub effect Clock {\n  fn now() -> Int\n}\n\npub effect Notification {\n  fn send(message: String) -> Unit\n}\n"
+      }
+    },
+    {
+      "id": "cross_module_contract_change_2:mutant:stale_contract",
+      "category": "stale_contract",
+      "retained": true,
+      "killedBy": "cross_module_contract_change_2:requested_behavior",
+      "sourceOverrides": {
+        "src/capabilities.volt": "module capabilities\n\nimport domain.{Registration, StoreError}\n\n {\n  value: Int\n}\n\npub effect RegistrationStore {\n  fn find(event_id: Int, person_id: Int) -> Option<Registration>\n  fn save(registration: Registration) -> Result<Unit, StoreError>\n}\n\npub effect Clock {\n  fn now() -> Int\n}\n\npub effect Notification {\n  fn send(message: String) -> Unit\n}\n"
+      }
+    },
+    {
+      "id": "cross_module_contract_change_2:mutant:weakened_invariant",
+      "category": "weakened_invariant",
+      "retained": true,
+      "killedBy": "cross_module_contract_change_2:preservation:capacity",
+      "sourceOverrides": {
+        "src/registration_service.volt": "module registration_service\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn within_capacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registration_code() -> Int {\n  1\n}\n\npub fn event_code(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn person_code(person: Person) -> Int {\n  person.id\n}\n\npub fn calibration_code() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered > event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          event_id: event.id,\n          person_id: person.id,\n          created_at: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(store_error) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n"
+      }
+    },
+    {
+      "id": "cross_module_contract_change_2:mutant:effect_bypass",
+      "category": "effect_bypass",
+      "retained": true,
+      "killedBy": "cross_module_contract_change_2:compiles_full",
+      "sourceOverrides": {
+        "src/registration_service.volt": "module registration_service\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn within_capacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registration_code() -> Int {\n  1\n}\n\npub fn event_code(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn person_code(person: Person) -> Int {\n  person.id\n}\n\npub fn calibration_code() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          event_id: event.id,\n          person_id: person.id,\n          created_at: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(store_error) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n"
+      }
+    },
+    {
+      "id": "cross_module_contract_change_2:mutant:non_exhaustive_change",
+      "category": "non_exhaustive_change",
+      "retained": true,
+      "killedBy": "cross_module_contract_change_2:compiles_full",
+      "sourceOverrides": {
+        "src/registration_service.volt": "module registration_service\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn within_capacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registration_code() -> Int {\n  1\n}\n\npub fn event_code(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n\n  }\n}\n\npub fn person_code(person: Person) -> Int {\n  person.id\n}\n\npub fn calibration_code() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          event_id: event.id,\n          person_id: person.id,\n          created_at: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(store_error) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n"
+      }
+    },
+    {
+      "id": "cross_module_contract_change_2:mutant:unnecessary_capability",
+      "category": "unnecessary_capability",
+      "retained": true,
+      "killedBy": "cross_module_contract_change_2:compiles_full",
+      "sourceOverrides": {
+        "src/registration_service.volt": "module registration_service\n\nimport capabilities.{Clock, Notification, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn within_capacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registration_code() -> Int {\n  1\n}\n\npub fn event_code(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn person_code(person: Person) -> Int {\n  person.id\n}\n\npub fn calibration_code() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, Notification, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          event_id: event.id,\n          person_id: person.id,\n          created_at: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(store_error) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n"
+      }
+    },
+    {
+      "id": "cross_module_contract_change_2:mutant:unrelated_regression",
+      "category": "unrelated_regression",
+      "retained": true,
+      "killedBy": "cross_module_contract_change_2:runtime:registration_guarantees",
+      "sourceOverrides": {
+        "src/registration_service.volt": "module registration_service\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn within_capacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registration_code() -> Int {\n  1\n}\n\npub fn event_code(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn person_code(person: Person) -> Int {\n  person.id\n}\n\npub fn calibration_code() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          event_id: event.id,\n          person_id: person.id,\n          created_at: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(store_error) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(EventFull)\n    }\n  }\n}\n"
+      }
+    },
+    {
+      "id": "cross_module_contract_change_2:mutant:output_drift",
+      "category": "output_drift",
+      "retained": true,
+      "killedBy": "cross_module_contract_change_2:runtime:registration_guarantees",
+      "sourceOverrides": {
+        "src/registration_service.volt": "module registration_service\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn within_capacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registration_code() -> Int {\n  1\n}\n\npub fn event_code(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn person_code(person: Person) -> Int {\n  person.id\n}\n\npub fn calibration_code() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          event_id: event.id,\n          person_id: person.id,\n          created_at: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(store_error) -> Error(EventFull)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n"
+      }
+    }
+  ],
+  "excludedMutations": [
+    {
+      "id": "cross_module_contract_change_2:mutant:duplicated_invariant",
+      "category": "duplicated_invariant",
+      "retained": false,
+      "removedReason": "Equivalent mutant: duplicating the same capacity predicate does not change observable behavior.",
+      "candidateHash": "sha256:e744f684f184dd07382a48cc737f84ce564b7a154e95a23e8b1e524ffedf393c"
+    }
+  ],
+  "seed": {
+    "schemaVersion": 1,
+    "repositoryId": "event-registration-seed-v1",
+    "modules": [
+      "domain",
+      "registration_service",
+      "capabilities",
+      "tests"
+    ],
+    "capabilities": [
+      "in_memory_database",
+      "clock",
+      "notification"
+    ],
+    "networkAllowed": false,
+    "files": {
+      "src/capabilities.volt": "module capabilities\n\nimport domain.{Registration, StoreError}\n\npub effect RegistrationStore {\n  fn find(event_id: Int, person_id: Int) -> Option<Registration>\n  fn save(registration: Registration) -> Result<Unit, StoreError>\n}\n\npub effect Clock {\n  fn now() -> Int\n}\n\npub effect Notification {\n  fn send(message: String) -> Unit\n}\n",
+      "src/domain.volt": "module domain\n\npub type EventState {\n  Open\n  Closed\n}\n\npub type RegistrationError {\n  EventFull\n  AlreadyRegistered\n  RegistrationClosed\n  StoreFailed\n}\n\npub type StoreError {\n  Unavailable\n}\n\npub record Event {\n  id: Int,\n  capacity: Int,\n  registered: Int,\n  state: EventState\n}\n\npub record Person {\n  id: Int,\n  name: String\n}\n\npub record Registration {\n  event_id: Int,\n  person_id: Int,\n  created_at: Int\n}\n\npub record AuditStamp {\n  value: Int\n}\n",
+      "src/registration_service.volt": "module registration_service\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn within_capacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registration_code() -> Int {\n  1\n}\n\npub fn event_code(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn person_code(person: Person) -> Int {\n  person.id\n}\n\npub fn calibration_code() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          event_id: event.id,\n          person_id: person.id,\n          created_at: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(store_error) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n",
+      "src/tests.volt": "module tests\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person}\nimport registration_service.{register}\n\npub fn registration_test()\n  uses {Clock, RegistrationStore}\n  -> Result<Unit, String> {\n  let event = Event { id: 1, capacity: 2, registered: 0, state: Open } in\n  let person = Person { id: 7, name: \"Ada\" } in\n  match register(event, person) {\n    Ok(registration) -> Ok(())\n    Error(problem) -> Error(\"registration failed\")\n  }\n}\n",
+      "volt.json": "{\n  \"schemaVersion\": 1,\n  \"sourceRoot\": \"src\",\n  \"run\": \"tests.registration_test\",\n  \"tests\": [\n    \"tests.registration_test\"\n  ],\n  \"capabilities\": [\n    {\n      \"effect\": \"capabilities::effect::RegistrationStore\",\n      \"adapter\": \"database\"\n    },\n    {\n      \"effect\": \"capabilities::effect::Clock\",\n      \"adapter\": \"clock\",\n      \"config\": {\n        \"values\": [\n          100\n        ]\n      }\n    },\n    {\n      \"effect\": \"capabilities::effect::Notification\",\n      \"adapter\": \"notification\"\n    }\n  ]\n}\n"
+    }
+  },
+  "expectedSolution": {
+    "schemaVersion": 1,
+    "taskId": "cross_module_contract_change_2",
+    "files": {
+      "src/capabilities.volt": "module capabilities\n\nimport domain.{Registration, StoreError}\n\npub record AuditStamp {\n  value: Int\n}\n\npub effect RegistrationStore {\n  fn find(event_id: Int, person_id: Int) -> Option<Registration>\n  fn save(registration: Registration) -> Result<Unit, StoreError>\n}\n\npub effect Clock {\n  fn now() -> Int\n}\n\npub effect Notification {\n  fn send(message: String) -> Unit\n}\n",
+      "src/domain.volt": "module domain\n\npub type EventState {\n  Open\n  Closed\n}\n\npub type RegistrationError {\n  EventFull\n  AlreadyRegistered\n  RegistrationClosed\n  StoreFailed\n}\n\npub type StoreError {\n  Unavailable\n}\n\npub record Event {\n  id: Int,\n  capacity: Int,\n  registered: Int,\n  state: EventState\n}\n\npub record Person {\n  id: Int,\n  name: String\n}\n\npub record Registration {\n  event_id: Int,\n  person_id: Int,\n  created_at: Int\n}\n\n",
+      "src/registration_service.volt": "module registration_service\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person, Registration, RegistrationError}\n\npub fn within_capacity(event: Event) -> Bool {\n  event.registered < event.capacity\n}\n\npub fn registration_code() -> Int {\n  1\n}\n\npub fn event_code(event: Event) -> Int {\n  match event.state {\n    Open -> 1\n    Closed -> 0\n  }\n}\n\npub fn person_code(person: Person) -> Int {\n  person.id\n}\n\npub fn calibration_code() -> Int {\n  7\n}\n\npub fn register(event: Event, person: Person)\n  uses {Clock, RegistrationStore}\n  -> Result<Registration, RegistrationError> {\n  match RegistrationStore.find(event.id, person.id) {\n    Some(existing) -> Error(AlreadyRegistered)\n    None -> match event.state {\n      Open -> if event.registered >= event.capacity {\n        Error(EventFull)\n      } else {\n        let registration = Registration {\n          event_id: event.id,\n          person_id: person.id,\n          created_at: Clock.now()\n        } in\n        match RegistrationStore.save(registration) {\n          Ok(saved) -> Ok(registration)\n          Error(store_error) -> Error(StoreFailed)\n        }\n      }\n      Closed -> Error(RegistrationClosed)\n    }\n  }\n}\n",
+      "src/tests.volt": "module tests\n\nimport capabilities.{Clock, RegistrationStore}\nimport domain.{Event, EventState, Person}\nimport registration_service.{register}\n\npub fn registration_test()\n  uses {Clock, RegistrationStore}\n  -> Result<Unit, String> {\n  let event = Event { id: 1, capacity: 2, registered: 0, state: Open } in\n  let person = Person { id: 7, name: \"Ada\" } in\n  match register(event, person) {\n    Ok(registration) -> Ok(())\n    Error(problem) -> Error(\"registration failed\")\n  }\n}\n",
+      "volt.json": "{\n  \"schemaVersion\": 1,\n  \"sourceRoot\": \"src\",\n  \"run\": \"tests.registration_test\",\n  \"tests\": [\n    \"tests.registration_test\"\n  ],\n  \"capabilities\": [\n    {\n      \"effect\": \"capabilities::effect::RegistrationStore\",\n      \"adapter\": \"database\"\n    },\n    {\n      \"effect\": \"capabilities::effect::Clock\",\n      \"adapter\": \"clock\",\n      \"config\": {\n        \"values\": [\n          100\n        ]\n      }\n    },\n    {\n      \"effect\": \"capabilities::effect::Notification\",\n      \"adapter\": \"notification\"\n    }\n  ]\n}\n"
+    }
+  }
+}

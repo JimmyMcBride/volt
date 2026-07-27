@@ -32,13 +32,13 @@ The working principle is **semantic compression**: maximize how much programmer 
 - [Issue #2](https://github.com/JimmyMcBride/volt/issues/2) and Issues [#3](https://github.com/JimmyMcBride/volt/issues/3)–[#6](https://github.com/JimmyMcBride/volt/issues/6) are reconciled under [Milestone #1](https://github.com/JimmyMcBride/volt/milestone/1).
 - Issues #3, #4, and #5 are implemented, merged, and closed.
 - Issue #5 provides the strict TypeScript reference frontend, two checker modes, canonical formatter, stable AST/typed IR/program graph, repository-impact facts, DiagnosticV1, deterministic capability adapters, tree-walking interpreter, repository manifest, and `check`, `run`, `test`, and `fmt` CLI.
-- Issue #6 is refined and owner-approved for offline corpus, hidden-test, treatment-adapter, harness, replay, schema, and analysis implementation.
+- Issue #6's offline corpus, hidden-test, treatment-adapter, harness, replay, schema, baseline, authorization, and analysis scope is implemented in `benchmark/`.
 - No controlled Volt study has run. Both Volt-specific hypotheses remain unvalidated. Live calibration and confirmatory execution remain separately gated.
 - Brain owns concise durable knowledge under `.brain/` and `docs/`; GitHub owns planning through Discussions, Issues, Milestones, and Projects.
 
 ## Near-Term Goal
 
-Implement the approved offline Issue #6 corpus and harness without live provider calls or model spend. After offline review, separately approve a frozen calibration manifest; after calibration, separately approve the powered confirmatory run and cost ceiling.
+Review and merge the offline Issue #6 implementation. Then separately freeze and approve the exact calibration model/authorization manifest; after calibration, separately approve the powered confirmatory run and cost ceiling.
 
 ## Durable Research Context
 

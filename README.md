@@ -59,6 +59,15 @@ Volt v0 has an approved semantic kernel and a working reference toolchain:
 - explicit repository manifests and deterministic capability adapters; and
 - `volt check`, `volt run`, `volt test`, and `volt fmt` commands.
 
+The repository also contains the approved offline controlled-study implementation:
+
+- a content-addressed four-module event-registration seed;
+- four calibration and twelve private confirmatory maintenance tasks;
+- mutation-checked hidden assertions and preregistered impact surfaces;
+- four causal Volt treatment adapters and three descriptive language baselines;
+- an isolated fake/replay trajectory harness with authorization and spend gates; and
+- deterministic power, six-endpoint analysis, and eleven separate operational measurements.
+
 The reference implementation uses Node.js 24 and strict TypeScript 6. It is intentionally small, deterministic, and dependency-light so the research can test Volt's ideas without hiding them behind production-backend complexity.
 
 ## Try the reference toolchain
@@ -100,7 +109,16 @@ Volt is built around that failure mode. Its research asks whether language const
 
 ## Research status
 
-Volt is a research prototype, not a production language. The v0 kernel and reference interpreter exist, but no controlled Volt study has run yet. Claims about better agent performance remain hypotheses until the benchmark corpus and study are complete.
+Volt is a research prototype, not a production language. The v0 kernel, reference interpreter, and offline benchmark harness exist, but no live calibration or controlled confirmatory study has run. Claims about better agent performance remain hypotheses until separately approved study execution is complete.
+
+Run the network-free, spend-free benchmark validation with:
+
+```sh
+npm run check:benchmark
+npm run benchmark:offline
+```
+
+See the [controlled-study harness](benchmark/README.md) for the corpus, isolation model, analysis, and separate live-execution approval gates.
 
 The repository intentionally has no optimizer, bytecode VM, native backend, package manager, or LSP today. Those choices belong after the current evidence phase.
 
