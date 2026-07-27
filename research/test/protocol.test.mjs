@@ -37,7 +37,7 @@ const [
   readJson("schema/analysis-report.schema.json")
 ]);
 
-test("proposed v1.1 amendment retains frozen values and exposes reapproval-sensitive changes", () => {
+test("approved v1.1 amendment retains frozen values and records owner approval", () => {
   assert.doesNotThrow(() => validateProtocol(protocol));
 });
 

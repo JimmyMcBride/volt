@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-26T07:53:52Z"
+updated: "2026-07-27T03:07:00Z"
 ---
 Volt has no approved compiler or runtime architecture. The candidate architecture remains blocked on separately approved GitHub specs.
 
@@ -16,7 +16,7 @@ Volt has no approved compiler or runtime architecture. The candidate architectur
 ## Research Tooling
 
 - Node.js 24 dependency-free ES modules implement protocol validation, metrics, and decision rules.
-- Proposed protocol v1.1 adds deterministic research-layer safe-evolution measures and remains `pending_reapproval`.
+- Approved protocol v1.1 adds deterministic research-layer safe-evolution measures; both Volt hypotheses remain unvalidated pending confirmatory results.
 - Issue #6 will own task construction, hidden tests, harnesses, run manifests, raw results, and execution after approval.
 
 ## Proposed Compiler Direction

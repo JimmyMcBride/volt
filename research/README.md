@@ -1,11 +1,11 @@
 ---
-updated: "2026-07-26T07:53:21Z"
+updated: "2026-07-27T03:07:00Z"
 ---
 # Volt Research Artifacts
 
-GitHub [Issue #3](https://github.com/JimmyMcBride/volt/issues/3) is the canonical approved v1.0 specification. This directory implements its original protocol and a proposed v1.1 safe-repository-evolution amendment; it does not replace or silently amend the GitHub planning contract.
+GitHub [Issue #3](https://github.com/JimmyMcBride/volt/issues/3) is the canonical approved v1.1 research protocol. This directory implements that protocol as executable artifacts; it does not replace the GitHub planning contract.
 
-Protocol v1.1 is `pending_reapproval` because it changes the primary outcome family, Holm multiplicity family, power calculation, and falsification gate. It must not be frozen or used for confirmatory execution before owner approval.
+Protocol v1.1 is owner-approved. Its six primary comparisons, Holm family, power calculation, and falsification gate are frozen unless Issue #3 is explicitly reopened and reapproved. Both Volt hypotheses remain unvalidated until confirmatory results exist.
 
 ## Contents
 

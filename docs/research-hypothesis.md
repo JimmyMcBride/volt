@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-26T07:52:51Z"
+updated: "2026-07-27T03:07:00Z"
 ---
 # Volt Research Hypothesis
 
@@ -40,11 +40,11 @@ Function-sized exercises remain compiler conformance tests, not the primary lang
 
 ## Primary Outcomes
 
-The approved v1.0 first-pass and bounded-repair estimands remain. Proposed v1.1 adds `repository_change_success_rate` as the primary maintenance outcome for the static-obligation and canonical-syntax ablations, plus repository-change success within three turns for the diagnostic representation ablation.
+The approved v1.1 protocol retains the v1.0 first-pass and bounded-repair estimands and adds `repository_change_success_rate` as the primary maintenance outcome for the static-obligation and canonical-syntax ablations, plus repository-change success within three turns for the diagnostic representation ablation.
 
 Repository-change success is binary and awards no partial credit. Missing trajectories are failures.
 
-This expands the primary Holm family from three to six comparisons and changes the power calculation and falsification gate. Therefore v1.1 is `pending_reapproval`; these changes are not represented as approved results or frozen study rules.
+The primary Holm family now contains six comparisons. The corresponding power calculation and falsification gate are owner-approved protocol rules; changing them requires reopening and reapproving Issue #3.
 
 ## Operational Metrics
 
@@ -80,9 +80,9 @@ Those are planning directions only. No compiler exists on this branch, and imple
 
 ## Decision Boundary
 
-The proposed v1.1 support rule preserves the v1.0 requirement for at least two meaningful first-pass/repair comparisons, including a language comparison, and adds at least one meaningful maintenance-language comparison. Significant harm in any of the six comparisons, exclusion of meaningful benefit by both maintenance-language upper bounds, harmful model-family effects, or unresolved complexity guardrails prevents support according to the machine-readable rules.
+The approved v1.1 support rule preserves the v1.0 requirement for at least two meaningful first-pass/repair comparisons, including a language comparison, and adds at least one meaningful maintenance-language comparison. Significant harm in any of the six comparisons, exclusion of meaningful benefit by both maintenance-language upper bounds, harmful model-family effects, or unresolved complexity guardrails prevents support according to the machine-readable rules.
 
-No exploratory composite can override the preregistered decision. The owner must reapprove the amendment before confirmatory freezing or execution.
+No exploratory composite can override the preregistered decision. Owner approval of v1.1 is recorded. Confirmatory execution still requires the downstream corpus and study spec, frozen artifacts, and its separate approval.
 
 ## Durable Constraints
 

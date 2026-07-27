@@ -17,10 +17,12 @@ function equalSet(actual, expected, label) {
 export function validateProtocol(protocol) {
   invariant(protocol.schemaVersion === 1, "protocol schemaVersion must be 1");
   invariant(protocol.protocolId === "volt-v0-evidence-ready", "unexpected protocolId");
-  invariant(protocol.version === "1.1.0", "protocol must be the proposed v1.1 amendment");
-  invariant(protocol.status === "pending_reapproval", "amended protocol must remain pending reapproval");
+  invariant(protocol.version === "1.1.0", "protocol must be the approved v1.1 amendment");
+  invariant(protocol.status === "approved", "amended protocol must be approved");
   invariant(protocol.amendment.id === "safe_repository_evolution", "safe-evolution amendment is missing");
-  invariant(protocol.amendment.status === "pending_owner_approval", "amendment cannot imply approval");
+  invariant(protocol.amendment.status === "approved", "safe-evolution amendment must be approved");
+  invariant(protocol.amendment.approvedAt === "2026-07-26", "amendment approval date is wrong");
+  invariant(protocol.amendment.approvedBy === "JimmyMcBride", "amendment approval authority is wrong");
   equalSet(
     protocol.amendment.approvalSensitiveChanges,
     ["primary_outcome", "statistical_rule", "power_calculation", "falsification_gate"],
@@ -190,7 +192,7 @@ export function validateProtocol(protocol) {
   invariant(protocol.claimBoundaries.externalLanguageComparisons === "descriptive_only", "external baselines cannot become causal");
   invariant(protocol.claimBoundaries.semanticCompressionComposite === "prohibited_for_success_decision", "composite scoring is forbidden");
   invariant(
-    protocol.claimBoundaries.safeRepositoryEvolution === "unvalidated_pending_protocol_reapproval_and_confirmatory_results",
+    protocol.claimBoundaries.safeRepositoryEvolution === "unvalidated_until_confirmatory_results",
     "safe repository evolution must remain an unvalidated hypothesis"
   );
   invariant(

@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "protocolId": "volt-v0-evidence-ready",
   "version": "1.1.0",
-  "status": "pending_reapproval",
+  "status": "approved",
   "source": {
     "issue": "https://github.com/JimmyMcBride/volt/issues/3",
     "approvedAt": "2026-07-26",
@@ -11,8 +11,10 @@
   },
   "amendment": {
     "id": "safe_repository_evolution",
-    "status": "pending_owner_approval",
+    "status": "approved",
     "proposedAt": "2026-07-26",
+    "approvedAt": "2026-07-26",
+    "approvedBy": "JimmyMcBride",
     "supersedesVersion": "1.0.0",
     "reason": "Make safe evolution of existing Volt codebases a first-class evaluated objective rather than a secondary implication of greenfield correctness.",
     "approvalSensitiveChanges": [
@@ -498,7 +500,7 @@
     "externalLanguageComparisons": "descriptive_only",
     "semanticCompressionComposite": "prohibited_for_success_decision",
     "voltSpecificBenefit": "unvalidated_until_confirmatory_results",
-    "safeRepositoryEvolution": "unvalidated_pending_protocol_reapproval_and_confirmatory_results",
+    "safeRepositoryEvolution": "unvalidated_until_confirmatory_results",
     "programGraphImpactAnalysis": "future_direction_pending_language_and_interpreter_spec_approval",
     "semanticDiff": "future_direction_not_implemented_or_validated"
   },

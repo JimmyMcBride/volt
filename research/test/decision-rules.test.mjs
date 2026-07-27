@@ -77,7 +77,7 @@ test("meaningful benefit requires effect, interval, and adjusted significance ga
   }), false);
 });
 
-test("significant harm follows the proposed amended effect and Holm gates", () => {
+test("significant harm follows the approved amended effect and Holm gates", () => {
   assert.equal(isSignificantHarm({
     id: "static_obligation_effect",
     kind: "language",

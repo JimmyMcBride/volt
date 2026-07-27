@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-27T03:00:08Z"
+updated: "2026-07-27T03:07:00Z"
 ---
 # Project Overview
 
@@ -30,7 +30,7 @@ The working principle is **semantic compression**: maximize how much programmer 
 
 - GitHub [Discussion #1](https://github.com/JimmyMcBride/volt/discussions/1) contains four full, distinct promotion briefs and remains the canonical shaping source.
 - [Issue #2](https://github.com/JimmyMcBride/volt/issues/2) and Issues [#3](https://github.com/JimmyMcBride/volt/issues/3)–[#6](https://github.com/JimmyMcBride/volt/issues/6) are reconciled under [Milestone #1](https://github.com/JimmyMcBride/volt/milestone/1) with the approved dependency graph.
-- Issue #3 now contains protocol v1.1, adding safe repository evolution as a primary outcome. Because that changes primary endpoints, multiplicity, power, and falsification, it remains `needs-refinement` pending explicit owner reapproval.
+- Issue #3 contains the owner-approved protocol v1.1, including safe repository evolution as a primary outcome and the six-comparison multiplicity, power, support, and falsification rules.
 - The protocol retains twelve existing-repository tasks: three each for state extension, invariant change, effect addition, and cross-module contract change.
 - Deterministic research-layer metrics and fixtures cover propagation completeness, preservation, semantic blast radius, impact prediction, stale contracts, unrequested behavior changes, repair locality, and descriptive reviewability.
 - No controlled Volt study has run. Both Volt-specific hypotheses remain unvalidated.
@@ -39,7 +39,7 @@ The working principle is **semantic compression**: maximize how much programmer 
 
 ## Near-Term Goal
 
-Review and explicitly approve or revise Issue #3's v1.1 protocol amendment. Only then review Issue #4 for execution readiness; implementation remains blocked until its own explicit approval.
+Merge the verified Issue #3 implementation, then review Issue #4 as the next canonical spec. Language-kernel implementation remains blocked until Issue #4 receives its own explicit approval.
 
 ## Durable Research Context
 

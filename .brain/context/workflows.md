@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-26T08:02:02Z"
+updated: "2026-07-27T03:07:00Z"
 ---
 ## Startup
 
@@ -30,7 +30,7 @@ updated: "2026-07-26T08:02:02Z"
 - `research/test/metrics.test.mjs` covers semantic-compression and repair-locality algorithms.
 - `research/test/maintenance.test.mjs` covers strict repository-change success, propagation completeness, preservation counts, semantic blast radius, impact prediction, and descriptive reviewability using stable conceptual impact-site fixtures.
 - These are research-layer fixtures, not compiler conformance claims. No compiler exists.
-- Protocol v1.1 remains pending owner reapproval. Do not freeze or execute it.
+- Protocol v1.1 is owner-approved. Do not change its six primary comparisons, power rules, or decision gates without reopening Issue #3. Study execution still requires the separately approved downstream corpus and study spec.
 - Do not construct the benchmark corpus or execute trajectories until the downstream spec is explicitly approved.
 
 ## Verification and Closeout

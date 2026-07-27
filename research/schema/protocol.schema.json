@@ -168,7 +168,7 @@
           "const": "unvalidated_until_confirmatory_results"
         },
         "safeRepositoryEvolution": {
-          "const": "unvalidated_pending_protocol_reapproval_and_confirmatory_results"
+          "const": "unvalidated_until_confirmatory_results"
         },
         "programGraphImpactAnalysis": {
           "const": "future_direction_pending_language_and_interpreter_spec_approval"
@@ -205,6 +205,8 @@
         "id",
         "status",
         "proposedAt",
+        "approvedAt",
+        "approvedBy",
         "supersedesVersion",
         "reason",
         "approvalSensitiveChanges"
@@ -214,11 +216,18 @@
           "const": "safe_repository_evolution"
         },
         "status": {
-          "const": "pending_owner_approval"
+          "const": "approved"
         },
         "proposedAt": {
           "type": "string",
           "format": "date"
+        },
+        "approvedAt": {
+          "type": "string",
+          "format": "date"
+        },
+        "approvedBy": {
+          "const": "JimmyMcBride"
         },
         "supersedesVersion": {
           "const": "1.0.0"
