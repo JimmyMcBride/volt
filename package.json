@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "check": "npm run check:research && npm run check:language && npm run check:toolchain && npm run check:benchmark",
+    "check": "npm run build && npm run check:research && npm run check:language && node toolchain/scripts/validate.mjs && node benchmark/scripts/validate.mjs",
     "check:research": "node research/scripts/validate.mjs",
     "check:language": "node language/scripts/validate.mjs",
     "check:toolchain": "npm run build && node toolchain/scripts/validate.mjs",

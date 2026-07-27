@@ -9,6 +9,20 @@ export class AuthorizationError extends Error {
   }
 }
 
+function validateEstimatedSpendUsd(value) {
+  if (!Number.isFinite(value) || value < 0) {
+    throw new AuthorizationError("estimated spend must be a finite non-negative number");
+  }
+  return value;
+}
+
+export function parseEstimatedSpendUsd(value) {
+  if (typeof value !== "string" || value.trim() === "") {
+    throw new AuthorizationError("--estimated-spend is required for live phases");
+  }
+  return validateEstimatedSpendUsd(Number(value));
+}
+
 export function assertAuthorized({
   manifest,
   phase,
@@ -16,6 +30,7 @@ export function assertAuthorized({
   estimatedSpendUsd
 }) {
   validateAuthorizationManifest(manifest);
+  validateEstimatedSpendUsd(estimatedSpendUsd);
   if (manifest.phase !== phase) {
     throw new AuthorizationError(`authorization phase ${manifest.phase} does not permit ${phase}`);
   }

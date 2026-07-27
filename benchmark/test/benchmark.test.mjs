@@ -11,7 +11,11 @@ import {
   selectPoweredSampleSize
 } from "../lib/analysis.mjs";
 import { ArtifactStore } from "../lib/artifacts.mjs";
-import { assertAuthorized, AuthorizationError } from "../lib/authorization.mjs";
+import {
+  assertAuthorized,
+  AuthorizationError,
+  parseEstimatedSpendUsd
+} from "../lib/authorization.mjs";
 import { compileCondition, diagnosticParity, treatmentParity } from "../lib/conditions.mjs";
 import { applyMutation, runHiddenTests, verifyMutationCatalog } from "../lib/corpus.mjs";
 import {
@@ -380,6 +384,28 @@ test("authorization gates fail closed on approval, hash, and spend mismatches", 
     }),
     /spend/u
   );
+  for (const estimatedSpendUsd of [Number.NaN, Number.POSITIVE_INFINITY, -1]) {
+    assert.throws(
+      () => assertAuthorized({
+        manifest: approved,
+        phase: "calibration",
+        expectedHashes: {},
+        estimatedSpendUsd
+      }),
+      /finite non-negative/u
+    );
+  }
+});
+
+test("live phases require an explicit finite non-negative spend estimate", () => {
+  for (const value of [undefined, ""]) {
+    assert.throws(() => parseEstimatedSpendUsd(value), /--estimated-spend is required/u);
+  }
+  for (const value of ["NaN", "Infinity", "-1"]) {
+    assert.throws(() => parseEstimatedSpendUsd(value), /finite non-negative/u);
+  }
+  assert.equal(parseEstimatedSpendUsd("0"), 0);
+  assert.equal(parseEstimatedSpendUsd("12.50"), 12.5);
 });
 
 function syntheticRecord({ task, modelId, condition, replicate, first, final, sourceHash }) {

@@ -1,6 +1,11 @@
 import { readFile, readdir } from "node:fs/promises";
 import { resolve } from "node:path";
-import { assertAuthorized, loadAuthorization, refuseProviderBoundary } from "../lib/authorization.mjs";
+import {
+  assertAuthorized,
+  loadAuthorization,
+  parseEstimatedSpendUsd,
+  refuseProviderBoundary
+} from "../lib/authorization.mjs";
 import { ArtifactStore } from "../lib/artifacts.mjs";
 import { FakeModel, ReplayModel, runTrajectory } from "../lib/harness.mjs";
 import { contentHash, stableJson } from "../lib/stable.mjs";
@@ -9,7 +14,7 @@ const root = resolve(import.meta.dirname, "../..");
 const mode = process.argv[2];
 const supported = new Set(["offline", "calibration", "confirmatory"]);
 if (!supported.has(mode)) {
-  process.stderr.write("usage: node benchmark/scripts/run.mjs <offline|calibration|confirmatory> [--authorization path] [--estimated-spend usd]\n");
+  process.stderr.write("usage: node benchmark/scripts/run.mjs offline\n       node benchmark/scripts/run.mjs <calibration|confirmatory> --authorization path --estimated-spend usd\n");
   process.exitCode = 2;
 } else {
   const readJson = async (path) => JSON.parse(await readFile(resolve(root, path), "utf8"));
@@ -34,7 +39,7 @@ if (!supported.has(mode)) {
         modelManifestHash: contentHash(modelTemplate),
         aliasManifestHash: corpus.aliasManifestHash
       },
-      estimatedSpendUsd: Number(argument("--estimated-spend") ?? Number.POSITIVE_INFINITY)
+      estimatedSpendUsd: parseEstimatedSpendUsd(argument("--estimated-spend"))
     });
     refuseProviderBoundary(mode);
   } else {

@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-27T07:00:47Z"
+updated: "2026-07-27T17:01:43Z"
 ---
 # Issue #6 Offline Benchmark Implementation
 
@@ -9,6 +9,7 @@ updated: "2026-07-27T07:00:47Z"
 - Added exact causal ablations, descriptive language baseline scaffolds, a replayable three-repair trajectory harness, content-addressed artifacts, authorization gates, and preregistered analysis.
 - The trajectory harness enforces the 15-minute budget before and during model completion; timeouts are retained as failed outcomes.
 - Live calibration and confirmatory provider execution remain separately gated; repository verification is offline-only with zero allowed network calls and zero spend.
+- Every live phase requires an explicit finite non-negative spend estimate; missing, negative, infinite, or `NaN` values fail before authorization.
 
 ## Verification
 
