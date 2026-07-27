@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-27T05:12:53Z"
+updated: "2026-07-27T05:45:59Z"
 ---
 ## Startup
 
@@ -18,7 +18,7 @@ updated: "2026-07-27T05:12:53Z"
 - Local `.plan/` Markdown contains compatibility pointers only; do not duplicate GitHub planning content there.
 - Use `plan discuss assess` and `plan discuss promote` for GitHub-backed promotion.
 - Do not create planning issues, labels, milestones, or projects manually unless Plan emits `manual_fallback_allowed=true`.
-- Specs stop at human approval before implementation. Issues #3 and #4 are complete; Issue #5 is approved and implemented on its execution branch. Issue #6 still requires separate refinement and approval.
+- Specs stop at human approval before implementation. Issues #3, #4, and #5 are complete. Issue #6 is owner-approved for offline implementation only.
 
 ## Repository Verification
 
@@ -34,7 +34,9 @@ updated: "2026-07-27T05:12:53Z"
 - Run `npm run verify` for all contract validation and deterministic tests.
 - After `npm run build`, invoke the local CLI with `node dist/toolchain/src/cli.js <check|run|test|fmt> --project <repo>`.
 - Protocol v1.1 is owner-approved. Do not change its six primary comparisons, power rules, or decision gates without reopening Issue #3.
-- Do not construct the benchmark corpus or execute trajectories until Issue #6 is explicitly approved.
+- Issue #6 offline implementation must remain network-free and spend-free under normal verification.
+- Do not run live calibration without its owner-approved frozen model/authorization manifest and spend ceiling.
+- Do not run confirmatory trajectories without completed calibration, a valid powered sample-size decision, and separate owner approval.
 
 ## Verification and Closeout
 
