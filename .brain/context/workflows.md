@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-27T03:48:27Z"
+updated: "2026-07-27T05:12:53Z"
 ---
 ## Startup
 
@@ -18,18 +18,21 @@ updated: "2026-07-27T03:48:27Z"
 - Local `.plan/` Markdown contains compatibility pointers only; do not duplicate GitHub planning content there.
 - Use `plan discuss assess` and `plan discuss promote` for GitHub-backed promotion.
 - Do not create planning issues, labels, milestones, or projects manually unless Plan emits `manual_fallback_allowed=true`.
-- Specs stop at human approval before implementation. Issue #4 is owner-approved and limited to language-kernel contracts. Issues #5 and #6 require their own approval before execution.
+- Specs stop at human approval before implementation. Issues #3 and #4 are complete; Issue #5 is approved and implemented on its execution branch. Issue #6 still requires separate refinement and approval.
 
 ## Repository Verification
 
 - Node.js 24 or newer is required by `package.json`.
+- `tsconfig.json` freezes strict TypeScript 6 compilation to the ignored `dist/` output tree.
 - `package-lock.json` pins the dependency-free package state; run `npm ci` to reproduce it.
 - Run `npm run check:research` for approved protocol, evidence, traceability, report, and schema invariants.
 - `research/test/` covers protocol approval and traceability, decision rules, research metrics, and maintenance measures.
 - Run `npm run check:language` for the Issue #4 kernel, grammar coverage, fixture hashes, rejection/boundary coverage, formatter goldens, public-change obligations, and twelve-slot feature coverage.
 - `language/test/kernel.test.mjs` covers approved-kernel drift, fixture addressing, grammar/static-rule coverage, all feature boundaries, formatter ordering, public-change ordering, and protocol workload compatibility.
+- Run `npm run build` for strict TypeScript 6 compilation and `npm run check:toolchain` for schemas, checker-profile fidelity, complexity, and dependency guardrails.
+- `toolchain/test/toolchain.test.mjs` covers accepted/rejected conformance, both checker modes, Unknown propagation, AST/IR/graph stability, all public-change categories, DiagnosticV1 rendering, manifests, CLI commands, interpreter behavior, capability isolation, exit classes, and latency guardrails.
 - Run `npm run verify` for all contract validation and deterministic tests.
-- Language contract checks are conformance-input checks, not claims that a compiler exists. Issue #5 must consume these inputs in executable lexer/parser/resolver/checker/formatter tests.
+- After `npm run build`, invoke the local CLI with `node dist/toolchain/src/cli.js <check|run|test|fmt> --project <repo>`.
 - Protocol v1.1 is owner-approved. Do not change its six primary comparisons, power rules, or decision gates without reopening Issue #3.
 - Do not construct the benchmark corpus or execute trajectories until Issue #6 is explicitly approved.
 

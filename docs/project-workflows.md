@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-27T03:47:53Z"
+updated: "2026-07-27T05:12:53Z"
 ---
 ## Project Workflow
 
@@ -23,8 +23,10 @@ updated: "2026-07-27T03:47:53Z"
 
 - `npm run check:research`: validate approved protocol v1.1 and research evidence contracts.
 - `npm run check:language`: validate the Issue #4 kernel contract and all conformance inputs.
-- `npm run verify`: run both contract validators and all deterministic tests.
+- `npm run build`: compile the reference toolchain with strict TypeScript 6.
+- `npm run check:toolchain`: validate toolchain schemas, the ablation profile hash, source-size guardrail, and zero runtime dependencies.
+- `npm run verify`: run all contract validators, compile the toolchain, and execute all deterministic tests.
 - `plan check --project .`: validate Plan/GitHub-backed project state.
 - `brain context audit --project .`: audit durable context after meaningful changes.
 
-Language fixture validation is not executable Volt compilation. Issue #5 must implement and run the parser, resolver, checker, formatter, DiagnosticV1, and interpreter conformance suites against these frozen inputs.
+Use `node dist/toolchain/src/cli.js <check|run|test|fmt> --project <repo>` after `npm run build`. A Volt repository must provide the versioned repository manifest; test discovery is explicit and never filename-based.

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://volt.dev/schema/ast-v1.json",
+  "title": "AstV1 and NormalizedAstV1",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": ["schemaVersion", "module", "imports", "declarations", "file", "range"],
+      "properties": {"schemaVersion": {"const": 1}, "module": {"type": "string"}, "imports": {"type": "array"}, "declarations": {"type": "array"}, "file": {"type": "string"}, "range": {"type": "object"}}
+    },
+    {
+      "type": "object",
+      "required": ["schemaVersion", "moduleBoundary", "root", "hash"],
+      "properties": {"schemaVersion": {"const": 1}, "moduleBoundary": {"type": "string"}, "root": {"type": "object"}, "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+    }
+  ]
+}

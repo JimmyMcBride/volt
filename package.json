@@ -1,16 +1,25 @@
 {
-  "name": "volt-research-protocol",
+  "name": "volt",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "engines": {
     "node": ">=24"
   },
+  "bin": {
+    "volt": "dist/toolchain/src/cli.js"
+  },
   "scripts": {
-    "check": "npm run check:research && npm run check:language",
+    "build": "tsc -p tsconfig.json",
+    "check": "npm run check:research && npm run check:language && npm run check:toolchain",
     "check:research": "node research/scripts/validate.mjs",
     "check:language": "node language/scripts/validate.mjs",
-    "test": "node --test",
+    "check:toolchain": "npm run build && node toolchain/scripts/validate.mjs",
+    "test": "npm run build && node --test",
     "verify": "npm run check && npm test"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "typescript": "^6.0.3"
   }
 }

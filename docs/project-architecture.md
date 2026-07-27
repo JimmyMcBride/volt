@@ -1,9 +1,9 @@
 ---
-updated: "2026-07-27T03:47:53Z"
+updated: "2026-07-27T05:12:53Z"
 ---
 # Project Architecture
 
-Volt has an approved language-kernel contract but no compiler or runtime implementation. Architecture choices for the executable frontend, DiagnosticV1, interpreter, and program graph remain downstream of separately approved GitHub Issue #5.
+Volt now has an approved language-kernel contract and a reference Node.js 24 / strict TypeScript 6 toolchain implementing GitHub Issue #5. The implementation is deliberately a deterministic research frontend and tree-walking interpreter, not a production backend.
 
 ## Current Repository Boundaries
 
@@ -12,25 +12,28 @@ Volt has an approved language-kernel contract but no compiler or runtime impleme
 - `docs/`: durable knowledge and architecture context, not specification ownership.
 - `research/`: approved protocol, schemas, evidence traceability, metrics, and deterministic fixtures.
 - `language/`: Issue #4 kernel contract, canonical grammar, conformance inputs, formatter goldens, public-change fixtures, and protocol feature coverage.
+- `toolchain/`: lexer, parser, resolver, checker modes, formatter, typed IR, program graph, impact facts, DiagnosticV1, repository loader, capability adapters, interpreter, CLI, schemas, and executable conformance tests.
 - `AGENTS.md`: agent entry contract.
 
-The current branch intentionally contains no lexer, parser, resolver, type checker, effect checker, exhaustiveness checker, executable formatter, interpreter, DiagnosticV1 implementation, semantic-diff engine, or benchmark corpus.
+The repository intentionally contains no semantic-diff engine, optimizer, transpiler, VM, native backend, package manager, LSP, benchmark corpus, or controlled study harness.
 
 ## Kernel Contract Surface
 
 `language/kernel/kernel-v0.json` is the machine-readable semantic contract. `language/grammar/volt-v0.ebnf` is the exact grammar. Supporting manifests freeze accepted/rejected examples, every grammar and static-rule category, all deferred and excluded boundaries, formatter input/output pairs, stable public-change obligation ordering, and compatibility with the twelve approved protocol workload slots.
 
-The dependency-free validator protects those contracts from drift. It does not parse Volt source. Executable conformance remains an Issue #5 acceptance requirement.
+The language validator protects those contracts from drift. The reference toolchain consumes the frozen fixtures in executable lexer-through-interpreter conformance tests.
 
-## Downstream Compiler Direction
+## Reference Toolchain
 
-Subject to Issue #5 approval, the future pipeline remains:
+The implemented pipeline is:
 
 `SourceFile → tokens → AST → resolved program → typed/effect-checked program → interpreter`
 
-The resolved and typed program should expose a deterministic program graph covering definitions, references, imports, callers, public contracts, ADT variants, matches, effects, operations, and related tests. Edges should explain why a site is affected: defines, references, imports, calls, constrains, matches, uses-effect, and tested-by.
+`AstV1`, `NormalizedAstV1`, `TypedIrV1`, `ProgramGraphV1`, `DiagnosticV1`, repository manifests, run manifests, checker profiles, and runtime capability interfaces have versioned schemas. Stable graph edges explain impact through defines, references, imports, calls, constrains, matches, uses-effect, and tested-by reasons.
 
-For public type, contract, effect, or module-boundary changes, impact analysis should return stable affected-symbol identifiers, missing propagation sites, and dependency reasons. DiagnosticV1 remains the proposed versioned public envelope. Repair actions remain declarative and are never automatically applied.
+Full and `static_obligations_erased` checker modes share parsing, resolution, AST/IR, graph facts, formatting, interpretation, and diagnostic rendering. The erased mode omits only the approved profile codes and propagates `Unknown` across erased boundaries. Public-change analysis returns stable symbols, declarations, files, sites, missing propagation sites, dependency reasons, and bounded declarative repairs.
+
+The `volt check`, `run`, `test`, and `fmt` commands load the explicit repository manifest defined by `toolchain/schema/repository-manifest-v1.schema.json`. Runtime capability registries are exact, synchronous, deterministic, and network-free. Exit codes distinguish success (`0`), program/test diagnostics (`1`), and CLI/internal failures (`2`).
 
 ## Semantic Diff Direction
 
@@ -38,8 +41,8 @@ A future semantic diff may report public-contract, effect-set, ADT-variant, matc
 
 ## Guardrails
 
-- Do not claim compiler behavior that has not been implemented and tested.
+- Do not claim behavior outside the executable conformance suite.
 - Do not expand the approved v0 language feature set without reopening Issue #4.
 - Keep language contracts separate from executable compiler architecture.
 - Keep the protocol coverage map separate from the Issue #6 benchmark corpus.
-- Require approved GitHub specs before compiler, repository-diagnostic, semantic-diff, or study implementation.
+- Require approved GitHub specs before semantic-diff or study implementation.

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://volt.dev/schema/checker-profile-v1.json",
+  "title": "CheckerProfileV1",
+  "type": "object",
+  "required": ["schemaVersion", "id", "version", "retained", "disabled"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "id": {"const": "static-obligations-erased"},
+    "version": {"type": "string"},
+    "retained": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "disabled": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+  },
+  "additionalProperties": false
+}

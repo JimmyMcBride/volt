@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-27T03:47:53Z"
+updated: "2026-07-27T05:12:00Z"
 ---
 # Project Overview
 
@@ -32,13 +32,13 @@ The working principle is **semantic compression**: maximize how much programmer 
 - [Issue #2](https://github.com/JimmyMcBride/volt/issues/2) and Issues [#3](https://github.com/JimmyMcBride/volt/issues/3)–[#6](https://github.com/JimmyMcBride/volt/issues/6) are reconciled under [Milestone #1](https://github.com/JimmyMcBride/volt/milestone/1).
 - Issue #3 is closed after approved protocol v1.1 and executable research artifacts merged in PR #7.
 - Issue #4 is implemented as a machine-readable v0 kernel contract, exact EBNF, content-addressed source fixtures, full grammar/static-rule/feature-boundary coverage, formatter goldens, five public-change obligation cases, and a twelve-slot protocol coverage map.
-- The kernel artifacts do not implement or claim compiler behavior. Lexer, parser, resolver, type/effect/exhaustiveness checking, formatter execution, DiagnosticV1, program graph, interpreter, and runtime adapters remain owned by Issue #5.
+- Issue #5 is implemented on the current branch as a strict TypeScript reference frontend, two checker modes, canonical formatter, stable AST/typed IR/program graph, repository-impact facts, DiagnosticV1, deterministic capability adapters, tree-walking interpreter, repository manifest, and `check`, `run`, `test`, and `fmt` CLI.
 - No controlled Volt study has run. Both Volt-specific hypotheses remain unvalidated. Issue #6 owns the future corpus and study.
 - Brain owns concise durable knowledge under `.brain/` and `docs/`; GitHub owns planning through Discussions, Issues, Milestones, and Projects.
 
 ## Near-Term Goal
 
-Review and explicitly approve Issue #5, then implement the reference frontend/interpreter against the frozen Issue #4 contract. Do not begin compiler work before that approval, and do not begin Issue #6 study work before Issue #5 completes.
+Review and merge the Issue #5 implementation, then refine and explicitly approve Issue #6 before constructing the benchmark corpus or running any controlled study.
 
 ## Durable Research Context
 

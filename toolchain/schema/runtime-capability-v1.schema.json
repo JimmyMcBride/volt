@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://volt.dev/schema/runtime-capability-v1.json",
+  "title": "RuntimeCapabilityV1",
+  "type": "object",
+  "required": ["effectId", "operations"],
+  "properties": {
+    "effectId": {"type": "string"},
+    "operations": {"type": "object"}
+  },
+  "additionalProperties": false
+}
