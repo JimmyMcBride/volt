@@ -1,0 +1,506 @@
+{
+  "$schema": "../schema/kernel.schema.json",
+  "schemaVersion": 1,
+  "kernelId": "volt-v0",
+  "version": "0.1.0",
+  "status": "approved",
+  "source": {
+    "issue": "https://github.com/JimmyMcBride/volt/issues/4",
+    "discussion": "https://github.com/JimmyMcBride/volt/discussions/1",
+    "approvedAt": "2026-07-26",
+    "approvedBy": "JimmyMcBride"
+  },
+  "boundaries": {
+    "owns": [
+      "canonical_grammar",
+      "lexical_contract",
+      "name_resolution_contract",
+      "type_rules",
+      "effect_rules",
+      "exhaustiveness_rules",
+      "stable_public_identities",
+      "public_change_obligations",
+      "canonical_format_contract",
+      "feature_boundaries"
+    ],
+    "doesNotOwn": [
+      "lexer_or_parser_implementation",
+      "diagnostic_v1",
+      "program_graph",
+      "interpreter",
+      "runtime_capability_adapters",
+      "semantic_diff",
+      "benchmark_corpus",
+      "agent_study"
+    ]
+  },
+  "sourceModel": {
+    "encoding": "UTF-8",
+    "extension": ".volt",
+    "lineEnding": "LF",
+    "modulePathPattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$",
+    "moduleFileMapping": "module segments map to slash-separated paths beneath one source root",
+    "oneModulePerFile": true,
+    "importsExplicit": true,
+    "importAliasesAllowed": false,
+    "globImportsAllowed": false,
+    "reexportsAllowed": false,
+    "cyclicImportsAllowed": false,
+    "implicitPreludeImportsAllowed": false,
+    "importableVisibility": "pub_only",
+    "importNamesSorted": true,
+    "unusedImports": "error",
+    "importErrors": [
+      "duplicate",
+      "unresolved",
+      "ambiguous",
+      "private",
+      "unused",
+      "cyclic",
+      "wildcard",
+      "aliased"
+    ],
+    "fileModuleMismatch": "resolve_error"
+  },
+  "lexical": {
+    "identifierPattern": "^[A-Za-z][A-Za-z0-9_]*$",
+    "keywords": [
+      "module",
+      "import",
+      "pub",
+      "record",
+      "type",
+      "effect",
+      "fn",
+      "uses",
+      "let",
+      "in",
+      "if",
+      "else",
+      "match",
+      "true",
+      "false"
+    ],
+    "lineCommentPrefix": "//",
+    "blockComments": false,
+    "semicolons": false,
+    "trailingCommas": false,
+    "integer": {
+      "representation": "signed_64_bit",
+      "literalPattern": "^(0|[1-9][0-9]*)$",
+      "negativeForm": "unary_minus",
+      "literalOverflow": "type_diagnostic"
+    },
+    "string": {
+      "contents": "UTF-8",
+      "escapes": [
+        "\\\"",
+        "\\\\",
+        "\\n",
+        "\\r",
+        "\\t"
+      ],
+      "normalization": "none",
+      "ordering": "unicode_scalar_lexicographic",
+      "hashing": "exact_unicode_scalar_sequence"
+    }
+  },
+  "naming": {
+    "lowerSnakeCase": [
+      "module_segment",
+      "function",
+      "parameter",
+      "local_binding",
+      "record_field",
+      "effect_operation"
+    ],
+    "upperCamelCase": [
+      "record",
+      "algebraic_data_type",
+      "constructor",
+      "effect"
+    ],
+    "shadowing": "error",
+    "duplicateTopLevelNames": "error",
+    "constructorCollisions": "error"
+  },
+  "declarations": [
+    "record",
+    "algebraic_data_type",
+    "effect",
+    "function"
+  ],
+  "types": {
+    "primitive": [
+      "Int",
+      "Bool",
+      "String",
+      "Unit"
+    ],
+    "builtInParametric": [
+      "List<T>",
+      "Option<T>",
+      "Result<T,E>"
+    ],
+    "userTypesNominal": true,
+    "functionBoundaryTypesExplicit": true,
+    "localInferenceOnly": true,
+    "userDefinedGenerics": false,
+    "functionsFirstClass": false,
+    "recordFieldsExact": true,
+    "adtPayloadArity": "zero_or_one",
+    "optionConstructors": [
+      "None",
+      "Some"
+    ],
+    "resultConstructors": [
+      "Ok",
+      "Error"
+    ],
+    "listOperations": [
+      "List.prepend",
+      "List.length"
+    ],
+    "functionBodyMustMatchReturnType": true,
+    "ifConditionType": "Bool",
+    "ifBranchTypesExact": true,
+    "callsRequireExactArityAndTypes": true,
+    "mutualRecursion": true
+  },
+  "resolution": {
+    "valueLookupOrder": [
+      "local_binding",
+      "parameter",
+      "same_module_declaration",
+      "explicit_import"
+    ],
+    "ambiguity": "error",
+    "fallbackSearch": false,
+    "constructorsInValueNamespace": true,
+    "importingTypeImportsConstructors": true,
+    "effectOperationCallShape": "EffectName.operation(args)",
+    "publicSurfaceRequiresPublicTypesAndEffects": true
+  },
+  "operators": [
+    {
+      "symbols": [
+        "call",
+        "field"
+      ],
+      "precedence": 8,
+      "associativity": "left"
+    },
+    {
+      "symbols": [
+        "!",
+        "unary-"
+      ],
+      "precedence": 7,
+      "associativity": "right"
+    },
+    {
+      "symbols": [
+        "*",
+        "/",
+        "%"
+      ],
+      "precedence": 6,
+      "associativity": "left"
+    },
+    {
+      "symbols": [
+        "+",
+        "-"
+      ],
+      "precedence": 5,
+      "associativity": "left"
+    },
+    {
+      "symbols": [
+        "<",
+        "<=",
+        ">",
+        ">="
+      ],
+      "precedence": 4,
+      "associativity": "non_associative"
+    },
+    {
+      "symbols": [
+        "==",
+        "!="
+      ],
+      "precedence": 3,
+      "associativity": "non_associative"
+    },
+    {
+      "symbols": [
+        "&&"
+      ],
+      "precedence": 2,
+      "associativity": "left"
+    },
+    {
+      "symbols": [
+        "||"
+      ],
+      "precedence": 1,
+      "associativity": "left"
+    }
+  ],
+  "operatorTyping": {
+    "arithmetic": {
+      "operators": [
+        "-",
+        "*",
+        "/",
+        "%"
+      ],
+      "operands": [
+        "Int",
+        "Int"
+      ],
+      "result": "Int"
+    },
+    "addition": [
+      {
+        "operands": [
+          "Int",
+          "Int"
+        ],
+        "result": "Int"
+      },
+      {
+        "operands": [
+          "String",
+          "String"
+        ],
+        "result": "String"
+      }
+    ],
+    "ordering": [
+      "Int",
+      "String"
+    ],
+    "equality": [
+      "Int",
+      "Bool",
+      "String",
+      "Unit",
+      "recursively_equatable_record",
+      "recursively_equatable_adt",
+      "recursively_equatable_list",
+      "recursively_equatable_option",
+      "recursively_equatable_result"
+    ],
+    "chainedComparisons": "error"
+  },
+  "evaluation": {
+    "order": "left_to_right",
+    "shortCircuit": [
+      "&&",
+      "||"
+    ],
+    "implicitConversions": false,
+    "operatorOverloading": false,
+    "expectedFailures": "Result<T,E>",
+    "exceptionsForExpectedFailures": false,
+    "arithmeticOverflow": "runtime_diagnostic",
+    "divisionByZero": "runtime_diagnostic",
+    "remainderByZero": "runtime_diagnostic"
+  },
+  "effects": {
+    "declarationsNamed": true,
+    "operationsSynchronous": true,
+    "pureFunctionsOmitUses": true,
+    "emptyUsesAllowed": false,
+    "setsSorted": true,
+    "setsDuplicateFree": true,
+    "setsExact": true,
+    "missingEffect": "error",
+    "unusedEffect": "error",
+    "transitivePropagation": true,
+    "recursiveGroups": "least_fixed_point",
+    "unreachableReferencesContribute": true,
+    "effectHandlers": false,
+    "effectPolymorphism": false
+  },
+  "matching": {
+    "expression": true,
+    "armResultTypesExact": true,
+    "guards": false,
+    "fallthrough": false,
+    "closedTypes": [
+      "user_adt",
+      "Option",
+      "Result",
+      "List",
+      "Bool"
+    ],
+    "closedCatchAllAllowed": false,
+    "openTypesRequireCatchAll": [
+      "Int",
+      "String",
+      "record"
+    ],
+    "duplicateArms": "error",
+    "unreachableArms": "error",
+    "overlappingArms": "error",
+    "duplicatePatternBindings": "error"
+  },
+  "stableIdentity": {
+    "declaration": "module_path::declaration_kind::declared_name",
+    "field": "::field::name",
+    "variant": "::variant::name",
+    "operation": "::operation::name",
+    "parameter": "::param::zero_based_index::name",
+    "excludes": [
+      "source_offset",
+      "declaration_order",
+      "formatter_layout"
+    ],
+    "affectedOrdering": "stable_identity_lexicographic"
+  },
+  "publicChanges": [
+    {
+      "id": "adt_variant",
+      "obligationCode": "K_CHANGE_ADT_VARIANT",
+      "affectedKinds": [
+        "exhaustive_match",
+        "constructor_set_fixture"
+      ],
+      "diagnosticPhase": "exhaustiveness"
+    },
+    {
+      "id": "record_field",
+      "obligationCode": "K_CHANGE_RECORD_FIELD",
+      "affectedKinds": [
+        "record_literal",
+        "record_pattern",
+        "field_reference",
+        "public_signature",
+        "related_fixture"
+      ],
+      "diagnosticPhase": "type"
+    },
+    {
+      "id": "function_contract",
+      "obligationCode": "K_CHANGE_FUNCTION_CONTRACT",
+      "affectedKinds": [
+        "caller",
+        "imported_signature",
+        "function_body",
+        "related_test"
+      ],
+      "diagnosticPhase": "type"
+    },
+    {
+      "id": "effect_set",
+      "obligationCode": "K_CHANGE_EFFECT_SET",
+      "affectedKinds": [
+        "caller_uses_set",
+        "runtime_capability_manifest"
+      ],
+      "diagnosticPhase": "effect"
+    },
+    {
+      "id": "module_move",
+      "obligationCode": "K_CHANGE_MODULE_MOVE",
+      "affectedKinds": [
+        "explicit_import",
+        "stable_identity_reference"
+      ],
+      "diagnosticPhase": "resolve"
+    }
+  ],
+  "formatter": {
+    "command": "volt fmt",
+    "indentSpaces": 2,
+    "lineEnding": "LF",
+    "trailingWhitespace": false,
+    "trailingCommas": false,
+    "semicolons": false,
+    "importsSorted": true,
+    "importNamesSorted": true,
+    "effectNamesSorted": true,
+    "recordFields": "declaration_order",
+    "publicDeclarations": "source_order",
+    "spaceAroundInfixOperators": true,
+    "spaceAroundArrow": true,
+    "openingBrace": "same_line",
+    "multilineMemberMinimumLines": 1,
+    "parsePreserving": true,
+    "idempotent": true
+  },
+  "warnings": {
+    "unusedLocalBinding": "warning"
+  },
+  "features": [
+    "modules",
+    "explicit_imports",
+    "records",
+    "closed_adts",
+    "functions",
+    "immutable_let",
+    "if_expression",
+    "match_expression",
+    "exact_effect_sets",
+    "list",
+    "option",
+    "result",
+    "canonical_formatting",
+    "stable_public_identities",
+    "public_change_obligations"
+  ],
+  "deferred": [
+    "user_defined_generics",
+    "lambdas",
+    "closures",
+    "higher_order_apis",
+    "mutable_collections",
+    "loops",
+    "async_concurrency",
+    "package_management",
+    "ffi",
+    "lsp",
+    "documentation_syntax",
+    "block_comments",
+    "effect_handlers",
+    "effect_polymorphism",
+    "implicit_result_propagation",
+    "symbolic_invariants",
+    "optimizer",
+    "compilation_targets"
+  ],
+  "excluded": [
+    "classes",
+    "inheritance",
+    "interfaces_traits",
+    "null",
+    "expected_failure_exceptions",
+    "macros",
+    "reflection",
+    "implicit_conversions",
+    "operator_overloading",
+    "global_mutable_state",
+    "runtime_code_loading",
+    "multiple_equivalent_syntax_forms",
+    "automatic_source_repair"
+  ],
+  "protocolCompatibility": {
+    "protocolId": "volt-v0-evidence-ready",
+    "protocolVersion": "1.1.0",
+    "conditionInterfaces": [
+      "canonical_syntax_toggle",
+      "static_obligation_toggle",
+      "diagnostic_fact_interface"
+    ],
+    "measurementInterfaces": [
+      "stable_ast_shape",
+      "declared_effect_set",
+      "stable_public_identity",
+      "public_change_obligation_set"
+    ],
+    "mayChangeProtocolDecisionRules": false
+  }
+}

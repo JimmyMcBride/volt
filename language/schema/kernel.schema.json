@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JimmyMcBride/volt/language/schema/kernel.schema.json",
+  "title": "Volt v0 Language Kernel",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "kernelId",
+    "version",
+    "status",
+    "source",
+    "boundaries",
+    "sourceModel",
+    "lexical",
+    "naming",
+    "declarations",
+    "types",
+    "resolution",
+    "operators",
+    "operatorTyping",
+    "evaluation",
+    "effects",
+    "matching",
+    "stableIdentity",
+    "publicChanges",
+    "formatter",
+    "warnings",
+    "features",
+    "deferred",
+    "excluded",
+    "protocolCompatibility"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "kernelId": {
+      "const": "volt-v0"
+    },
+    "version": {
+      "const": "0.1.0"
+    },
+    "status": {
+      "const": "approved"
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "issue",
+        "discussion",
+        "approvedAt",
+        "approvedBy"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "issue": {
+          "const": "https://github.com/JimmyMcBride/volt/issues/4"
+        },
+        "discussion": {
+          "const": "https://github.com/JimmyMcBride/volt/discussions/1"
+        },
+        "approvedAt": {
+          "type": "string",
+          "format": "date"
+        },
+        "approvedBy": {
+          "const": "JimmyMcBride"
+        }
+      }
+    },
+    "boundaries": {
+      "$ref": "#/$defs/stringArraysObject"
+    },
+    "sourceModel": {
+      "type": "object"
+    },
+    "lexical": {
+      "type": "object"
+    },
+    "naming": {
+      "type": "object"
+    },
+    "declarations": {
+      "$ref": "#/$defs/nonEmptyUniqueStrings"
+    },
+    "types": {
+      "type": "object"
+    },
+    "resolution": {
+      "type": "object"
+    },
+    "operators": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": [
+          "symbols",
+          "precedence",
+          "associativity"
+        ],
+        "properties": {
+          "symbols": {
+            "$ref": "#/$defs/nonEmptyUniqueStrings"
+          },
+          "precedence": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 8
+          },
+          "associativity": {
+            "enum": [
+              "left",
+              "right",
+              "non_associative"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "operatorTyping": {
+      "type": "object"
+    },
+    "evaluation": {
+      "type": "object"
+    },
+    "effects": {
+      "type": "object"
+    },
+    "matching": {
+      "type": "object"
+    },
+    "stableIdentity": {
+      "type": "object"
+    },
+    "publicChanges": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "obligationCode",
+          "affectedKinds",
+          "diagnosticPhase"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "enum": [
+              "adt_variant",
+              "record_field",
+              "function_contract",
+              "effect_set",
+              "module_move"
+            ]
+          },
+          "obligationCode": {
+            "type": "string",
+            "pattern": "^K_CHANGE_[A-Z_]+$"
+          },
+          "affectedKinds": {
+            "$ref": "#/$defs/nonEmptyUniqueStrings"
+          },
+          "diagnosticPhase": {
+            "enum": [
+              "resolve",
+              "type",
+              "effect",
+              "exhaustiveness"
+            ]
+          }
+        }
+      }
+    },
+    "formatter": {
+      "type": "object"
+    },
+    "warnings": {
+      "type": "object"
+    },
+    "features": {
+      "$ref": "#/$defs/nonEmptyUniqueStrings"
+    },
+    "deferred": {
+      "$ref": "#/$defs/nonEmptyUniqueStrings"
+    },
+    "excluded": {
+      "$ref": "#/$defs/nonEmptyUniqueStrings"
+    },
+    "protocolCompatibility": {
+      "type": "object",
+      "required": [
+        "protocolId",
+        "protocolVersion",
+        "conditionInterfaces",
+        "measurementInterfaces",
+        "mayChangeProtocolDecisionRules"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "protocolId": {
+          "const": "volt-v0-evidence-ready"
+        },
+        "protocolVersion": {
+          "const": "1.1.0"
+        },
+        "conditionInterfaces": {
+          "$ref": "#/$defs/nonEmptyUniqueStrings"
+        },
+        "measurementInterfaces": {
+          "$ref": "#/$defs/nonEmptyUniqueStrings"
+        },
+        "mayChangeProtocolDecisionRules": {
+          "const": false
+        }
+      }
+    }
+  },
+  "$defs": {
+    "nonEmptyUniqueStrings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "stringArraysObject": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/nonEmptyUniqueStrings"
+      }
+    }
+  }
+}

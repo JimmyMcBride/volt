@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "kernelId": "volt-v0",
+  "accepted": [
+    {
+      "id": "all_syntax",
+      "path": "language/fixtures/accepted/all_syntax.volt",
+      "covers": ["closed_adts", "exact_effect_sets", "functions", "if_expression", "immutable_let", "list", "match_expression", "option", "records", "result"],
+      "sha256": "97443364ef4ff9bb4984847a38fda6751583ba51f88c8c8eed7b86f1ced9124c"
+    },
+    {
+      "id": "containers",
+      "path": "language/fixtures/accepted/containers.volt",
+      "covers": ["list", "match_expression"],
+      "sha256": "ddb136740e70240e905970b714c39dc34c0e8061bd2ed053cfbe42ed41611ca0"
+    },
+    {
+      "id": "effects",
+      "path": "language/fixtures/accepted/effects.volt",
+      "covers": ["exact_effect_sets", "functions"],
+      "sha256": "08f189cc468460592b1fe1793fd68255a5c1b2cab5ec0bf17ee39452466f417c"
+    },
+    {
+      "id": "matching",
+      "path": "language/fixtures/accepted/matching.volt",
+      "covers": ["closed_adts", "match_expression"],
+      "sha256": "0c8946dff7a32ccc7ba7ad58e88eabc8ffe4838b9c644e54812806fbd343ca03"
+    },
+    {
+      "id": "module_domain",
+      "path": "language/fixtures/accepted/modules/domain.volt",
+      "covers": ["closed_adts", "modules", "records"],
+      "sha256": "121109e2e58fe42a3afcd76f9c72fff0bb86665a6be1cfcf0260cf54f1703f9b"
+    },
+    {
+      "id": "module_registration",
+      "path": "language/fixtures/accepted/modules/registration.volt",
+      "covers": ["closed_adts", "explicit_imports", "functions", "modules"],
+      "sha256": "6467d67f08f2d76b22c9de3c3dedb2e021410297132bbbdea1658fcc885f89f4"
+    },
+    {
+      "id": "records",
+      "path": "language/fixtures/accepted/records.volt",
+      "covers": ["functions", "records"],
+      "sha256": "2ebd66fdf555686f126a00b320a3afdda17af14182f1f1aaa7399423c639e9b1"
+    }
+  ],
+  "rejected": [
+    {
+      "id": "bad_naming",
+      "path": "language/fixtures/rejected/bad_naming.volt",
+      "expectedCode": "K_NAME_CONVENTION",
+      "sha256": "06b7fa52c0e83e8dba668fb16ff4e9e184a5ac80d41c6e7f8feee9749ec91108"
+    },
+    {
+      "id": "closed_catch_all",
+      "path": "language/fixtures/rejected/closed_catch_all.volt",
+      "expectedCode": "K_MATCH_CATCH_ALL",
+      "sha256": "b7f55a604664b1628551cc6262b707491562476077793183f1ab2ff0b5551a42"
+    },
+    {
+      "id": "import_alias",
+      "path": "language/fixtures/rejected/import_alias.volt",
+      "expectedCode": "K_IMPORT_ALIAS",
+      "sha256": "3393edff248f0c7fe61ce473b06ba61f36b2e73804658c3dd7fd65b419fc20b0"
+    },
+    {
+      "id": "missing_boundary_type",
+      "path": "language/fixtures/rejected/missing_boundary_type.volt",
+      "expectedCode": "K_TYPE_BOUNDARY",
+      "sha256": "8ac870860ead55820c896fda076215189420ca961fba1196426265c0da0ebac0"
+    },
+    {
+      "id": "missing_effect",
+      "path": "language/fixtures/rejected/missing_effect.volt",
+      "expectedCode": "K_EFFECT_MISSING",
+      "sha256": "9d0088d20bab15083f2543e7b882757fd932f58b01d9e16866b5f9fa4eabe308"
+    },
+    {
+      "id": "non_ascii_identifier",
+      "path": "language/fixtures/rejected/non_ascii_identifier.volt",
+      "expectedCode": "K_LEX_IDENTIFIER_ASCII",
+      "sha256": "52651916cf49cfc93436547158e0d13e26fa99a991392c502bdfb8213bc2d625"
+    },
+    {
+      "id": "record_missing_field",
+      "path": "language/fixtures/rejected/record_missing_field.volt",
+      "expectedCode": "K_TYPE_RECORD_FIELDS",
+      "sha256": "6c6b16525d9939810543738d1dbe72256c0596207a6974061c90fc490a228ed2"
+    },
+    {
+      "id": "semicolon",
+      "path": "language/fixtures/rejected/semicolon.volt",
+      "expectedCode": "K_LEX_SEMICOLON",
+      "sha256": "c662f8f737734d5981958fb88d478a747fd8c926d00c1947e78d58612bf40bd3"
+    },
+    {
+      "id": "shadowing",
+      "path": "language/fixtures/rejected/shadowing.volt",
+      "expectedCode": "K_NAME_SHADOWING",
+      "sha256": "7c0c3b8bd1ce3fe0a52447b3183897e844bcd929844dca71c77ad0f8342d164a"
+    },
+    {
+      "id": "trailing_comma",
+      "path": "language/fixtures/rejected/trailing_comma.volt",
+      "expectedCode": "K_LEX_TRAILING_COMMA",
+      "sha256": "08d63b29b7bbab44c88064ff5db499fb1f6db621a989fd301217f9a507524cba"
+    },
+    {
+      "id": "unused_effect",
+      "path": "language/fixtures/rejected/unused_effect.volt",
+      "expectedCode": "K_EFFECT_UNUSED",
+      "sha256": "a1e572dcbc14d1fb75907c14258729612412feb04342a7415888da2a57ff4eee"
+    },
+    {
+      "id": "unused_import",
+      "path": "language/fixtures/rejected/unused_import.volt",
+      "expectedCode": "K_IMPORT_UNUSED",
+      "sha256": "be60aca938215c52e03f796ed76a3f3cfdf39d7dea840ea9de171db5565e1a0c"
+    }
+  ]
+}

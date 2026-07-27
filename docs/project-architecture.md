@@ -1,63 +1,45 @@
 ---
-updated: "2026-07-26T07:53:08Z"
+updated: "2026-07-27T03:47:53Z"
 ---
 # Project Architecture
 
-Volt has no compiler implementation architecture yet. Architecture choices remain downstream of the research protocol, language kernel, and separately approved GitHub specs.
+Volt has an approved language-kernel contract but no compiler or runtime implementation. Architecture choices for the executable frontend, DiagnosticV1, interpreter, and program graph remain downstream of separately approved GitHub Issue #5.
 
 ## Current Repository Boundaries
 
 - `.brain/`: concise project memory and status pointers.
 - `.plan/`: GitHub backend configuration and local metadata mirror; not canonical planning content.
 - `docs/`: durable knowledge and architecture context, not specification ownership.
-- `research/`: executable protocol, schemas, evidence traceability, metrics, and deterministic fixtures.
+- `research/`: approved protocol, schemas, evidence traceability, metrics, and deterministic fixtures.
+- `language/`: Issue #4 kernel contract, canonical grammar, conformance inputs, formatter goldens, public-change fixtures, and protocol feature coverage.
 - `AGENTS.md`: agent entry contract.
 
-The current branch implements research-layer calculations only. It does not contain a lexer, parser, resolver, type checker, effect checker, exhaustiveness checker, interpreter, DiagnosticV1 implementation, or semantic-diff engine.
+The current branch intentionally contains no lexer, parser, resolver, type checker, effect checker, exhaustiveness checker, executable formatter, interpreter, DiagnosticV1 implementation, semantic-diff engine, or benchmark corpus.
 
-## External Planning Boundaries
+## Kernel Contract Surface
 
-- GitHub Discussion #1 owns shaping.
-- GitHub Issues own specifications and execution readiness.
-- GitHub Milestones and Projects own sequencing.
-- Existing Issues #4–#6 remain unapproved until the owner explicitly approves their updated specs.
+`language/kernel/kernel-v0.json` is the machine-readable semantic contract. `language/grammar/volt-v0.ebnf` is the exact grammar. Supporting manifests freeze accepted/rejected examples, every grammar and static-rule category, all deferred and excluded boundaries, formatter input/output pairs, stable public-change obligation ordering, and compatibility with the twelve approved protocol workload slots.
 
-## Proposed Downstream Compiler Direction
+The dependency-free validator protects those contracts from drift. It does not parse Volt source. Executable conformance remains an Issue #5 acceptance requirement.
 
-Subject to separate approval, the future pipeline remains:
+## Downstream Compiler Direction
+
+Subject to Issue #5 approval, the future pipeline remains:
 
 `SourceFile → tokens → AST → resolved program → typed/effect-checked program → interpreter`
 
-To support safe repository evolution, the resolved and typed program should expose a deterministic program graph.
+The resolved and typed program should expose a deterministic program graph covering definitions, references, imports, callers, public contracts, ADT variants, matches, effects, operations, and related tests. Edges should explain why a site is affected: defines, references, imports, calls, constrains, matches, uses-effect, and tested-by.
 
-Proposed node coverage:
-
-- definitions and references;
-- imports and module boundaries;
-- callers and callees;
-- public types and contracts;
-- ADT variants and match sites;
-- declared effects and operations; and
-- related tests.
-
-Proposed edges explain why a site is affected: defines, references, imports, calls, constrains, matches, uses-effect, and tested-by.
-
-For public type, contract, effect, or module-boundary changes, impact analysis should return stable affected-symbol identifiers, missing propagation sites, and dependency reasons. Stable ordering and complete node/edge coverage are requirements, not implementation choices.
-
-## Repository Diagnostics Direction
-
-DiagnosticV1 remains the proposed versioned public envelope. Repository-aware additions should remain backward-compatible and machine-readable, including affected declarations, missing propagation, dependency reasons, and a bounded repair surface. Repair actions remain declarative and are never automatically applied.
+For public type, contract, effect, or module-boundary changes, impact analysis should return stable affected-symbol identifiers, missing propagation sites, and dependency reasons. DiagnosticV1 remains the proposed versioned public envelope. Repair actions remain declarative and are never automatically applied.
 
 ## Semantic Diff Direction
 
-A future semantic diff may report public-contract, effect-set, ADT-variant, match-coverage, and unexpected behavior-surface changes. It must distinguish facts from heuristics and must not collapse dimensions into an authoritative score.
-
-This is a deferred direction. The current branch records research schemas and metric fixtures only.
+A future semantic diff may report public-contract, effect-set, ADT-variant, match-coverage, and unexpected behavior-surface changes. It must distinguish facts from heuristics and must not collapse dimensions into an authoritative score. This remains deferred.
 
 ## Guardrails
 
 - Do not claim compiler behavior that has not been implemented and tested.
-- Do not expand the v0 language feature set to implement impact analysis.
-- Keep semantic requirements separate from implementation architecture.
-- Prefer deterministic stable identifiers and ordering.
-- Require approved GitHub specs before compiler, repository-diagnostic, or semantic-diff implementation.
+- Do not expand the approved v0 language feature set without reopening Issue #4.
+- Keep language contracts separate from executable compiler architecture.
+- Keep the protocol coverage map separate from the Issue #6 benchmark corpus.
+- Require approved GitHub specs before compiler, repository-diagnostic, semantic-diff, or study implementation.

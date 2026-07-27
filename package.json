@@ -7,7 +7,9 @@
     "node": ">=24"
   },
   "scripts": {
-    "check": "node research/scripts/validate.mjs",
+    "check": "npm run check:research && npm run check:language",
+    "check:research": "node research/scripts/validate.mjs",
+    "check:language": "node language/scripts/validate.mjs",
     "test": "node --test",
     "verify": "npm run check && npm test"
   }

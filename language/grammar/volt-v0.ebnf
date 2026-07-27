@@ -1,0 +1,55 @@
+Program        = ModuleDecl ImportDecl* Decl* EOF
+ModuleDecl     = "module" ModulePath
+ModulePath     = lower_id ("." lower_id)*
+ImportDecl     = "import" ModulePath ".{" ImportName ("," ImportName)* "}"
+ImportName     = lower_id | UpperName
+
+Decl           = Pub? (RecordDecl | TypeDecl | EffectDecl | FunctionDecl)
+Pub            = "pub"
+RecordDecl     = "record" UpperName "{" FieldDecl ("," FieldDecl)* "}"
+FieldDecl      = lower_id ":" Type
+TypeDecl       = "type" UpperName "{" VariantDecl+ "}"
+VariantDecl    = UpperName | UpperName "(" Type ")"
+EffectDecl     = "effect" UpperName "{" EffectFnDecl+ "}"
+EffectFnDecl   = "fn" lower_id "(" Params? ")" "->" Type
+FunctionDecl   = "fn" lower_id "(" Params? ")" Uses? "->" Type Block
+Params         = Param ("," Param)*
+Param          = lower_id ":" Type
+Uses           = "uses" "{" UpperName ("," UpperName)* "}"
+
+Type           = "Int" | "Bool" | "String" | "Unit" | UpperName
+               | "List" "<" Type ">"
+               | "Option" "<" Type ">"
+               | "Result" "<" Type "," Type ">"
+
+Block          = "{" Expr "}"
+Expr           = LetExpr | IfExpr | MatchExpr | OrExpr
+LetExpr        = "let" lower_id TypeAnnotation? "=" Expr "in" Expr
+TypeAnnotation = ":" Type
+IfExpr         = "if" Expr Block "else" Block
+MatchExpr      = "match" Expr "{" MatchArm+ "}"
+MatchArm       = Pattern "->" Expr
+
+OrExpr         = AndExpr ("||" AndExpr)*
+AndExpr        = EqualityExpr ("&&" EqualityExpr)*
+EqualityExpr   = OrderExpr (("==" | "!=") OrderExpr)?
+OrderExpr      = AddExpr (("<" | "<=" | ">" | ">=") AddExpr)?
+AddExpr        = MultiplyExpr (("+" | "-") MultiplyExpr)*
+MultiplyExpr   = UnaryExpr (("*" | "/" | "%") UnaryExpr)*
+UnaryExpr      = ("!" | "-") UnaryExpr | PostfixExpr
+PostfixExpr    = AtomExpr (("(" Arguments? ")") | ("." lower_id))*
+Arguments      = Expr ("," Expr)*
+
+AtomExpr       = Integer | StringLiteral | "true" | "false" | "()"
+               | lower_id | UpperName | ListLiteral | RecordLiteral | "(" Expr ")"
+ListLiteral    = "[" (Expr ("," Expr)*)? "]"
+RecordLiteral  = UpperName "{" FieldValue ("," FieldValue)* "}"
+FieldValue     = lower_id ":" Expr
+
+Pattern        = "_" | lower_id | LiteralPattern | ConstructorPattern
+               | RecordPattern | ListPattern
+LiteralPattern = Integer | StringLiteral | "true" | "false" | "()"
+ConstructorPattern = UpperName | UpperName "(" Pattern ")"
+RecordPattern  = UpperName "{" FieldPattern ("," FieldPattern)* "}"
+FieldPattern   = lower_id ":" Pattern
+ListPattern    = "[]" | "[" Pattern "," "..." lower_id "]"
