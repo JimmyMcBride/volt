@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "conditions": [
+    "volt_full",
+    "static_obligations_erased",
+    "alias_permissive",
+    "diagnostics_plain"
+  ],
+  "fullCheckerProfile": "full",
+  "erasedCheckerProfileHash": "sha256:032f158a7c9fd49afee5ec4948d3a5ec32341d949c6675e877e26b419465c7d8",
+  "aliasManifestHash": "sha256:b3fbf8ac150584475d7564d181138af2780cdb52e1e871a793ef8a63a1fd2af6",
+  "diagnosticFork": "same_frozen_first_failure"
+}

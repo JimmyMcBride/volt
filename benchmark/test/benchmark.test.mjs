@@ -31,11 +31,13 @@ import { contentHash, stableJson } from "../lib/stable.mjs";
 const root = resolve(import.meta.dirname, "../..");
 const fixture = async (path) => JSON.parse(await readFile(resolve(root, path), "utf8"));
 
-test("generated corpus freezes four calibration and twelve private confirmatory tasks", async () => {
+test("generated corpus freezes four calibration tasks and retires twelve exposed confirmatory fixtures", async () => {
   const corpus = await fixture("benchmark/corpus/corpus-manifest-v1.json");
   assert.equal(corpus.calibrationTaskCount, 4);
   assert.equal(corpus.confirmatoryTaskCount, 12);
-  assert.equal(corpus.confirmatoryPrivateUntilStudyComplete, true);
+  assert.equal(corpus.confirmatoryPrivateUntilStudyComplete, false);
+  assert.equal(corpus.confirmatoryEligibleForEvidence, false);
+  assert.equal(corpus.confirmatoryStatus, "retired_public_development_fixtures");
   assert.deepEqual(corpus.normalVerification, {
     networkAllowed: false,
     providerCallsAllowed: false,

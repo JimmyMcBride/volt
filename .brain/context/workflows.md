@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-27T17:41:59Z"
+updated: "2026-07-28T05:23:00Z"
 ---
 ## Startup
 
@@ -18,26 +18,30 @@ updated: "2026-07-27T17:41:59Z"
 - Local `.plan/` Markdown contains compatibility pointers only; do not duplicate GitHub planning content there.
 - Use `plan discuss assess` and `plan discuss promote` for GitHub-backed promotion.
 - Do not create planning issues, labels, milestones, or projects manually unless Plan emits `manual_fallback_allowed=true`.
-- Specs stop at human approval before implementation. Issues #3–#6 are complete; Issue #15 is the active owner-approved pre-calibration naming migration.
+- Specs stop at human approval before implementation. Issues #3–#6 and #15 are complete; Issue #17 is approved for offline implementation only.
 
 ## Repository Verification
 
 - `package.json` requires Node.js 24 or newer, defines the build/check/test workflows, and keeps runtime dependencies at zero.
 - `package-lock.json` pins the reproducible npm dependency state; use `npm ci` for a clean install.
 - `tsconfig.json` freezes strict TypeScript 6 compilation into ignored `dist/` output.
-- Run `npm run check:research` for protocol, evidence, traceability, report, and schema invariants. `research/test/` covers approval, evidence, decision rules, metrics, and safe-maintenance measurements.
-- Run `npm run check:language` for the kernel, canonical camelCase naming, grammar coverage, fixture hashes, rejection/boundary coverage, formatter goldens, public-change obligations, and workload feature coverage. `language/test/` freezes those validation contracts.
+- Run `npm run check:research` for protocol, evidence, traceability, report, and schema invariants.
+- `research/test/` freezes approval, evidence, decision-rule, metric, and safe-maintenance contracts.
+- Run `npm run check:language` for the kernel, canonical camelCase naming, grammar coverage, fixture hashes, rejection/boundary coverage, formatter goldens, public-change obligations, and workload feature coverage.
+- `language/test/` freezes kernel, grammar, naming, formatter, fixture, and workload-coverage contracts.
 - Run `npm run build` and `npm run check:toolchain` for compilation, schemas, checker-profile fidelity, complexity, and dependency guardrails.
-- `toolchain/test/toolchain.test.mjs` covers all identifier roles, rejects underscores through `K_NAME_UNDERSCORE`, rejects wrong case through `K_NAME_CONVENTION`, and proves formatting never guesses invalid renames.
+- `toolchain/test/` covers parser/checker fidelity, diagnostics, formatting, graph stability, runtime capabilities, and CLI behavior.
 - Run `npm run benchmark:generate` after an approved source-contract change; generation must be byte-idempotent.
-- Run `npm run check:benchmark` for all 16 task states, content hashes, assertions, 128 retained mutation kills, treatment parity, baseline equivalence, schemas, authorization gates, and offline network/spend isolation. `benchmark/test/` covers conditions, trajectories, hidden-output isolation, authorization, power, analysis, and operational measures.
-- Every Volt condition uses canonical camelCase. The alias-permissive condition varies keywords only and must still reject snake_case.
-- Preserve protocol v1.1 IDs, research metric/task/condition IDs, diagnostic/JSON keys, CLI flags, artifact directory IDs, and idiomatic external-baseline naming.
-- `npm run benchmark:offline` writes ignored deterministic fake/replay artifacts and performs no provider calls.
+- Run `npm run check:benchmark` for all 16 task states, 128 retained mutation kills, treatment parity, provider manifests, authorization gates, schemas, and offline network/spend isolation.
+- `benchmark/test/live.test.mjs` covers exact provider envelopes, response validation, context allowlisting, redaction, metadata-only retry rules, spend/checkpoint safety, the deterministic 160-trajectory schedule, two byte-identical fake calibrations, six-endpoint power failure, and the run-approval packet.
+- `npm run benchmark:offline` writes ignored deterministic fake/replay artifacts without provider calls.
+- `npm run benchmark:calibration:dry-run` exercises the full 160-trajectory schedule and artifact flow without provider calls or spend.
+- `npm run benchmark:calibration:preflight` is an explicit post-merge metadata-only command; it may not issue inference.
+- Build the run-approval packet only from the merged commit, no-inference preflight evidence, price evidence no older than 24 hours, expected duration, and every frozen hash.
+- Do not run `benchmark:calibrate` until the owner explicitly approves the exact authorization hash and USD ceiling. Issue #17 implementation approval is not run approval.
+- Keep `benchmark:confirmatory` fail-closed until fresh private tasks, calibration feasibility, powered sample size, validity review, and a separate owner approval exist.
 - Run `npm run verify` for all contract validation and deterministic tests.
 - After `npm run build`, invoke the local CLI with `node dist/toolchain/src/cli.js <check|run|test|fmt> --project <repo>`.
-- Do not run live calibration without its owner-approved frozen model/authorization manifest and spend ceiling.
-- Do not run confirmatory trajectories without completed calibration, a valid powered sample-size decision, and separate owner approval.
 
 ## Verification and Closeout
 

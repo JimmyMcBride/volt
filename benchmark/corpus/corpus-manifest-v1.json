@@ -12,7 +12,10 @@
   "calibrationTaskCount": 4,
   "confirmatoryTaskCount": 12,
   "calibrationIncludedInEvidence": false,
-  "confirmatoryPrivateUntilStudyComplete": true,
+  "confirmatoryPrivateUntilStudyComplete": false,
+  "confirmatoryEligibleForEvidence": false,
+  "confirmatoryStatus": "retired_public_development_fixtures",
+  "retirementManifestHash": "sha256:df1d734e1d322460c9c92d68b3dbdc216041848775d6a34fe2db0f2fe37d62f0",
   "taskIds": [
     "calibration_cross_module_contract_change",
     "calibration_effect_addition",

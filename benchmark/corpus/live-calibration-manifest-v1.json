@@ -1,10 +1,7 @@
 {
   "schemaVersion": 1,
-  "phase": "calibration",
-  "approved": false,
-  "owner": "JimmyMcBride",
-  "approvalId": "UNAPPROVED",
-  "maximumSpendUsd": 0,
+  "id": "volt-live-calibration-v1",
+  "status": "implementation_frozen_pending_run_approval",
   "protocolHash": "sha256:15b3676b15e7eb68954ca2e16924d43f9f864eb794c62e6c34aa0ef8e04e9108",
   "corpusManifestHash": "sha256:af1b7ffaff62f3c78aa795239dde89d0e7baa1317c30cc10c28919039f44e3b3",
   "modelManifestHash": "sha256:227fc361343f7d11ea998efbd8ae14984cd9781331b961582dfe6dce2774c1a1",
@@ -16,6 +13,28 @@
   "retirementManifestHash": "sha256:df1d734e1d322460c9c92d68b3dbdc216041848775d6a34fe2db0f2fe37d62f0",
   "priceTableHash": "sha256:b33b10423da1780d906694ea83c639951ba8fc3950b43e8171667e90f14d35a0",
   "implementationCommit": "UNMERGED",
-  "credentialsBoundary": "Only the parent orchestrator reads OPENAI_API_KEY and NOVITA_API_KEY; values never enter agent context, child environments, logs, errors, fixtures, artifacts, or Git.",
-  "storagePrivacyPolicy": "Only four synthetic public calibration contexts may reach providers; retired confirmatory content, secrets, host paths, and hidden assertions are denied."
+  "design": {
+    "tasks": 4,
+    "models": 2,
+    "conditions": [
+      "volt_full",
+      "static_obligations_erased",
+      "alias_permissive",
+      "diagnostics_plain"
+    ],
+    "replicates": 5,
+    "trajectories": 160,
+    "scheduleSeed": 20260727,
+    "requestCeiling": 640,
+    "diagnosticFork": "volt_full_to_diagnostics_plain"
+  },
+  "credentials": {
+    "openai": "OPENAI_API_KEY",
+    "novita": "NOVITA_API_KEY",
+    "passedToAgentOrChildEnvironment": false
+  },
+  "proposedMaximumSpendUsd": 45,
+  "runApprovalRequired": true,
+  "providerInferenceAuthorized": false,
+  "confirmatoryAuthorized": false
 }

@@ -26,11 +26,15 @@ function clone(value) {
 async function completeWithin(model, request, milliseconds) {
   if (milliseconds <= 0) throw new TrajectoryTimeoutError();
   let timer;
+  const controller = new AbortController();
   try {
     return await Promise.race([
-      model.complete(request),
+      model.complete({ ...request, signal: controller.signal }),
       new Promise((_, reject) => {
-        timer = setTimeout(() => reject(new TrajectoryTimeoutError()), milliseconds);
+        timer = setTimeout(() => {
+          controller.abort();
+          reject(new TrajectoryTimeoutError());
+        }, milliseconds);
       })
     ]);
   } finally {
@@ -87,7 +91,9 @@ function validateResponse(response, turn) {
   const tokens = response.generatedTokens ?? 0;
   if (!Number.isInteger(tokens) || tokens < 0) throw new TypeError("generatedTokens must be a non-negative integer");
   if (tokens > LIMITS.maxOutputTokensPerTurn) return { budgetExceeded: true, tokens };
-  const toolCalls = response.toolCalls ?? [];
+  const toolCalls = response.auditActions ?? response.toolCalls ?? (
+    turn === 0 ? ["inspect", "edit", "submit"] : ["edit", "submit"]
+  );
   if (!Array.isArray(toolCalls)) throw new TypeError("toolCalls must be an array");
   if (turn === 0) {
     const forbidden = toolCalls.filter((tool) => !FIRST_SUBMISSION_TOOLS.has(tool));
@@ -284,6 +290,11 @@ export async function runTrajectory({
   replicate = 1,
   aliasManifest,
   frozenFirstSubmission,
+  requireFrozenFirstSubmission = false,
+  onFirstSubmission = () => {},
+  authorizationHash = null,
+  turnNonces = [null, null, null, null],
+  requestSeed = null,
   now = () => Date.now(),
   artifactStore = new ArtifactStore()
 }) {
@@ -295,8 +306,25 @@ export async function runTrajectory({
   const attempts = [];
   let firstSubmission = frozenFirstSubmission === undefined ? null : clone(frozenFirstSubmission);
   let feedback = null;
+  const priorConversation = [];
 
   artifactStore.put("context/public-task.json", context);
+  if (requireFrozenFirstSubmission && frozenFirstSubmission === undefined) {
+    artifactStore.put("attempts/0/failure.json", {
+      name: "MissingFrozenFirstSubmission",
+      message: "diagnostic fork parent produced no reusable first submission"
+    });
+    return statusFailure(
+      task,
+      condition,
+      model.id,
+      replicate,
+      "missing",
+      artifactStore,
+      startedAt,
+      now()
+    );
+  }
 
   for (let turn = 0; turn <= LIMITS.repairTurns; turn += 1) {
     const prompt = turn === 0
@@ -309,6 +337,7 @@ export async function runTrajectory({
     artifactStore.put(`attempts/${turn}/prompt.json`, prompt);
 
     let response;
+    let validated;
     try {
       const elapsed = Math.max(0, now() - startedAt);
       if (elapsed >= LIMITS.wallClockMilliseconds) throw new TrajectoryTimeoutError();
@@ -316,11 +345,22 @@ export async function runTrajectory({
       else {
         response = await completeWithin(
           model,
-          { task: context, condition, turn, prompt: stableJson(prompt) },
+          {
+            task: context,
+            condition,
+            turn,
+            prompt: stableJson(prompt),
+            feedback,
+            trajectoryId: `${task.id}:${model.id}:${condition}:${replicate}`,
+            authorizationHash,
+            nonce: turnNonces[turn],
+            seed: requestSeed,
+            priorConversation: clone(priorConversation)
+          },
           LIMITS.wallClockMilliseconds - elapsed
         );
       }
-      const validated = validateResponse(response, turn);
+      validated = validateResponse(response, turn);
       tokens += validated.tokens;
       if (validated.budgetExceeded || tokens > LIMITS.maxOutputTokensPerTrajectory) {
         return statusFailure(
@@ -340,13 +380,26 @@ export async function runTrajectory({
       );
     }
 
-    if (turn === 0) firstSubmission = clone(response);
+    if (turn === 0) {
+      firstSubmission = {
+        files: clone(response.files),
+        generatedTokens: validated.tokens,
+        auditActions: clone(validated.toolCalls)
+      };
+      onFirstSubmission(clone(firstSubmission));
+    }
     files = mergeFiles(files, response.files);
-    const responseText = stableJson(response);
+    const responseText = stableJson({ schemaVersion: 1, files: response.files });
     outputBytes += Buffer.byteLength(responseText, "utf8");
-    artifactStore.put(`attempts/${turn}/model-output.json`, response);
+    artifactStore.put(`attempts/${turn}/model-output.json`, {
+      schemaVersion: 1,
+      files: response.files
+    });
     artifactStore.put(`attempts/${turn}/source-snapshot.json`, files);
-    artifactStore.put(`attempts/${turn}/tool-calls.json`, response.toolCalls ?? []);
+    artifactStore.put(`attempts/${turn}/tool-calls.json`, validated.toolCalls);
+    if (response.providerMetadata !== undefined) {
+      artifactStore.put(`attempts/${turn}/provider-metadata.json`, response.providerMetadata);
+    }
 
     const compilation = compileCondition(condition, files, { aliasManifest });
     const hidden = runHiddenTests(task, files);
@@ -374,6 +427,14 @@ export async function runTrajectory({
       maintenance
     };
     attempts.push(attempt);
+    priorConversation.push({
+      turn,
+      submission: {
+        schemaVersion: 1,
+        files: clone(response.files)
+      },
+      compilerFeedback: compilation.renderedDiagnostics
+    });
 
     if (hidden.passed && compilation.compilation.diagnostics.length === 0) break;
     feedback = compilation.renderedDiagnostics;

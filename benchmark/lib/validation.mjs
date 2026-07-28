@@ -187,11 +187,99 @@ export function validateAuthorizationManifest(manifest) {
     "taskContextManifestHash",
     "toolVersionsHash",
     "conditionAdaptersHash",
-    "aliasManifestHash"
+    "aliasManifestHash",
+    "retirementManifestHash",
+    "priceTableHash"
   ]) hash(manifest[key], `authorization.${key}`);
+  nonEmpty(manifest.implementationCommit, "authorization.implementationCommit");
   nonEmpty(manifest.credentialsBoundary, "authorization.credentialsBoundary");
   nonEmpty(manifest.storagePrivacyPolicy, "authorization.storagePrivacyPolicy");
   return manifest;
+}
+
+export function validateLiveModelManifest(manifest) {
+  object(manifest, "live model manifest");
+  assert.equal(manifest.schemaVersion, 1);
+  nonEmpty(manifest.id, "live model manifest id");
+  for (const key of [
+    "responseParserVersion",
+    "modelReportedIdentifierPolicy",
+    "requestTraceIdentifierPolicy",
+    "fingerprintPolicy"
+  ]) nonEmpty(manifest[key], `live model manifest ${key}`);
+  assert.equal(manifest.models.length, 2);
+  assert.equal(manifest.limits.requestCeiling, 640);
+  assert.equal(manifest.limits.repairTurns, 3);
+  const providers = new Set();
+  for (const model of manifest.models) {
+    assert(["openai", "novita"].includes(model.provider), `invalid provider: ${model.provider}`);
+    assert(!providers.has(model.provider), `duplicate provider: ${model.provider}`);
+    providers.add(model.provider);
+    for (const key of ["id", "family", "endpoint", "revision", "tokenizer", "evidence"]) {
+      nonEmpty(model[key], `live model.${key}`);
+    }
+    assert.equal(typeof model.seedSupported, "boolean");
+    object(model.request, "live model.request");
+    object(model.priceUsdPerMillion, "live model.priceUsdPerMillion");
+    for (const price of Object.values(model.priceUsdPerMillion)) {
+      assert(Number.isFinite(price) && price >= 0, "live model prices must be non-negative");
+    }
+  }
+  assert.deepEqual(providers, new Set(["openai", "novita"]));
+  return manifest;
+}
+
+export function validateRetirementManifest(manifest) {
+  object(manifest, "retirement manifest");
+  assert.equal(manifest.schemaVersion, 1);
+  assert.equal(manifest.status, "retired_from_confirmatory_evidence");
+  assert.equal(manifest.publicGitExposureObserved, true);
+  assert.equal(manifest.makingRepositoryPrivateRestoresEligibility, false);
+  assert.equal(manifest.confirmatoryEligible, false);
+  assert.equal(manifest.tasks.length, 12);
+  uniqueStrings(manifest.tasks.map((task) => task.id), "retirement task ids", { allowEmpty: false });
+  manifest.tasks.forEach((task) => {
+    assert(FAMILIES.has(task.family), `invalid retired task family: ${task.family}`);
+    hash(task.manifestHash, `retirement ${task.id} manifestHash`);
+  });
+  return manifest;
+}
+
+export function validateCalibrationContextManifest(manifest, retirementManifest) {
+  object(manifest, "calibration context manifest");
+  assert.equal(manifest.schemaVersion, 1);
+  assert.equal(manifest.allowedCorpus, "calibration");
+  assert.equal(manifest.allowedTaskIds.length, 4);
+  uniqueStrings(manifest.allowedTaskIds, "calibration allowed task ids", { allowEmpty: false });
+  assert.equal(manifest.tasks.length, 4);
+  assert.deepEqual(
+    manifest.tasks.map((task) => task.id),
+    [...manifest.allowedTaskIds].sort()
+  );
+  assert.equal(manifest.deniedRetirementManifestHash, contentHash(retirementManifest));
+  assert.deepEqual(
+    manifest.deniedTaskIds,
+    retirementManifest.tasks.map((task) => task.id).sort()
+  );
+  manifest.tasks.forEach((task) => {
+    assert(FAMILIES.has(task.family), `invalid calibration task family: ${task.family}`);
+    hash(task.manifestHash, `calibration ${task.id} manifestHash`);
+    hash(task.publicContextHash, `calibration ${task.id} publicContextHash`);
+  });
+  return manifest;
+}
+
+export function validateSpendLedger(ledger) {
+  object(ledger, "spend ledger");
+  assert.equal(ledger.schemaVersion, 1);
+  assert.equal(ledger.requestCeiling, 640);
+  for (const key of ["maximumSpendUsd", "spentUsd", "ambiguousReservedUsd"]) {
+    assert(Number.isFinite(ledger[key]) && ledger[key] >= 0, `spend ledger ${key}`);
+  }
+  assert(ledger.spentUsd + ledger.ambiguousReservedUsd <= ledger.maximumSpendUsd);
+  assert(Array.isArray(ledger.entries));
+  assert(ledger.entries.length <= ledger.requestCeiling);
+  return ledger;
 }
 
 export function validateArtifactIndex(index) {

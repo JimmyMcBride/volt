@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "id": "volt-live-calibration-context-v1",
+  "allowedCorpus": "calibration",
+  "allowedTaskIds": [
+    "calibration_cross_module_contract_change",
+    "calibration_effect_addition",
+    "calibration_invariant_change",
+    "calibration_state_extension"
+  ],
+  "tasks": [
+    {
+      "id": "calibration_cross_module_contract_change",
+      "family": "cross_module_contract_change",
+      "manifestHash": "sha256:1b7933e045e717497a721631f27239e1828feaf7a6284cc4d00429b670509a30",
+      "publicContextHash": "sha256:7bd92032e113618c99e7d7b90903676e3e1a140c6969411013ffe325fbc02ad6"
+    },
+    {
+      "id": "calibration_effect_addition",
+      "family": "effect_addition",
+      "manifestHash": "sha256:1e3b7ec1db8fef8f6e2df416e8761e265a2ff841d29e4046f674f7fcb1734998",
+      "publicContextHash": "sha256:30814215bbb27576f651157f5d1f84923a379f764bd5083b392c34b1999b263d"
+    },
+    {
+      "id": "calibration_invariant_change",
+      "family": "invariant_change",
+      "manifestHash": "sha256:26fa830b6b5e28c0085c65be1187d3ede20de504dcd60b8bf6e215aff76fa2ef",
+      "publicContextHash": "sha256:5cf29af982c02c51a9a0e9a234e326025dafdec73fe22edeebb09f71890fcded"
+    },
+    {
+      "id": "calibration_state_extension",
+      "family": "state_extension",
+      "manifestHash": "sha256:2b6347e818e58190d154d34a884f9b72023ec4543ab4c388053c460800bd3c34",
+      "publicContextHash": "sha256:a75159b6810c485b0c67da117ac6f915a5292ff89f37a5377aaa9649ee88992e"
+    }
+  ],
+  "deniedRetirementManifestHash": "sha256:df1d734e1d322460c9c92d68b3dbdc216041848775d6a34fe2db0f2fe37d62f0",
+  "deniedTaskIds": [
+    "cross_module_contract_change_1",
+    "cross_module_contract_change_2",
+    "cross_module_contract_change_3",
+    "effect_addition_1",
+    "effect_addition_2",
+    "effect_addition_3",
+    "invariant_change_1",
+    "invariant_change_2",
+    "invariant_change_3",
+    "state_extension_1",
+    "state_extension_2",
+    "state_extension_3"
+  ]
+}
