@@ -277,6 +277,59 @@ export function selectPoweredSampleSize({
   };
 }
 
+export function selectCalibrationPowerRecommendation(endpoints) {
+  if (!Array.isArray(endpoints) || endpoints.length !== 6) {
+    throw new TypeError("calibration power selection requires exactly six endpoints");
+  }
+  const ids = new Set();
+  const results = [];
+  for (const endpoint of endpoints) {
+    if (typeof endpoint.id !== "string" || endpoint.id.length === 0 || ids.has(endpoint.id)) {
+      throw new TypeError("calibration power endpoints require unique non-empty ids");
+    }
+    ids.add(endpoint.id);
+    if (!Number.isInteger(endpoint.eligibleCount) || endpoint.eligibleCount <= 0) {
+      return {
+        feasible: false,
+        trajectoriesPerTaskModelCondition: null,
+        decision: "declare_infeasible_and_reapprove",
+        reason: `endpoint ${endpoint.id} has no estimable eligible cohort`,
+        endpoints: []
+      };
+    }
+    const result = selectPoweredSampleSize({
+      baselineRate: endpoint.baselineRate,
+      taskVariance: endpoint.taskVariance ?? 0,
+      detectableEffect: 0.1,
+      targetPower: 0.8,
+      minimum: 20,
+      maximum: 60,
+      familySize: 6,
+      strata: 24
+    });
+    results.push({ id: endpoint.id, ...result });
+  }
+  if (results.some((result) => !result.feasible)) {
+    return {
+      feasible: false,
+      trajectoriesPerTaskModelCondition: null,
+      decision: "declare_infeasible_and_reapprove",
+      reason: "at least one endpoint requires more than 60 trajectories per task/model/condition",
+      endpoints: results
+    };
+  }
+  const recommendation = Math.max(
+    ...results.map((result) => result.trajectoriesPerTaskModelCondition)
+  );
+  return {
+    feasible: true,
+    trajectoriesPerTaskModelCondition: recommendation,
+    decision: "eligible_for_confirmatory_authorization_review",
+    endpoints: results,
+    calibrationEffectsAreEvidence: false
+  };
+}
+
 export function computeOperationalMeasurements(input) {
   const measurements = {
     obligation_coverage: obligationCoverage(input.obligationFixtures),

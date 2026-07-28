@@ -40,12 +40,16 @@ export class ArtifactStore {
   async write(root, runId) {
     for (const artifact of this.#artifacts.values()) {
       const target = resolve(root, artifact.path);
-      await mkdir(dirname(target), { recursive: true });
-      await writeFile(target, artifact.bytes, "utf8");
+      await mkdir(dirname(target), { recursive: true, mode: 0o700 });
+      await writeFile(target, artifact.bytes, { encoding: "utf8", mode: 0o600 });
     }
     const index = this.index(runId);
-    await mkdir(root, { recursive: true });
-    await writeFile(resolve(root, "artifact-index.json"), `${stableJson(index)}\n`, "utf8");
+    await mkdir(root, { recursive: true, mode: 0o700 });
+    await writeFile(
+      resolve(root, "artifact-index.json"),
+      `${stableJson(index)}\n`,
+      { encoding: "utf8", mode: 0o600 }
+    );
     return index;
   }
 }

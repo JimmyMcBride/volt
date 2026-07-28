@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://volt.dev/schema/benchmark/retirement-v1.schema.json",
+  "title": "retirement-v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schemaVersion",
+    "id",
+    "status",
+    "confirmatoryEligible",
+    "tasks"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "const": "retired_from_confirmatory_evidence"
+    },
+    "confirmatoryEligible": {
+      "const": false
+    },
+    "tasks": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

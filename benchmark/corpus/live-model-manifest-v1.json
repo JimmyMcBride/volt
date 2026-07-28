@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "id": "volt-live-calibration-models-v1",
+  "status": "frozen_for_implementation_pending_run_approval",
+  "responseParserVersion": "ProviderEnvelopeV1+AgentSubmissionV1",
+  "modelReportedIdentifierPolicy": "must_equal_frozen_model_id",
+  "requestTraceIdentifierPolicy": "non_empty_provider_request_or_trace_id_required",
+  "fingerprintPolicy": "bind_first_returned_value_and_reject_drift",
+  "models": [
+    {
+      "id": "gpt-5.4-2026-03-05",
+      "family": "frontier_hosted",
+      "provider": "openai",
+      "endpoint": "https://api.openai.com/v1/chat/completions",
+      "metadataEndpoint": "https://api.openai.com/v1/models/gpt-5.4-2026-03-05",
+      "revision": "gpt-5.4-2026-03-05",
+      "tokenizer": "provider_managed:gpt-5.4-2026-03-05",
+      "seedSupported": false,
+      "requiresRuntimeFingerprint": false,
+      "priceUsdPerMillion": {
+        "input": 2.5,
+        "cachedInput": 0.25,
+        "output": 15
+      },
+      "request": {
+        "stream": false,
+        "n": 1,
+        "response_format": {
+          "type": "json_object"
+        },
+        "reasoning_effort": "none",
+        "store": false,
+        "temperature": 0.2,
+        "top_p": 1,
+        "max_completion_tokens": 4000
+      },
+      "evidence": "https://developers.openai.com/api/docs/models/gpt-5.4"
+    },
+    {
+      "id": "qwen/qwen3-coder-next",
+      "family": "open_weight_code",
+      "provider": "novita",
+      "endpoint": "https://api.novita.ai/openai/v1/chat/completions",
+      "metadataEndpoint": null,
+      "revision": "da6e2ed27304dd39abadd9c82ef50e8de67bdd4c",
+      "tokenizer": "Qwen/Qwen3-Coder-Next-FP8@da6e2ed27304dd39abadd9c82ef50e8de67bdd4c",
+      "quantization": "fp8",
+      "seedSupported": false,
+      "requiresRuntimeFingerprint": true,
+      "seedPolicy": "include_only_after_endpoint_metadata_confirmation",
+      "priceUsdPerMillion": {
+        "input": 0.2,
+        "cachedInput": 0.02,
+        "output": 1.5
+      },
+      "request": {
+        "stream": false,
+        "n": 1,
+        "response_format": {
+          "type": "json_object"
+        },
+        "temperature": 0.2,
+        "top_p": 1,
+        "max_tokens": 4000
+      },
+      "evidence": "https://novita.ai/models/model-detail/qwen-qwen3-coder-next",
+      "upstream": "https://huggingface.co/Qwen/Qwen3-Coder-Next-FP8/tree/da6e2ed27304dd39abadd9c82ef50e8de67bdd4c"
+    }
+  ],
+  "limits": {
+    "cumulativeInputTokensPerTrajectory": 64000,
+    "outputTokensPerTurn": 4000,
+    "cumulativeOutputTokensPerTrajectory": 16000,
+    "repairTurns": 3,
+    "requestCeiling": 640
+  }
+}

@@ -2,6 +2,17 @@ import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { ABLATION_PROFILE_HASH } from "../../dist/toolchain/src/index.js";
+import {
+  buildCalibrationContextManifest,
+  buildRetirementManifest,
+  CALIBRATION_CONDITIONS,
+  CALIBRATION_REPLICATES,
+  CALIBRATION_REQUEST_CEILING,
+  CALIBRATION_SEED,
+  CALIBRATION_TRAJECTORY_COUNT
+} from "../lib/calibration.mjs";
+import { CALIBRATION_SYSTEM_PROMPT } from "../lib/live-contract.mjs";
+import { LIVE_MODEL_MANIFEST } from "../lib/providers.mjs";
 import { contentHash, stableJson } from "../lib/stable.mjs";
 
 const root = resolve(import.meta.dirname, "../..");
@@ -774,6 +785,30 @@ assert.deepEqual(
   ]
 );
 
+const retirementManifest = buildRetirementManifest(tasks);
+const calibrationContextManifest = buildCalibrationContextManifest(tasks, retirementManifest);
+const systemPromptManifest = {
+  schemaVersion: 1,
+  id: "volt-live-calibration-system-prompt-v1",
+  prompt: CALIBRATION_SYSTEM_PROMPT
+};
+const toolVersionsManifest = {
+  schemaVersion: 1,
+  node: "24",
+  typescript: "6.x",
+  responseParser: "AgentSubmissionV1",
+  providerBoundary: "ProviderModelV1",
+  diagnosticProtocol: "DiagnosticV1"
+};
+const conditionAdaptersManifest = {
+  schemaVersion: 1,
+  conditions: CALIBRATION_CONDITIONS,
+  fullCheckerProfile: "full",
+  erasedCheckerProfileHash: `sha256:${ABLATION_PROFILE_HASH}`,
+  aliasManifestHash: contentHash(aliasManifest),
+  diagnosticFork: "same_frozen_first_failure"
+};
+
 const corpusManifest = {
   schemaVersion: 1,
   corpusId: "volt-event-registration-v1",
@@ -788,7 +823,10 @@ const corpusManifest = {
   calibrationTaskCount: 4,
   confirmatoryTaskCount: 12,
   calibrationIncludedInEvidence: false,
-  confirmatoryPrivateUntilStudyComplete: true,
+  confirmatoryPrivateUntilStudyComplete: false,
+  confirmatoryEligibleForEvidence: false,
+  confirmatoryStatus: "retired_public_development_fixtures",
+  retirementManifestHash: contentHash(retirementManifest),
   taskIds: tasks.map((task) => task.id).sort(),
   tasks: tasks
     .map((task) => ({
@@ -886,6 +924,47 @@ const modelManifestTemplate = {
   }
 };
 
+const liveCalibrationManifest = {
+  schemaVersion: 1,
+  id: "volt-live-calibration-v1",
+  status: "implementation_frozen_pending_run_approval",
+  protocolHash: corpusManifest.protocolHash,
+  corpusManifestHash: contentHash(corpusManifest),
+  modelManifestHash: contentHash(LIVE_MODEL_MANIFEST),
+  systemPromptHash: contentHash(systemPromptManifest),
+  taskContextManifestHash: contentHash(calibrationContextManifest),
+  toolVersionsHash: contentHash(toolVersionsManifest),
+  conditionAdaptersHash: contentHash(conditionAdaptersManifest),
+  aliasManifestHash: corpusManifest.aliasManifestHash,
+  retirementManifestHash: contentHash(retirementManifest),
+  priceTableHash: contentHash(
+    LIVE_MODEL_MANIFEST.models.map(({ provider, priceUsdPerMillion }) => ({
+      provider,
+      priceUsdPerMillion
+    }))
+  ),
+  implementationCommit: "UNMERGED",
+  design: {
+    tasks: 4,
+    models: 2,
+    conditions: CALIBRATION_CONDITIONS,
+    replicates: CALIBRATION_REPLICATES,
+    trajectories: CALIBRATION_TRAJECTORY_COUNT,
+    scheduleSeed: CALIBRATION_SEED,
+    requestCeiling: CALIBRATION_REQUEST_CEILING,
+    diagnosticFork: "volt_full_to_diagnostics_plain"
+  },
+  credentials: {
+    openai: "OPENAI_API_KEY",
+    novita: "NOVITA_API_KEY",
+    passedToAgentOrChildEnvironment: false
+  },
+  proposedMaximumSpendUsd: 45,
+  runApprovalRequired: true,
+  providerInferenceAuthorized: false,
+  confirmatoryAuthorized: false
+};
+
 const authorizationTemplate = {
   schemaVersion: 1,
   phase: "calibration",
@@ -895,20 +974,30 @@ const authorizationTemplate = {
   maximumSpendUsd: 0,
   protocolHash: corpusManifest.protocolHash,
   corpusManifestHash: contentHash(corpusManifest),
-  modelManifestHash: contentHash(modelManifestTemplate),
-  systemPromptHash: contentHash("UNFROZEN"),
-  taskContextManifestHash: contentHash("UNFROZEN"),
-  toolVersionsHash: contentHash("UNFROZEN"),
-  conditionAdaptersHash: contentHash("UNFROZEN"),
+  modelManifestHash: liveCalibrationManifest.modelManifestHash,
+  systemPromptHash: liveCalibrationManifest.systemPromptHash,
+  taskContextManifestHash: liveCalibrationManifest.taskContextManifestHash,
+  toolVersionsHash: liveCalibrationManifest.toolVersionsHash,
+  conditionAdaptersHash: liveCalibrationManifest.conditionAdaptersHash,
   aliasManifestHash: corpusManifest.aliasManifestHash,
-  credentialsBoundary: "Provider credentials are available only to the future orchestrator boundary.",
-  storagePrivacyPolicy: "Secrets and hidden tests are excluded from model-visible context and public artifacts."
+  retirementManifestHash: liveCalibrationManifest.retirementManifestHash,
+  priceTableHash: liveCalibrationManifest.priceTableHash,
+  implementationCommit: "UNMERGED",
+  credentialsBoundary: "Only the parent orchestrator reads OPENAI_API_KEY and NOVITA_API_KEY; values never enter agent context, child environments, logs, errors, fixtures, artifacts, or Git.",
+  storagePrivacyPolicy: "Only four synthetic public calibration contexts may reach providers; retired confirmatory content, secrets, host paths, and hidden assertions are denied."
 };
 
 await writeJson("benchmark/corpus/alias-manifest-v1.json", aliasManifest);
 await writeJson("benchmark/corpus/corpus-manifest-v1.json", corpusManifest);
 await writeJson("benchmark/corpus/baseline-manifest-v1.json", baselineManifest);
 await writeJson("benchmark/corpus/model-manifest.template.json", modelManifestTemplate);
+await writeJson("benchmark/corpus/live-model-manifest-v1.json", LIVE_MODEL_MANIFEST);
+await writeJson("benchmark/corpus/live-calibration-manifest-v1.json", liveCalibrationManifest);
+await writeJson("benchmark/corpus/calibration-context-manifest-v1.json", calibrationContextManifest);
+await writeJson("benchmark/corpus/confirmatory-retirement-v1.json", retirementManifest);
+await writeJson("benchmark/corpus/system-prompt-v1.json", systemPromptManifest);
+await writeJson("benchmark/corpus/tool-versions-v1.json", toolVersionsManifest);
+await writeJson("benchmark/corpus/condition-adapters-v1.json", conditionAdaptersManifest);
 await writeJson("benchmark/corpus/authorization.template.json", authorizationTemplate);
 await writeJson("benchmark/corpus/generated/seed.json", seed);
 for (const task of tasks) {
@@ -998,6 +1087,102 @@ const schemaSpecs = {
       approved: { type: "boolean" },
       owner: { type: "string" },
       maximumSpendUsd: { type: "number", minimum: 0 }
+    }
+  },
+  "agent-submission-v1": {
+    required: ["schemaVersion", "files"],
+    properties: {
+      files: {
+        type: "object",
+        additionalProperties: { type: "string" }
+      }
+    }
+  },
+  "provider-envelope-v1": {
+    required: ["schemaVersion", "provider", "modelId", "endpoint", "request"],
+    properties: {
+      provider: { enum: ["openai", "novita"] },
+      modelId: { type: "string", minLength: 1 },
+      endpoint: { type: "string", minLength: 1 },
+      request: { type: "object" }
+    }
+  },
+  "spend-ledger-v1": {
+    required: [
+      "schemaVersion",
+      "maximumSpendUsd",
+      "spentUsd",
+      "ambiguousReservedUsd",
+      "requestCeiling",
+      "entries"
+    ],
+    properties: {
+      maximumSpendUsd: { type: "number", minimum: 0 },
+      spentUsd: { type: "number", minimum: 0 },
+      ambiguousReservedUsd: { type: "number", minimum: 0 },
+      requestCeiling: { const: 640 },
+      entries: { type: "array" }
+    }
+  },
+  "preflight-v1": {
+    required: ["schemaVersion", "provider", "modelId", "inferenceAuthorized", "evidence"],
+    properties: {
+      provider: { enum: ["openai", "novita"] },
+      modelId: { type: "string", minLength: 1 },
+      inferenceAuthorized: { type: "boolean" },
+      evidence: { type: "object" }
+    }
+  },
+  "live-model-v1": {
+    required: ["schemaVersion", "id", "status", "models", "limits"],
+    properties: {
+      id: { type: "string", minLength: 1 },
+      status: { type: "string", minLength: 1 },
+      models: { type: "array", minItems: 2, maxItems: 2 },
+      limits: { type: "object" }
+    }
+  },
+  "retirement-v1": {
+    required: ["schemaVersion", "id", "status", "confirmatoryEligible", "tasks"],
+    properties: {
+      id: { type: "string", minLength: 1 },
+      status: { const: "retired_from_confirmatory_evidence" },
+      confirmatoryEligible: { const: false },
+      tasks: { type: "array", minItems: 12, maxItems: 12 }
+    }
+  },
+  "calibration-context-v1": {
+    required: ["schemaVersion", "id", "allowedCorpus", "allowedTaskIds", "tasks", "deniedTaskIds"],
+    properties: {
+      id: { type: "string", minLength: 1 },
+      allowedCorpus: { const: "calibration" },
+      allowedTaskIds: { type: "array", minItems: 4, maxItems: 4, uniqueItems: true },
+      tasks: { type: "array", minItems: 4, maxItems: 4 },
+      deniedTaskIds: { type: "array", minItems: 12, maxItems: 12, uniqueItems: true }
+    }
+  },
+  "run-approval-packet-v1": {
+    required: [
+      "schemaVersion",
+      "kind",
+      "implementationCommit",
+      "readyForOwnerApproval",
+      "preflight",
+      "priceEvidence",
+      "worstCase",
+      "frozenHashes",
+      "authorizationHash",
+      "requiredOwnerResponse",
+      "confirmatoryAuthorized",
+      "packetHash"
+    ],
+    properties: {
+      kind: { const: "calibration_run_approval_packet" },
+      implementationCommit: { type: "string", pattern: "^[a-f0-9]{40}$" },
+      readyForOwnerApproval: { type: "boolean" },
+      authorizationHash: { $ref: "#/$defs/hash" },
+      confirmatoryAuthorized: { const: false },
+      packetHash: { $ref: "#/$defs/hash" }
     }
   },
   "artifact-index-v1": {

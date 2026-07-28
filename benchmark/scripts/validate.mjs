@@ -25,8 +25,11 @@ import { contentHash } from "../lib/stable.mjs";
 import {
   validateAliasManifest,
   validateAuthorizationManifest,
+  validateCalibrationContextManifest,
   validateCorpusManifest,
-  validateModelManifest
+  validateLiveModelManifest,
+  validateModelManifest,
+  validateRetirementManifest
 } from "../lib/validation.mjs";
 
 const root = resolve(import.meta.dirname, "../..");
@@ -46,6 +49,13 @@ const [
   baselines,
   models,
   authorization,
+  liveModels,
+  liveCalibration,
+  calibrationContext,
+  retirement,
+  systemPrompt,
+  toolVersions,
+  conditionAdapters,
   schemaIndex,
   calibrationTasks,
   confirmatoryTasks
@@ -59,6 +69,13 @@ const [
   readJson("benchmark/corpus/baseline-manifest-v1.json"),
   readJson("benchmark/corpus/model-manifest.template.json"),
   readJson("benchmark/corpus/authorization.template.json"),
+  readJson("benchmark/corpus/live-model-manifest-v1.json"),
+  readJson("benchmark/corpus/live-calibration-manifest-v1.json"),
+  readJson("benchmark/corpus/calibration-context-manifest-v1.json"),
+  readJson("benchmark/corpus/confirmatory-retirement-v1.json"),
+  readJson("benchmark/corpus/system-prompt-v1.json"),
+  readJson("benchmark/corpus/tool-versions-v1.json"),
+  readJson("benchmark/corpus/condition-adapters-v1.json"),
   readJson("benchmark/schema/index.json"),
   taskFiles("benchmark/corpus/generated/calibration"),
   taskFiles("benchmark/corpus/generated/private")
@@ -68,11 +85,31 @@ const tasks = [...calibrationTasks, ...confirmatoryTasks].sort((left, right) => 
 validateAliasManifest(aliases);
 validateModelManifest(models);
 validateAuthorizationManifest(authorization);
+validateLiveModelManifest(liveModels);
+validateRetirementManifest(retirement);
+validateCalibrationContextManifest(calibrationContext, retirement);
 validateCorpusManifest(corpus, tasks);
 assert.equal(corpus.protocolHash, contentHash(protocol));
 assert.equal(corpus.kernelHash, contentHash(kernel));
 assert.equal(corpus.checkerProfileHash, `sha256:${ABLATION_PROFILE_HASH}`);
 assert.equal(corpus.aliasManifestHash, contentHash(aliases));
+assert.equal(corpus.confirmatoryPrivateUntilStudyComplete, false);
+assert.equal(corpus.confirmatoryEligibleForEvidence, false);
+assert.equal(corpus.retirementManifestHash, contentHash(retirement));
+assert.equal(liveCalibration.protocolHash, corpus.protocolHash);
+assert.equal(liveCalibration.corpusManifestHash, contentHash(corpus));
+assert.equal(liveCalibration.modelManifestHash, contentHash(liveModels));
+assert.equal(liveCalibration.systemPromptHash, contentHash(systemPrompt));
+assert.equal(liveCalibration.taskContextManifestHash, contentHash(calibrationContext));
+assert.equal(liveCalibration.toolVersionsHash, contentHash(toolVersions));
+assert.equal(liveCalibration.conditionAdaptersHash, contentHash(conditionAdapters));
+assert.equal(liveCalibration.retirementManifestHash, contentHash(retirement));
+assert.equal(liveCalibration.design.trajectories, 160);
+assert.equal(liveCalibration.design.requestCeiling, 640);
+assert.equal(liveCalibration.runApprovalRequired, true);
+assert.equal(liveCalibration.providerInferenceAuthorized, false);
+assert.equal(authorization.modelManifestHash, contentHash(liveModels));
+assert.equal(authorization.retirementManifestHash, contentHash(retirement));
 assert.equal(
   new Set([...profile.retained, ...profile.disabled]).size,
   profile.retained.length + profile.disabled.length
@@ -127,7 +164,7 @@ assert.deepEqual(
 );
 
 const schemaNames = Object.values(schemaIndex.records);
-assert.equal(schemaNames.length, 14);
+assert.equal(schemaNames.length, 22);
 for (const path of schemaNames) {
   const schema = await readJson(path);
   assert.equal(schema.$schema, "https://json-schema.org/draft/2020-12/schema");

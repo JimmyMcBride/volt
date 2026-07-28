@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "id": "volt-exposed-confirmatory-retirement-v1",
+  "status": "retired_from_confirmatory_evidence",
+  "reason": "Task manifests and hidden assertions were tracked in public Git history.",
+  "publicGitExposureObserved": true,
+  "makingRepositoryPrivateRestoresEligibility": false,
+  "confirmatoryEligible": false,
+  "retainedUse": "public_development_fixtures_only",
+  "tasks": [
+    {
+      "id": "cross_module_contract_change_1",
+      "family": "cross_module_contract_change",
+      "manifestHash": "sha256:6746ff1f5fcc6715313d0c560c0d23dfd592d0db73a54d85e349faf8c6dcba31"
+    },
+    {
+      "id": "cross_module_contract_change_2",
+      "family": "cross_module_contract_change",
+      "manifestHash": "sha256:14aaaf2bd2798bb39f246d30af575a7915053eb3096c22d1d6bcbce731677d9c"
+    },
+    {
+      "id": "cross_module_contract_change_3",
+      "family": "cross_module_contract_change",
+      "manifestHash": "sha256:fb25489a362a07160cc735f2cf99d54c6f0b865c7ee079e5e82aabd5f331fae7"
+    },
+    {
+      "id": "effect_addition_1",
+      "family": "effect_addition",
+      "manifestHash": "sha256:51187ecbdd2e88e29d645481b5fad2f30ea15d73530b2accacca8468e98b1f47"
+    },
+    {
+      "id": "effect_addition_2",
+      "family": "effect_addition",
+      "manifestHash": "sha256:3e72fc7030419da6b3a00d97d13a596f7557ffb68c2816bce85af5d1bae42cc1"
+    },
+    {
+      "id": "effect_addition_3",
+      "family": "effect_addition",
+      "manifestHash": "sha256:b82b8c984824075a87371b7902bceaa83fd7e9e87d94c14f1e59687dcc1dbc6a"
+    },
+    {
+      "id": "invariant_change_1",
+      "family": "invariant_change",
+      "manifestHash": "sha256:1a7e052949c5ef249f71ef9b95af24731d67899adb87c2a39054ea8a46a6add6"
+    },
+    {
+      "id": "invariant_change_2",
+      "family": "invariant_change",
+      "manifestHash": "sha256:8b5e598b1f22693ebd5c52ef76cc2ec0ba43c70fa3cfa903c2f3c7f66f9e49eb"
+    },
+    {
+      "id": "invariant_change_3",
+      "family": "invariant_change",
+      "manifestHash": "sha256:078f584a43f95021ee3a24e98b82aa7a875ea3d53812009c0dacdad31bd1f7f2"
+    },
+    {
+      "id": "state_extension_1",
+      "family": "state_extension",
+      "manifestHash": "sha256:345a373d35ea98b217b95e23729668b84b43ee047234f423dc313a60fd3a137a"
+    },
+    {
+      "id": "state_extension_2",
+      "family": "state_extension",
+      "manifestHash": "sha256:5cff893ca73dae1e2db4d8746d478c5601723c4516f369ba9765d301c6c1271e"
+    },
+    {
+      "id": "state_extension_3",
+      "family": "state_extension",
+      "manifestHash": "sha256:0a6536d76ca0bcdb3188de2b8599c864c5af9eb855c272ffa8a4ecaa8258a9aa"
+    }
+  ]
+}

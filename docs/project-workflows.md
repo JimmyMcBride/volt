@@ -1,5 +1,5 @@
 ---
-updated: "2026-07-27T17:39:10Z"
+updated: "2026-07-28T05:17:28Z"
 ---
 ## Project Workflow
 
@@ -18,7 +18,18 @@ updated: "2026-07-27T17:39:10Z"
 - Canonical sequencing: GitHub Milestones and Projects.
 - Local Plan Markdown must not mirror canonical planning content.
 - Plan must authorize any manual fallback before planning objects are created outside Plan.
-- The active pre-calibration amendment is [Issue #15](https://github.com/JimmyMcBride/volt/issues/15), canonical camelCase identifiers.
+- [Issue #17](https://github.com/JimmyMcBride/volt/issues/17) is the approved live-calibration provider-boundary specification.
+
+## Live-Calibration Workflow
+
+- Issue #17 spec approval authorizes implementation, fake-provider verification, committed manifest generation, and a review PR only. It authorizes zero inference requests and zero spend.
+- Keep `npm run verify`, `npm run benchmark:offline`, and `npm run benchmark:calibration:dry-run` network-free and zero-spend.
+- Run `npm run benchmark:calibration:preflight` only after the implementation is merged. It may use documented zero-charge metadata endpoints but must make no inference request.
+- Build the run-approval packet from the exact merged commit, saved preflight result, current price evidence, expected duration, and all frozen hashes.
+- Do not run `benchmark:calibrate` until the owner explicitly approves the packet's exact authorization hash and USD ceiling.
+- Treat any model, provider, endpoint, revision, tokenizer, quantization, request-field, fingerprint, price, or ceiling drift as requiring a revised packet or spec amendment.
+- Keep `benchmark:confirmatory` fail-closed. Calibration cannot authorize confirmatory execution or update the Volt thesis.
+- The twelve tracked confirmatory fixtures are publicly exposed and permanently retired from confirmatory evidence. Future confirmatory tasks must be newly generated after freeze and kept outside public Git until the study completes.
 
 ## Naming-Migration Workflow
 
@@ -36,13 +47,12 @@ updated: "2026-07-27T17:39:10Z"
 - `npm run check:language`: validate the kernel contract and all conformance inputs.
 - `npm run build`: compile the reference toolchain with strict TypeScript 6.
 - `npm run check:toolchain`: validate toolchain schemas, checker-profile hash, source-size guardrail, and zero runtime dependencies.
-- `npm run check:benchmark`: validate all 16 tasks, hashes, assertions, 128 retained mutants, treatment parity, descriptive baseline parity, schemas, authorization gates, and offline network/spend isolation.
-- `npm run benchmark:generate`: regenerate content-addressed corpus and baseline artifacts after approved source-contract changes.
-- `npm run benchmark:offline`: run deterministic fake/replay trajectories and write ignored content-addressed artifacts without provider calls.
+- `npm run check:benchmark`: validate all 16 tasks, hashes, assertions, 128 retained mutants, treatment parity, provider manifests, authorization gates, and offline network/spend isolation.
+- `npm run benchmark:generate`: regenerate content-addressed corpus, provider manifests, and schemas after approved source-contract changes.
+- `npm run benchmark:offline`: run deterministic fake/replay trajectories without provider calls.
+- `npm run benchmark:calibration:dry-run`: run the complete deterministic 160-trajectory fake calibration and artifact flow without provider calls.
 - `npm run verify`: run all contract validators, compile the toolchain, and execute all deterministic tests.
 - `plan check --project .`: validate Plan/GitHub-backed project state.
 - `brain context audit --project .`: audit durable context after meaningful changes.
 
 Use `node dist/toolchain/src/cli.js <check|run|test|fmt> --project <repo>` after `npm run build`. A Volt repository must provide the versioned repository manifest; test discovery is explicit and never filename-based.
-
-`npm run benchmark:calibrate` and `npm run benchmark:confirmatory` are separate gated commands. They must refuse execution without the exact matching owner-approved authorization manifest and spend ceiling. The current offline implementation deliberately has no active provider boundary.
