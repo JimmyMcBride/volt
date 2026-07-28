@@ -174,6 +174,23 @@ export function confirmatoryCostEstimate(recommendation, models) {
   };
 }
 
+export function rehydrateFirstSubmissions(checkpointRecords) {
+  const submissions = new Map();
+  for (const checkpoint of checkpointRecords) {
+    if (checkpoint.kind !== "trajectory_completed" ||
+        checkpoint.value?.record?.condition !== "volt_full" ||
+        checkpoint.value.frozenFirstSubmission === null ||
+        checkpoint.value.frozenFirstSubmission === undefined) {
+      continue;
+    }
+    submissions.set(
+      checkpoint.value.record.trajectoryId,
+      structuredClone(checkpoint.value.frozenFirstSubmission)
+    );
+  }
+  return submissions;
+}
+
 export async function executeCalibration({
   tasks,
   models,
@@ -226,7 +243,7 @@ export async function executeCalibration({
     }
   }
   const taskById = new Map(tasks.map((task) => [task.id, task]));
-  const firstSubmissions = new Map();
+  const firstSubmissions = rehydrateFirstSubmissions(checkpointRecords);
   const trajectoryRecords = checkpointRecords
     .filter((record) => record.kind === "trajectory_completed")
     .map((record) => record.value.record);
@@ -309,6 +326,7 @@ export async function executeCalibration({
     await journal.append("trajectory_completed", {
       record,
       recordHash: contentHash(record),
+      frozenFirstSubmission: item.condition === "volt_full" ? capturedFirst : null,
       ledger: ledger.snapshot()
     });
   }

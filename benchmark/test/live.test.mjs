@@ -19,7 +19,10 @@ import {
   parseJsonUtf8,
   validateProviderPayload
 } from "../lib/live-contract.mjs";
-import { executeFakeCalibration } from "../lib/live-runner.mjs";
+import {
+  executeFakeCalibration,
+  rehydrateFirstSubmissions
+} from "../lib/live-runner.mjs";
 import {
   exactRequestEnvelope,
   LIVE_MODEL_MANIFEST,
@@ -391,6 +394,35 @@ test("spend ledger refuses ceiling breaches and restores checkpoints without rep
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
+});
+
+test("completed full-arm checkpoints rehydrate the diagnostic fork submission", () => {
+  const trajectoryId =
+    "calibration_state_extension:gpt-5.4-2026-03-05:volt_full:1";
+  const frozenFirstSubmission = {
+    files: { "src/domain.volt": "module domain\n" },
+    generatedTokens: 42,
+    auditActions: ["inspect", "edit", "submit"]
+  };
+  const restored = rehydrateFirstSubmissions([{
+    kind: "trajectory_completed",
+    value: {
+      record: { trajectoryId, condition: "volt_full" },
+      frozenFirstSubmission
+    }
+  }]);
+  assert.deepEqual(restored.get(trajectoryId), frozenFirstSubmission);
+  assert.notEqual(restored.get(trajectoryId), frozenFirstSubmission);
+  assert.equal(
+    rehydrateFirstSubmissions([{
+      kind: "trajectory_completed",
+      value: {
+        record: { trajectoryId, condition: "diagnostics_plain" },
+        frozenFirstSubmission
+      }
+    }]).size,
+    0
+  );
 });
 
 test("calibration schedule is deterministic, paired, randomized, and bounded", async () => {
